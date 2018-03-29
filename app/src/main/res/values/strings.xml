@@ -3,4 +3,7 @@
     <string name="players">Players</string>
     <string name="scores">Scores</string>
     <string name="statistics">Statistics</string>
+    <string name="search">Search</string>
+    <string name="preferences">Preferences</string>
+    <string name="logout">Logout</string>
 </resources>
