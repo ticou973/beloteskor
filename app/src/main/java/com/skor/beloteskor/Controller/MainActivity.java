@@ -7,6 +7,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.skor.beloteskor.R;
@@ -15,6 +20,10 @@ public class MainActivity extends AppCompatActivity {
 
     private android.support.v7.widget.Toolbar toolbar;
     private BottomNavigationView navigation;
+    private EditText yourName, yourPartnerName, onYourLeftName, onYourRightName;
+    private TextView totalScoreA, totalScoreB;
+    private Button newGameBtn;
+    private ImageView triangleView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +72,29 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //gestion de la barre des scores
+        yourName = findViewById(R.id.et_you);
+        yourPartnerName = findViewById(R.id.et_your_partner);
+        onYourLeftName = findViewById(R.id.et_on_your_left);
+        onYourRightName = findViewById(R.id.et_on_your_right);
+        totalScoreA = findViewById(R.id.score_total_equipeA);
+        totalScoreB = findViewById(R.id.score_total_equipeB);
 
+        triangleView = findViewById(R.id.triangleView);
+        triangleView.setVisibility(View.INVISIBLE);
+
+
+        newGameBtn = findViewById(R.id.new_game_btn);
+        newGameBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //disparition et désactivation du bouton de nouvelle partie
+                newGameBtn.setVisibility(View.INVISIBLE);
+                newGameBtn.setEnabled(false);
+
+            }
+        });
 
 
     }

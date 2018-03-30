@@ -6,4 +6,10 @@
     <string name="search">Search</string>
     <string name="preferences">Preferences</string>
     <string name="logout">Logout</string>
+    <string name="on_your_left">On Your Left</string>
+    <string name="on_your_right">On Your Right</string>
+    <string name="your_partner">Your Partner</string>
+    <string name="you">You</string>
+    <string name="white_triangle">white triangle</string>
+    <string name="new_game">New Game</string>
 </resources>
