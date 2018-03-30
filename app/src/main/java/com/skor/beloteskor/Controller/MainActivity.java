@@ -92,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
                 //disparition et désactivation du bouton de nouvelle partie
                 newGameBtn.setVisibility(View.INVISIBLE);
                 newGameBtn.setEnabled(false);
+                triangleView.setVisibility(View.VISIBLE);
 
             }
         });

@@ -6,6 +6,6 @@
     <color name="colorAccent">#9b27af</color>
     <color name="colorAccentDark">#69007f</color>
     <color name="colorAccentLight">#cf5ce2</color>
-    <color name="colorBackGround">#FAFAFA</color>
+    <color name="colorBackGround">#fafafa</color>
     <color name="colorTextOnPrimaryLight">#424242</color>
 </resources>
