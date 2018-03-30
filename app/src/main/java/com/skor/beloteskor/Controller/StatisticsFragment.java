@@ -11,11 +11,11 @@ import android.view.ViewGroup;
 import com.skor.beloteskor.R;
 
 
-public class SettingsGameFragment extends Fragment {
+public class StatisticsFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public SettingsGameFragment() {
+    public StatisticsFragment() {
         // Required empty public constructor
     }
 
@@ -24,7 +24,8 @@ public class SettingsGameFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_settings_game, container, false);
+        View view = inflater.inflate(R.layout.fragment_statistics, container, false);
+
         return view;
     }
 
@@ -34,8 +35,6 @@ public class SettingsGameFragment extends Fragment {
             mListener.onFragmentInteraction(uri);
         }
     }
-
-
 
     @Override
     public void onAttach(Context context) {
@@ -48,15 +47,11 @@ public class SettingsGameFragment extends Fragment {
         }
     }
 
-
-
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
     }
-
-
 
 
     public interface OnFragmentInteractionListener {

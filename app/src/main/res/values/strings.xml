@@ -15,4 +15,17 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="_0">0</string>
+    <string name="annonces">Annonces</string>
+    <string name="variantes">Variantes</string>
+    <string name="sans_annonce">Sans Annonce</string>
+    <string name="nb_points_1001">nb points : 1001</string>
+    <string name="nb_donnes_12">nb donnes : 12</string>
+    <string name="sens_inverse">Sens Inverse</string>
+    <string name="raymond">Raymond</string>
+    <string name="gis_le">Gisèle</string>
+    <string name="distribution">Distribution</string>
+    <string name="sens_aiguilles">Sens Aiguilles</string>
+    <string name="albert">Albert</string>
+    <string name="g_raldine">Géraldine</string>
 </resources>

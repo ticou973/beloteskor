@@ -1,8 +1,10 @@
 package com.skor.beloteskor.Controller;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -10,20 +12,26 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.skor.beloteskor.R;
 
-public class MainActivity extends AppCompatActivity {
+//todo faire attention à l'impléme,tation de l'interface qui répète 2 fois la même méthode de Callback
+public class MainActivity extends AppCompatActivity implements SettingsGameFragment.OnFragmentInteractionListener, ScoresFragment.OnFragmentInteractionListener, PlayersFragment.OnFragmentInteractionListener, StatisticsFragment.OnFragmentInteractionListener{
 
     private android.support.v7.widget.Toolbar toolbar;
     private BottomNavigationView navigation;
     private EditText yourName, yourPartnerName, onYourLeftName, onYourRightName;
     private TextView totalScoreA, totalScoreB;
-    private Button newGameBtn;
+    private Button startGameBtn;
     private ImageView triangleView;
+
+    private FrameLayout flFragments;
+
+    private FragmentTransaction transaction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,19 +55,26 @@ public class MainActivity extends AppCompatActivity {
 
                     case R.id.players:
 
-                        Toast.makeText(MainActivity.this, "Players", Toast.LENGTH_SHORT).show();
+                        PlayersFragment playersFragment = new PlayersFragment();
+                        transaction = getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.fl_fragment, playersFragment).commit();
+
 
                         return true;
 
                     case R.id.scores:
 
-                        Toast.makeText(MainActivity.this, "Scores", Toast.LENGTH_SHORT).show();
+                        ScoresFragment scoresFragment = new ScoresFragment();
+                        transaction = getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.fl_fragment, scoresFragment).commit();
 
                         return true;
 
                     case R.id.statistics:
 
-                        Toast.makeText(MainActivity.this, "Statistics", Toast.LENGTH_SHORT).show();
+                        StatisticsFragment statisticsFragment = new StatisticsFragment();
+                        transaction = getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.fl_fragment, statisticsFragment).commit();
 
                         return true;
 
@@ -79,23 +94,33 @@ public class MainActivity extends AppCompatActivity {
         onYourRightName = findViewById(R.id.et_on_your_right);
         totalScoreA = findViewById(R.id.score_total_equipeA);
         totalScoreB = findViewById(R.id.score_total_equipeB);
+        flFragments = findViewById(R.id.fl_fragment);
 
         triangleView = findViewById(R.id.triangleView);
         triangleView.setVisibility(View.INVISIBLE);
 
 
-        newGameBtn = findViewById(R.id.new_game_btn);
-        newGameBtn.setOnClickListener(new View.OnClickListener() {
+        startGameBtn = findViewById(R.id.start_game_btn);
+        startGameBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                //disparition et désactivation du bouton de nouvelle partie
-                newGameBtn.setVisibility(View.INVISIBLE);
-                newGameBtn.setEnabled(false);
+                startGameBtn.setVisibility(View.INVISIBLE);
+                startGameBtn.setEnabled(false);
                 triangleView.setVisibility(View.VISIBLE);
+                totalScoreA.setText("0");
+                totalScoreB.setText("0");
+
+                ScoresFragment scoresFragment = new ScoresFragment();
+                transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.fl_fragment, scoresFragment).commit();
 
             }
         });
+
+        //Lancement du fragment de settings
+        SettingsGameFragment settingsGameFragment = new SettingsGameFragment();
+        transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fl_fragment, settingsGameFragment).commit();
 
 
     }
@@ -131,5 +156,10 @@ public class MainActivity extends AppCompatActivity {
             default:
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }

@@ -8,4 +8,5 @@
     <color name="colorAccentLight">#cf5ce2</color>
     <color name="colorBackGround">#fafafa</color>
     <color name="colorTextOnPrimaryLight">#424242</color>
+    <color name="colorbuttonfalse">#DBDBDB</color>
 </resources>
