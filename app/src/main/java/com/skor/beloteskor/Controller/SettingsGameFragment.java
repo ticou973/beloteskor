@@ -14,6 +14,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.skor.beloteskor.R;
@@ -27,6 +28,8 @@ public class SettingsGameFragment extends Fragment {
     private TextInputLayout tilPoints, tilDonnes;
     private TextInputEditText tietPoints, tietDonnes;
     private ToggleButton sansAnnonceBtn, annoncesBtn, sensAiguillesBtn, sensInverseBtn, distribYouBtn, distribYourPartnerBtn, distribLeftBtn, distribRightBtn;
+
+    private String nom1;
 
     public SettingsGameFragment() {
         // Required empty public constructor
@@ -406,6 +409,9 @@ public class SettingsGameFragment extends Fragment {
 
             }
         });
+
+        String player = getActivity().toString();
+        Toast.makeText(getContext(), player, Toast.LENGTH_SHORT).show();
 
     }
 

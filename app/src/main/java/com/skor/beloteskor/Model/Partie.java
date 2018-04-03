@@ -22,14 +22,14 @@ public class Partie {
     @Embedded
     private TypeDePartie type;
 
-    @ColumnInfo(name ="sens_jeu")
-    private boolean sensJeu;
+    @Embedded
+    private Equipes equipes;
 
     @Embedded
     private Joueur premierDistributeur;
 
-    @Embedded
-    private Equipes equipes;
+    @ColumnInfo(name ="sens_jeu")
+    private boolean sensJeu;
 
     @ColumnInfo(name ="score_equipeA")
     private int scoreEquipeA;
@@ -65,30 +65,6 @@ public class Partie {
 
     //Autres méthodes
 
-
-    //todo écrire les méthodes liées à la classe partie
-
-    public boolean getGameState(int partieId){
-
-        return false;
-    }
-
-    public Equipe determineWinner (Equipe equipeA, Equipe equipeB){
-
-
-        return equipeA;
-    }
-
-    public void startGame(){
-
-
-    }
-
-    public int getTotalTeamScore (Equipe equipe){
-
-        return 0;
-
-    }
 
 
     //Getter et Setter

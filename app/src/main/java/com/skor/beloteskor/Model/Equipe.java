@@ -16,6 +16,7 @@ public class Equipe {
     @PrimaryKey(autoGenerate = true)
     private int EquipeId;
 
+
     @ColumnInfo(name="nom_equipe")
     private String nomEquipe;
 
@@ -25,6 +26,8 @@ public class Equipe {
     @ColumnInfo(name="nom_joueur2")
     private String nomJoueur2;
 
+
+    //Variables statiques
 
     //Méthodes constructeurs
 
