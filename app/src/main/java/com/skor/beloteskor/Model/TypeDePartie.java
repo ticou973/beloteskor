@@ -1,5 +1,7 @@
 package com.skor.beloteskor.Model;
 
+import android.arch.persistence.room.Ignore;
+
 /**
  * Created by thierrycouilleault on 16/11/2017.
  */
@@ -24,6 +26,7 @@ public class TypeDePartie {
 
     }
 
+    @Ignore
     public TypeDePartie(String typeJeu, String typeAnnonce, int nbPoints, int nbDonnes) {
         this.typeJeu = typeJeu;
         this.typeAnnonce = typeAnnonce;

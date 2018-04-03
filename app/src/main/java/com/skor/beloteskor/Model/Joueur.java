@@ -2,6 +2,7 @@ package com.skor.beloteskor.Model;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 /**
@@ -25,14 +26,11 @@ public class Joueur {
     public Joueur (){
     }
 
+    @Ignore
     public Joueur (String nomJoueur) {
         this.nomJoueur = nomJoueur;
 
     }
-
-
-    //Autres méthodes
-
 
 
     //Getter et Setter

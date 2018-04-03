@@ -5,6 +5,7 @@ import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
 /**
@@ -13,7 +14,7 @@ import android.arch.persistence.room.PrimaryKey;
 
 @Entity (foreignKeys = @ForeignKey(entity = Partie.class,
         parentColumns = "partieId",
-        childColumns = "num_partie"))
+        childColumns = "num_partie"),indices = {@Index(value = {"num_partie"})})
 public class Donne {
 
     @PrimaryKey (autoGenerate = true)
@@ -51,6 +52,7 @@ public class Donne {
     public Donne() {
     }
 
+    @Ignore
     public Donne(int partieId, int numDonne, Joueur preneur, Couleur couleur, boolean belote, boolean capot, int score1, int score2) {
         this.partieId = partieId;
         this.numDonne = numDonne;

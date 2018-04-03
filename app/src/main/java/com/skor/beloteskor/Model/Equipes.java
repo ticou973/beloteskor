@@ -1,6 +1,7 @@
 package com.skor.beloteskor.Model;
 
-import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Embedded;
+import android.arch.persistence.room.Ignore;
 
 /**
  * Created by thierrycouilleault on 22/01/2018.
@@ -8,98 +9,43 @@ import android.arch.persistence.room.ColumnInfo;
 
 public class Equipes {
 
-   @ColumnInfo(name="nom_equipeA")
-    private String nomequipeA;
+    @Embedded(prefix = "A_")
+    Equipe equipeA;
 
-   @ColumnInfo(name="nom_joueur1")
-   private String nomJoueur1;
+    @Embedded(prefix = "B_")
+    Equipe equipeB;
 
-   @ColumnInfo(name="nom_joueur2")
-   private String nomJoueur2;
-
-   @ColumnInfo(name="nom_equipeB")
-    private String nomequipeB;;
-
-    @ColumnInfo(name="nom_joueur3")
-    private String nomJoueur3;
-
-    @ColumnInfo(name="nom_joueur4")
-    private String nomJoueur4;
 
 
 
 
 // Constructeurs
 
-
-    public Equipes(String nomequipeA, String nomJoueur1, String nomJoueur2, String nomequipeB, String nomJoueur3, String nomJoueur4) {
-        this.nomequipeA = nomequipeA;
-        this.nomJoueur1 = nomJoueur1;
-        this.nomJoueur2 = nomJoueur2;
-        this.nomequipeB = nomequipeB;
-        this.nomJoueur3 = nomJoueur3;
-        this.nomJoueur4 = nomJoueur4;
-    }
-
-    public Equipes(String nomequipeA, String nomequipeB) {
-        this.nomequipeA = nomequipeA;
-        this.nomequipeB = nomequipeB;
-    }
-
     public Equipes(){
     }
 
-
-
-
-    //Getter et setter
-
-
-    public String getNomequipeA() {
-        return nomequipeA;
+    @Ignore
+    public Equipes(Equipe equipeA, Equipe equipeB) {
+        this.equipeA = equipeA;
+        this.equipeB = equipeB;
     }
 
-    public void setNomequipeA(String nomequipeA) {
-        this.nomequipeA = nomequipeA;
+//Getter et setter
+
+
+    public Equipe getEquipeA() {
+        return equipeA;
     }
 
-    public String getNomJoueur1() {
-        return nomJoueur1;
+    public void setEquipeA(Equipe equipeA) {
+        this.equipeA = equipeA;
     }
 
-    public void setNomJoueur1(String nomJoueur1) {
-        this.nomJoueur1 = nomJoueur1;
+    public Equipe getEquipeB() {
+        return equipeB;
     }
 
-    public String getNomJoueur2() {
-        return nomJoueur2;
-    }
-
-    public void setNomJoueur2(String nomJoueur2) {
-        this.nomJoueur2 = nomJoueur2;
-    }
-
-    public String getNomequipeB() {
-        return nomequipeB;
-    }
-
-    public void setNomequipeB(String nomequipeB) {
-        this.nomequipeB = nomequipeB;
-    }
-
-    public String getNomJoueur3() {
-        return nomJoueur3;
-    }
-
-    public void setNomJoueur3(String nomJoueur3) {
-        this.nomJoueur3 = nomJoueur3;
-    }
-
-    public String getNomJoueur4() {
-        return nomJoueur4;
-    }
-
-    public void setNomJoueur4(String nomJoueur4) {
-        this.nomJoueur4 = nomJoueur4;
+    public void setEquipeB(Equipe equipeB) {
+        this.equipeB = equipeB;
     }
 }

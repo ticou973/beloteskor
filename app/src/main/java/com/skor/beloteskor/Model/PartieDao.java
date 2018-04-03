@@ -26,7 +26,7 @@ public interface PartieDao {
     @Update
     void updatePartie(Partie partie);
 
-    @Query("SELECT * FROM partie WHERE nom_joueur1 IN (:nomJoueur)")
-    List<Partie> loadPartiesByJoueur(String nomJoueur);
+    /*@Query("SELECT * FROM partie WHERE nom_joueur1 IN (:nomJoueur)")
+    List<Partie> loadPartiesByJoueur(String nomJoueur);*/
 
 }
