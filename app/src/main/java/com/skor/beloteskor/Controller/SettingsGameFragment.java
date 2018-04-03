@@ -78,13 +78,11 @@ public class SettingsGameFragment extends Fragment {
                     sansAnnonceBtn.setAlpha(1.0f);
                     annoncesBtn.setBackgroundResource(R.drawable.radius_button_accent);
 
-
                 }  else if (!isChecked && !annoncesBtn.isChecked()) {
 
                     sansAnnonceBtn.setChecked(true);
                    sansAnnonceBtn.setAlpha(1.0f);
                     sansAnnonceBtn.setBackgroundResource(R.drawable.radius_button_accent);
-
                 }
             }
         });
@@ -99,13 +97,11 @@ public class SettingsGameFragment extends Fragment {
                     sansAnnonceBtn.setAlpha(0.3f);
                     sansAnnonceBtn.setBackgroundResource(R.drawable.radius_button_accent);
 
-
                 }  else if (!isChecked && !sansAnnonceBtn.isChecked()) {
 
                     annoncesBtn.setChecked(true);
                     annoncesBtn.setAlpha(1.0f);
                     annoncesBtn.setBackgroundResource(R.drawable.radius_button_accent);
-
                 }
             }
         });
@@ -131,13 +127,11 @@ public class SettingsGameFragment extends Fragment {
                     sensAiguillesBtn.setAlpha(1.0f);
                     sensInverseBtn.setBackgroundResource(R.drawable.radius_button_accent);
 
-
                 } else if (!isChecked && !sensInverseBtn.isChecked()) {
 
                     sensAiguillesBtn.setChecked(true);
                     sensAiguillesBtn.setAlpha(1.0f);
                     sensAiguillesBtn.setBackgroundResource(R.drawable.radius_button_accent);
-
                 }
             }
         });
@@ -152,13 +146,11 @@ public class SettingsGameFragment extends Fragment {
                     sensInverseBtn.setAlpha(1.0f);
                     sensAiguillesBtn.setBackgroundResource(R.drawable.radius_button_accent);
 
-
                 } else if (!isChecked && !sensAiguillesBtn.isChecked()) {
 
                     sensInverseBtn.setChecked(true);
                     sensInverseBtn.setAlpha(1.0f);
                     sensInverseBtn.setBackgroundResource(R.drawable.radius_button_accent);
-
                 }
             }
         });
@@ -205,16 +197,12 @@ public class SettingsGameFragment extends Fragment {
                     distribLeftBtn.setBackgroundResource(R.drawable.radius_button_accent);
                     distribRightBtn.setBackgroundResource(R.drawable.radius_button_accent);
 
-
                 } else if (!isChecked && !distribYourPartnerBtn.isChecked() && !distribLeftBtn.isChecked() && !distribRightBtn.isChecked()) {
 
                     distribYouBtn.setChecked(true);
                     distribYouBtn.setAlpha(1.0f);
                     distribYouBtn.setBackgroundResource(R.drawable.radius_button_accent);
-
                 }
-
-
             }
         });
 
@@ -236,15 +224,12 @@ public class SettingsGameFragment extends Fragment {
                     distribLeftBtn.setBackgroundResource(R.drawable.radius_button_accent);
                     distribRightBtn.setBackgroundResource(R.drawable.radius_button_accent);
 
-
                 } else if (!isChecked && !distribYouBtn.isChecked() && !distribLeftBtn.isChecked() && !distribRightBtn.isChecked()) {
 
                     distribYourPartnerBtn.setChecked(true);
                     distribYourPartnerBtn.setAlpha(1.0f);
                     distribYourPartnerBtn.setBackgroundResource(R.drawable.radius_button_accent);
-
                 }
-
             }
         });
 
@@ -272,9 +257,7 @@ public class SettingsGameFragment extends Fragment {
                     distribLeftBtn.setChecked(true);
                     distribLeftBtn.setAlpha(1.0f);
                     distribLeftBtn.setBackgroundResource(R.drawable.radius_button_accent);
-
                 }
-
             }
         });
 
@@ -296,15 +279,12 @@ public class SettingsGameFragment extends Fragment {
                     distribYourPartnerBtn.setBackgroundResource(R.drawable.radius_button_accent);
                     distribLeftBtn.setBackgroundResource(R.drawable.radius_button_accent);
 
-
                 } else if (!isChecked && !distribYourPartnerBtn.isChecked() && !distribLeftBtn.isChecked() && !distribYouBtn.isChecked()) {
 
                     distribRightBtn.setChecked(true);
                     distribRightBtn.setAlpha(1.0f);
                     distribRightBtn.setBackgroundResource(R.drawable.radius_button_accent);
-
                 }
-
             }
         });
 
@@ -333,24 +313,20 @@ public class SettingsGameFragment extends Fragment {
             public void onFocusChange(View v, boolean hasFocus) {
 
                 if(hasFocus ){
-                    tilPoints.setHint("Nb de Points : ");
-
                     tilPoints.setBackgroundColor(getResources().getColor(R.color.color_accent2));
                     tilPoints.setAlpha(1.0f);
                     tilDonnes.setBackgroundColor(getResources().getColor(R.color.colorbuttonfalse));
                     tilDonnes.setAlpha(0.5f);
+                    tietPoints.setCursorVisible(true);
 
 
                 }else{
-                    tilDonnes.setHint("Nb de Donnes");
                     tilPoints.setBackgroundColor(getResources().getColor(R.color.colorbuttonfalse));
                     tilDonnes.setBackgroundColor(getResources().getColor(R.color.color_accent2));
                     tilDonnes.setAlpha(1.0f);
                     tilPoints.setAlpha(0.5f);
-
+                    tietDonnes.setCursorVisible(true);
                 }
-
-
             }
         });
 
@@ -361,20 +337,18 @@ public class SettingsGameFragment extends Fragment {
 
                 if (hasFocus){
 
-                    tilDonnes.setHint("Nb de Donnes");
                     tilPoints.setBackgroundColor(getResources().getColor(R.color.colorbuttonfalse));
                     tilDonnes.setBackgroundColor(getResources().getColor(R.color.color_accent2));
                     tilDonnes.setAlpha(1.0f);
                     tilPoints.setAlpha(0.5f);
-                    tietPoints.setText("");
-                } else {
+                    tietDonnes.setCursorVisible(true);
 
-                    tilPoints.setHint("Nb de Points : ");
+                } else {
                     tilPoints.setBackgroundColor(getResources().getColor(R.color.color_accent2));
                     tilPoints.setAlpha(1.0f);
                     tilDonnes.setBackgroundColor(getResources().getColor(R.color.colorbuttonfalse));
                     tilDonnes.setAlpha(0.5f);
-                    tietDonnes.setText("");
+                    tietPoints.setCursorVisible(true);
                 }
             }
         });
@@ -392,8 +366,7 @@ public class SettingsGameFragment extends Fragment {
 
                     tietPoints.setText("");
                     tietPoints.setCursorVisible(false);
-                    tietPoints.setHint( nbPoints );
-
+                    tietPoints.setHint(nbPoints);
 
                     handled = true;
                 }
@@ -413,14 +386,13 @@ public class SettingsGameFragment extends Fragment {
 
                     tietDonnes.setText("");
                     tietDonnes.setCursorVisible(false);
-                    tietDonnes.setHint( nbDonnes );
+                    tietDonnes.setHint(nbDonnes);
 
                     handled = true;
                 }
                 return handled;
             }
         });
-
 
 
 
@@ -442,7 +414,6 @@ public class SettingsGameFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
-
 
 
 
