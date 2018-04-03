@@ -10,7 +10,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -20,13 +19,12 @@ import android.widget.Toast;
 import com.skor.beloteskor.R;
 
 //todo faire attention à l'impléme,tation de l'interface qui répète 2 fois la même méthode de Callback
-public class MainActivity extends AppCompatActivity implements SettingsGameFragment.OnFragmentInteractionListener, ScoresFragment.OnFragmentInteractionListener, PlayersFragment.OnFragmentInteractionListener, StatisticsFragment.OnFragmentInteractionListener{
+public class MainActivity extends AppCompatActivity implements SettingsGameFragment.OnSettingsGameFragmentListener, ScoresFragment.OnFragmentInteractionListener, PlayersFragment.OnFragmentInteractionListener, StatisticsFragment.OnFragmentInteractionListener{
 
     private android.support.v7.widget.Toolbar toolbar;
     private BottomNavigationView navigation;
     private EditText yourName, yourPartnerName, onYourLeftName, onYourRightName;
     private TextView totalScoreA, totalScoreB;
-    private Button startGameBtn;
     private ImageView triangleView;
 
     private FrameLayout flFragments;
@@ -54,36 +52,27 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
                 switch (item.getItemId()) {
 
                     case R.id.players:
-
                         PlayersFragment playersFragment = new PlayersFragment();
                         transaction = getSupportFragmentManager().beginTransaction();
                         transaction.replace(R.id.fl_fragment, playersFragment).commit();
-
-
                         return true;
 
                     case R.id.scores:
-
                         ScoresFragment scoresFragment = new ScoresFragment();
                         transaction = getSupportFragmentManager().beginTransaction();
                         transaction.replace(R.id.fl_fragment, scoresFragment).commit();
-
                         return true;
 
                     case R.id.statistics:
-
                         StatisticsFragment statisticsFragment = new StatisticsFragment();
                         transaction = getSupportFragmentManager().beginTransaction();
                         transaction.replace(R.id.fl_fragment, statisticsFragment).commit();
-
                         return true;
 
                     default:
                         Toast.makeText(MainActivity.this, "default", Toast.LENGTH_SHORT).show();
                         return false;
-
                 }
-
             }
         });
 
@@ -99,23 +88,6 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
         triangleView = findViewById(R.id.triangleView);
         triangleView.setVisibility(View.INVISIBLE);
 
-
-        startGameBtn = findViewById(R.id.start_game_btn);
-        startGameBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startGameBtn.setVisibility(View.INVISIBLE);
-                startGameBtn.setEnabled(false);
-                triangleView.setVisibility(View.VISIBLE);
-                totalScoreA.setText("0");
-                totalScoreB.setText("0");
-
-                ScoresFragment scoresFragment = new ScoresFragment();
-                transaction = getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.fl_fragment, scoresFragment).commit();
-
-            }
-        });
 
         //Lancement du fragment de settings
         SettingsGameFragment settingsGameFragment = new SettingsGameFragment();
@@ -159,7 +131,21 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
     }
 
     @Override
+    public void onSettingsGameFragmentInteraction() {
+
+        triangleView.setVisibility(View.VISIBLE);
+        totalScoreA.setText("0");
+        totalScoreB.setText("0");
+
+        ScoresFragment scoresFragment = new ScoresFragment();
+        transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fl_fragment, scoresFragment).commit();
+
+    }
+
+    @Override
     public void onFragmentInteraction(Uri uri) {
+
 
     }
 }

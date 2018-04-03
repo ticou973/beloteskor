@@ -28,4 +28,6 @@
     <string name="sens_aiguilles">Sens Aiguilles</string>
     <string name="albert">Albert</string>
     <string name="g_raldine">Géraldine</string>
+    <string name="start_game">Start Game</string>
+    <string name="sans_annonces">Sans Annonces</string>
 </resources>

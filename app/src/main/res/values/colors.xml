@@ -9,4 +9,7 @@
     <color name="colorBackGround">#fafafa</color>
     <color name="colorTextOnPrimaryLight">#424242</color>
     <color name="colorbuttonfalse">#DBDBDB</color>
+    <color name="color_accent2">#ffeb3b</color>
+    <color name="color_accent2_dark">#c8b900</color>
+    <color name="color_accent2_light">#ffff72</color>
 </resources>
