@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,9 +14,13 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.skor.beloteskor.Model.ModeEquipe;
 import com.skor.beloteskor.R;
 
 
@@ -27,11 +32,26 @@ public class SettingsGameFragment extends Fragment {
     private TextInputLayout tilPoints, tilDonnes;
     private TextInputEditText tietPoints, tietDonnes;
     private ToggleButton sansAnnonceBtn, annoncesBtn, sensAiguillesBtn, sensInverseBtn, distribYouBtn, distribYourPartnerBtn, distribLeftBtn, distribRightBtn;
+    private EditText yourName, yourPartnerName, onYourLeftName, onYourRightName;
+    private TextView totalScoreA, totalScoreB;
+    private ImageView triangleView;
+    private CardView cvDistribution;
 
-    private String nom1;
+    private String player1="", player2="", player3="", player4="";
+    private ModeEquipe modeEquipe;
+
+
+                             //CONSTRUCTEURS
+
 
     public SettingsGameFragment() {
         // Required empty public constructor
+    }
+
+                            //INTERFACE FRAGMENT
+    public interface OnSettingsGameFragmentListener {
+        void onSettingsGameFragmentInteraction();
+        void onSettingsModeEquipeChoice();
     }
 
 
@@ -61,7 +81,13 @@ public class SettingsGameFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
 
-        //gestion des settings des annonces
+
+
+
+                                            //VARIANTES
+
+        //Settings du type de jeu sans ou avec annonces
+
         sansAnnonceBtn = getActivity().findViewById(R.id.sans_annonce_btn);
         annoncesBtn = getActivity().findViewById(R.id.annonces_btn);
         sansAnnonceBtn.setChecked(true);
@@ -109,7 +135,121 @@ public class SettingsGameFragment extends Fragment {
         });
 
 
-        //gestion du sens des aiguilles
+        //Settings type de jeu (en points ou donnes)
+
+        tilDonnes = getActivity().findViewById(R.id.til_nb_donnes);
+        tilPoints = getActivity().findViewById(R.id.til_nb_points);
+        tietDonnes = getActivity().findViewById(R.id.nb_donnes_jouees);
+        tietPoints = getActivity().findViewById(R.id.nb_points_joues);
+
+
+        tietPoints.setHint("1001");
+        tilPoints.setHint("Nb de Points : ");
+        tilPoints.setBackgroundColor(getResources().getColor(R.color.color_accent2));
+        tilPoints.setAlpha(1.0f);
+        tilDonnes.setBackgroundColor(getResources().getColor(R.color.colorbuttonfalse));
+        tilDonnes.setAlpha(0.5f);
+        tietDonnes.setHint("12");
+        tilDonnes.setHint("Nb de Donnes");
+
+
+        tietPoints.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+
+                if(hasFocus ){
+                    tilPoints.setBackgroundColor(getResources().getColor(R.color.color_accent2));
+                    tilPoints.setAlpha(1.0f);
+                    tilDonnes.setBackgroundColor(getResources().getColor(R.color.colorbuttonfalse));
+                    tilDonnes.setAlpha(0.5f);
+                    tietPoints.setCursorVisible(true);
+
+
+                }else{
+                    tilPoints.setBackgroundColor(getResources().getColor(R.color.colorbuttonfalse));
+                    tilDonnes.setBackgroundColor(getResources().getColor(R.color.color_accent2));
+                    tilDonnes.setAlpha(1.0f);
+                    tilPoints.setAlpha(0.5f);
+                    tietDonnes.setCursorVisible(true);
+                }
+            }
+        });
+
+        tietDonnes.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+
+
+                if (hasFocus){
+
+                    tilPoints.setBackgroundColor(getResources().getColor(R.color.colorbuttonfalse));
+                    tilDonnes.setBackgroundColor(getResources().getColor(R.color.color_accent2));
+                    tilDonnes.setAlpha(1.0f);
+                    tilPoints.setAlpha(0.5f);
+                    tietDonnes.setCursorVisible(true);
+
+                } else {
+                    tilPoints.setBackgroundColor(getResources().getColor(R.color.color_accent2));
+                    tilPoints.setAlpha(1.0f);
+                    tilDonnes.setBackgroundColor(getResources().getColor(R.color.colorbuttonfalse));
+                    tilDonnes.setAlpha(0.5f);
+                    tietPoints.setCursorVisible(true);
+                }
+            }
+        });
+
+
+        tietPoints.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+
+                boolean handled = false;
+
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+
+                    String nbPoints = v.getEditableText().toString();
+
+                    tietPoints.setText("");
+                    tietPoints.setCursorVisible(false);
+                    tietPoints.setHint(nbPoints);
+
+                    handled = true;
+                }
+                return handled;
+
+            }
+        });
+
+        tietDonnes.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                boolean handled = false;
+
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+
+                    String nbDonnes = v.getEditableText().toString();
+
+                    tietDonnes.setText("");
+                    tietDonnes.setCursorVisible(false);
+                    tietDonnes.setHint(nbDonnes);
+
+                    handled = true;
+                }
+                return handled;
+            }
+        });
+
+
+                                     //DISTRIBUTION
+
+        //Card View Distribution
+
+        cvDistribution = getActivity().findViewById(R.id.cv_distribution);
+        cvDistribution.setVisibility(View.INVISIBLE);
+        cvDistribution.setEnabled(false);
+
+
+        //Sens du jeu
 
         sensAiguillesBtn = getActivity().findViewById(R.id.sens_aiguilles_btn);
         sensInverseBtn = getActivity().findViewById(R.id.sens_inverse_btn);
@@ -158,7 +298,7 @@ public class SettingsGameFragment extends Fragment {
         });
 
 
-        //Gestion du premier distributeur
+        //Premier distributeur
 
         distribYouBtn = getActivity().findViewById(R.id.distrib_you_btn);
         distribYourPartnerBtn = getActivity().findViewById(R.id.distrib_partner_btn);
@@ -290,127 +430,65 @@ public class SettingsGameFragment extends Fragment {
             }
         });
 
+                                                //JOUEURS
 
+        //Noms des joueurs et Scores
 
-        //gestion des nb points ou Donnes
-
-        tilDonnes = getActivity().findViewById(R.id.til_nb_donnes);
-        tilPoints = getActivity().findViewById(R.id.til_nb_points);
-        tietDonnes = getActivity().findViewById(R.id.nb_donnes_jouees);
-        tietPoints = getActivity().findViewById(R.id.nb_points_joues);
-
-
-        tietPoints.setHint("1001");
-        tilPoints.setHint("Nb de Points : ");
-        tilPoints.setBackgroundColor(getResources().getColor(R.color.color_accent2));
-        tilPoints.setAlpha(1.0f);
-        tilDonnes.setBackgroundColor(getResources().getColor(R.color.colorbuttonfalse));
-        tilDonnes.setAlpha(0.5f);
-        tietDonnes.setHint("12");
-        tilDonnes.setHint("Nb de Donnes");
-
-
-        tietPoints.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-
-                if(hasFocus ){
-                    tilPoints.setBackgroundColor(getResources().getColor(R.color.color_accent2));
-                    tilPoints.setAlpha(1.0f);
-                    tilDonnes.setBackgroundColor(getResources().getColor(R.color.colorbuttonfalse));
-                    tilDonnes.setAlpha(0.5f);
-                    tietPoints.setCursorVisible(true);
-
-
-                }else{
-                    tilPoints.setBackgroundColor(getResources().getColor(R.color.colorbuttonfalse));
-                    tilDonnes.setBackgroundColor(getResources().getColor(R.color.color_accent2));
-                    tilDonnes.setAlpha(1.0f);
-                    tilPoints.setAlpha(0.5f);
-                    tietDonnes.setCursorVisible(true);
-                }
-            }
-        });
-
-        tietDonnes.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-
-
-                if (hasFocus){
-
-                    tilPoints.setBackgroundColor(getResources().getColor(R.color.colorbuttonfalse));
-                    tilDonnes.setBackgroundColor(getResources().getColor(R.color.color_accent2));
-                    tilDonnes.setAlpha(1.0f);
-                    tilPoints.setAlpha(0.5f);
-                    tietDonnes.setCursorVisible(true);
-
-                } else {
-                    tilPoints.setBackgroundColor(getResources().getColor(R.color.color_accent2));
-                    tilPoints.setAlpha(1.0f);
-                    tilDonnes.setBackgroundColor(getResources().getColor(R.color.colorbuttonfalse));
-                    tilDonnes.setAlpha(0.5f);
-                    tietPoints.setCursorVisible(true);
-                }
-            }
-        });
-
-
-        tietPoints.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-
-                boolean handled = false;
-
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-
-                    String nbPoints = v.getEditableText().toString();
-
-                    tietPoints.setText("");
-                    tietPoints.setCursorVisible(false);
-                    tietPoints.setHint(nbPoints);
-
-                    handled = true;
-                }
-                return handled;
-
-            }
-        });
-
-        tietDonnes.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                boolean handled = false;
-
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-
-                    String nbDonnes = v.getEditableText().toString();
-
-                    tietDonnes.setText("");
-                    tietDonnes.setCursorVisible(false);
-                    tietDonnes.setHint(nbDonnes);
-
-                    handled = true;
-                }
-                return handled;
-            }
-        });
+        yourName = getActivity().findViewById(R.id.et_you);
+        yourPartnerName = getActivity().findViewById(R.id.et_your_partner);
+        onYourLeftName = getActivity().findViewById(R.id.et_on_your_left);
+        onYourRightName = getActivity().findViewById(R.id.et_on_your_right);
+        totalScoreA = getActivity().findViewById(R.id.score_total_equipeA);
+        totalScoreB = getActivity().findViewById(R.id.score_total_equipeB);
+        triangleView = getActivity().findViewById(R.id.triangleView);
+        triangleView.setVisibility(View.INVISIBLE);
 
 
 
-        //Lancement de la partie
+                                    //LANCEMENT D'UNE PARTIE
+
+        //Bouton Start et DB
         startGameBtn = getActivity().findViewById(R.id.start_game_btn2);
+
+        verifNoms();
+
         startGameBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-              startGame();
+                if (verifNoms() && !cvDistribution.isEnabled()){
+
+                    cvDistribution.setVisibility(View.VISIBLE);
+                    cvDistribution.setEnabled(true);
+
+                    Toast.makeText(getContext(), "Lancement du choix de distrib", Toast.LENGTH_SHORT).show();
+
+                } else if (verifNoms() && cvDistribution.isEnabled()){
+
+
+                    triangleView.setVisibility(View.VISIBLE);
+                    totalScoreA.setText("0");
+                    totalScoreB.setText("0");
+                    modeEquipe = ModeEquipe.MODE_EQUIPE_STATIQUE_NOMINATIF;
+
+                    startGame();
+
+                } else if (!verifNoms()) {
+
+                    Toast.makeText(getContext(), "Lancement d'une alerte avec choix", Toast.LENGTH_SHORT).show();
+
+                    ShowDialogModeEquipe();
+
+                }
+
+
 
             }
         });
-
-
     }
+
+
+
 
     @Override
     public void onDetach() {
@@ -419,15 +497,51 @@ public class SettingsGameFragment extends Fragment {
     }
 
 
-
-    public interface OnSettingsGameFragmentListener {
-        void onSettingsGameFragmentInteraction();
-    }
-
+                        //METHODES FRAGMENT
 
     public void startGame() {
         if (mListener != null) {
             mListener.onSettingsGameFragmentInteraction();
         }
     }
+
+    private void ShowDialogModeEquipe() {
+
+        if (mListener != null) {
+            mListener.onSettingsModeEquipeChoice();
+        }
+
+    }
+
+
+    private boolean verifNoms() {
+
+        player1 = yourName.getEditableText().toString();
+        player2 = yourPartnerName.getEditableText().toString();
+        player3 = onYourLeftName.getEditableText().toString();
+        player4 = onYourRightName.getEditableText().toString();
+
+
+        if((player1.equals("")|| player2.equals("") || player3.equals("") || player4.equals(""))){
+
+            return false;
+        }
+
+        distribYouBtn.setTextOff(player1);
+        distribYouBtn.setTextOn(player1);
+        distribYouBtn.setText(player1);
+        distribYourPartnerBtn.setTextOn(player2);
+        distribYourPartnerBtn.setTextOff(player2);
+        distribYourPartnerBtn.setText(player2);
+        distribLeftBtn.setTextOff(player3);
+        distribLeftBtn.setTextOn(player3);
+        distribLeftBtn.setText(player3);
+        distribRightBtn.setTextOn(player4);
+        distribRightBtn.setTextOff(player4);
+        distribRightBtn.setText(player4);
+
+        return true;
+
+    }
+
 }

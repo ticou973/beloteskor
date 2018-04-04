@@ -7,7 +7,7 @@ import android.arch.persistence.room.Ignore;
  * Created by thierrycouilleault on 22/01/2018.
  */
 
-public class Equipes {
+public class Table {
 
     @Embedded(prefix = "A_")
     Equipe equipeA;
@@ -21,11 +21,11 @@ public class Equipes {
 
 // Constructeurs
 
-    public Equipes(){
+    public Table(){
     }
 
     @Ignore
-    public Equipes(Equipe equipeA, Equipe equipeB) {
+    public Table(Equipe equipeA, Equipe equipeB) {
         this.equipeA = equipeA;
         this.equipeB = equipeB;
     }

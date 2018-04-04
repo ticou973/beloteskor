@@ -30,4 +30,5 @@
     <string name="g_raldine">Géraldine</string>
     <string name="start_game">Start Game</string>
     <string name="sans_annonces">Sans Annonces</string>
+    <string name="dialog_text_mode_equipe">Missing names. The game continue with 2 Teams : Us and You. Would you like to continue ?</string>
 </resources>

@@ -3,7 +3,6 @@ package com.skor.beloteskor.Model;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 /**
@@ -22,10 +21,13 @@ public class Partie {
     @Embedded
     private TypeDePartie type;
 
-    @Embedded
-    private Equipes equipes;
+    @ColumnInfo(name = "mode_equipe")
+    private ModeEquipe modeEquipe;
 
     @Embedded
+    private Table table;
+
+    @Embedded(prefix = "distrib_")
     private Joueur premierDistributeur;
 
     @ColumnInfo(name ="sens_jeu")
@@ -44,9 +46,10 @@ public class Partie {
 
     //Méthodes constructeurs
 
-    public Partie(TypeDePartie type, Equipes equipes, Joueur premierDistributeur, boolean sensJeu, int scoreEquipeA, int scoreEquipeB, boolean partieterminee) {
+    public Partie(TypeDePartie type, ModeEquipe modeEquipe, Table table, Joueur premierDistributeur, boolean sensJeu, int scoreEquipeA, int scoreEquipeB, boolean partieterminee) {
         this.type = type;
-        this.equipes = equipes;
+        this.modeEquipe = modeEquipe;
+        this.table = table;
         this.premierDistributeur = premierDistributeur;
         this.sensJeu = sensJeu;
         this.scoreEquipeA = scoreEquipeA;
@@ -54,14 +57,6 @@ public class Partie {
         this.partieterminee = partieterminee;
     }
 
-    @Ignore
-    public Partie(TypeDePartie type, Equipes equipes, int scoreEquipeA, int scoreEquipeB, boolean partieterminee) {
-        this.type = type;
-        this.equipes = equipes;
-        this.scoreEquipeA = scoreEquipeA;
-        this.scoreEquipeB = scoreEquipeB;
-        this.partieterminee = partieterminee;
-    }
 
     //Autres méthodes
 
@@ -86,12 +81,12 @@ public class Partie {
         this.type = type;
     }
 
-    public Equipes getEquipes() {
-        return equipes;
+    public Table getTable() {
+        return table;
     }
 
-    public void setEquipes(Equipes equipes) {
-        this.equipes = equipes;
+    public void setTable(Table table) {
+        this.table = table;
     }
 
     public Joueur getPremierDistributeur() {
@@ -132,5 +127,13 @@ public class Partie {
 
     public void setPartieterminee(boolean partieterminee) {
         this.partieterminee = partieterminee;
+    }
+
+    public ModeEquipe getModeEquipe() {
+        return modeEquipe;
+    }
+
+    public void setModeEquipe(ModeEquipe modeEquipe) {
+        this.modeEquipe = modeEquipe;
     }
 }

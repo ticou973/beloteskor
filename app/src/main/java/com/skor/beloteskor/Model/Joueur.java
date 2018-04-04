@@ -3,6 +3,7 @@ package com.skor.beloteskor.Model;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
 /**
@@ -10,7 +11,7 @@ import android.arch.persistence.room.PrimaryKey;
  */
 
 
-@Entity
+@Entity (indices = {@Index(value = {"nom_joueur"},unique = true)})
 public class Joueur {
 
    @PrimaryKey(autoGenerate = true)

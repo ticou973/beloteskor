@@ -25,7 +25,7 @@ public class Converters {
             return 4;
         }
 
-        return 5;
+        return 0;
     }
 
     @TypeConverter
@@ -50,6 +50,27 @@ public class Converters {
 
         return null;
 
+    }
+
+    @TypeConverter
+    public static int modeEquipeToCodeModeEquipe(ModeEquipe modeEquipe){
+
+        if(modeEquipe == ModeEquipe.MODE_EQUIPE_STATIQUE_ANONYME)  return 1;
+        if(modeEquipe == ModeEquipe.MODE_EQUIPE_STATIQUE_NOMINATIF)  return 2;
+        if(modeEquipe == ModeEquipe.MODE_EQUIPE_DYNAMIQUE)  return 3;
+        if(modeEquipe == ModeEquipe.MODE_INDIVIDUEL)  return 4;
+
+        return 0;
+    }
+
+    @TypeConverter
+    public static ModeEquipe codeModeEquipeToModeEquipe (int codeModeEquipe) {
+        if (codeModeEquipe == 1) return ModeEquipe.MODE_EQUIPE_STATIQUE_ANONYME;
+        if (codeModeEquipe == 2) return ModeEquipe.MODE_EQUIPE_STATIQUE_NOMINATIF;
+        if (codeModeEquipe == 3) return ModeEquipe.MODE_EQUIPE_DYNAMIQUE;
+        if (codeModeEquipe == 4) return ModeEquipe.MODE_INDIVIDUEL;
+
+        return null;
     }
 
 }
