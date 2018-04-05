@@ -14,8 +14,6 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -32,12 +30,9 @@ public class SettingsGameFragment extends Fragment {
     private TextInputLayout tilPoints, tilDonnes;
     private TextInputEditText tietPoints, tietDonnes;
     private ToggleButton sansAnnonceBtn, annoncesBtn, sensAiguillesBtn, sensInverseBtn, distribYouBtn, distribYourPartnerBtn, distribLeftBtn, distribRightBtn;
-    private EditText yourName, yourPartnerName, onYourLeftName, onYourRightName;
-    private TextView totalScoreA, totalScoreB;
-    private ImageView triangleView;
     private CardView cvDistribution;
 
-    private String player1="", player2="", player3="", player4="";
+    private String player1, player2, player3, player4;
     private ModeEquipe modeEquipe;
 
 
@@ -79,8 +74,6 @@ public class SettingsGameFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-
 
 
 
@@ -430,18 +423,7 @@ public class SettingsGameFragment extends Fragment {
             }
         });
 
-                                                //JOUEURS
 
-        //Noms des joueurs et Scores
-
-        yourName = getActivity().findViewById(R.id.et_you);
-        yourPartnerName = getActivity().findViewById(R.id.et_your_partner);
-        onYourLeftName = getActivity().findViewById(R.id.et_on_your_left);
-        onYourRightName = getActivity().findViewById(R.id.et_on_your_right);
-        totalScoreA = getActivity().findViewById(R.id.score_total_equipeA);
-        totalScoreB = getActivity().findViewById(R.id.score_total_equipeB);
-        triangleView = getActivity().findViewById(R.id.triangleView);
-        triangleView.setVisibility(View.INVISIBLE);
 
 
 
@@ -466,9 +448,7 @@ public class SettingsGameFragment extends Fragment {
                 } else if (verifNoms() && cvDistribution.isEnabled()){
 
 
-                    triangleView.setVisibility(View.VISIBLE);
-                    totalScoreA.setText("0");
-                    totalScoreB.setText("0");
+
                     modeEquipe = ModeEquipe.MODE_EQUIPE_STATIQUE_NOMINATIF;
 
                     startGame();
@@ -516,10 +496,10 @@ public class SettingsGameFragment extends Fragment {
 
     private boolean verifNoms() {
 
-        player1 = yourName.getEditableText().toString();
-        player2 = yourPartnerName.getEditableText().toString();
-        player3 = onYourLeftName.getEditableText().toString();
-        player4 = onYourRightName.getEditableText().toString();
+        player1 = "";
+        player2 = "";
+        player3 = "";
+        player4 = "";
 
 
         if((player1.equals("")|| player2.equals("") || player3.equals("") || player4.equals(""))){

@@ -1,6 +1,5 @@
 package com.skor.beloteskor.Controller;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -16,13 +15,15 @@ import android.widget.Toast;
 import com.skor.beloteskor.R;
 
 //todo faire attention à l'impléme,tation de l'interface qui répète 2 fois la même méthode de Callback
-public class MainActivity extends AppCompatActivity implements SettingsGameFragment.OnSettingsGameFragmentListener, ScoresFragment.OnFragmentInteractionListener, PlayersFragment.OnFragmentInteractionListener, StatisticsFragment.OnFragmentInteractionListener, DialogModeEquipeFragment.DialogModeEquipeFragmentListener{
+public class MainActivity extends AppCompatActivity implements SettingsGameFragment.OnSettingsGameFragmentListener,
+        ScoresFragment.OnScoresFragmentInteractionListener, PlayersFragment.OnPlayersFragmentInteractionListener, StatisticsFragment.OnStatisticsFragmentInteractionListener,
+        DialogModeEquipeFragment.DialogModeEquipeFragmentListener, PlayerScoreFragment.OnPlayerScoreFragmentListener{
 
     private android.support.v7.widget.Toolbar toolbar;
     private BottomNavigationView navigation;
 
 
-    private FrameLayout flFragments;
+    private FrameLayout flFragmentMain, flFragmentNameScore;
 
     private FragmentTransaction transaction;
 
@@ -32,6 +33,10 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+
+
 
         //gestion de la Toolbar
         toolbar = findViewById(R.id.toolbar);
@@ -51,19 +56,19 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
                     case R.id.players:
                         PlayersFragment playersFragment = new PlayersFragment();
                         transaction = getSupportFragmentManager().beginTransaction();
-                        transaction.replace(R.id.fl_fragment, playersFragment).commit();
+                        transaction.replace(R.id.fl_fragment_main, playersFragment).commit();
                         return true;
 
                     case R.id.scores:
                         ScoresFragment scoresFragment = new ScoresFragment();
                         transaction = getSupportFragmentManager().beginTransaction();
-                        transaction.replace(R.id.fl_fragment, scoresFragment).commit();
+                        transaction.replace(R.id.fl_fragment_main, scoresFragment).commit();
                         return true;
 
                     case R.id.statistics:
                         StatisticsFragment statisticsFragment = new StatisticsFragment();
                         transaction = getSupportFragmentManager().beginTransaction();
-                        transaction.replace(R.id.fl_fragment, statisticsFragment).commit();
+                        transaction.replace(R.id.fl_fragment_main, statisticsFragment).commit();
                         return true;
 
                     default:
@@ -74,17 +79,20 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
         });
 
 
+                                    //FRAGMENTS
 
-
-
-
-        flFragments = findViewById(R.id.fl_fragment);
+        flFragmentMain = findViewById(R.id.fl_fragment_main);
+        flFragmentNameScore = findViewById(R.id.fl_fragment_name_score);
 
 
         //Lancement du fragment de settings
         SettingsGameFragment settingsGameFragment = new SettingsGameFragment();
         transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fl_fragment, settingsGameFragment).commit();
+        transaction.replace(R.id.fl_fragment_main, settingsGameFragment).commit();
+
+        PlayerScoreFragment playerScoreFragment = new PlayerScoreFragment();
+        transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fl_fragment_name_score, playerScoreFragment).commit();
 
 
     }
@@ -124,12 +132,14 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
 
     //Méthodes des fragments implémentés
 
+    //Fragments Settings Game
+
     @Override
     public void onSettingsGameFragmentInteraction() {
 
         ScoresFragment scoresFragment = new ScoresFragment();
         transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fl_fragment, scoresFragment).commit();
+        transaction.replace(R.id.fl_fragment_main, scoresFragment).commit();
 
     }
 
@@ -142,12 +152,7 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
 
     }
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
-
-    }
-
+    //Fragments Boite de dialogue de choix de mode equipe
 
     @Override
     public void onDialogPositiveClick(DialogFragment dialog) {
@@ -159,6 +164,35 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
     @Override
     public void onDialogNegativeClick(DialogFragment dialog) {
 
+
+    }
+
+
+    //Fragments Player et scores
+
+    @Override
+    public void onPlayerScoreInteraction() {
+
+    }
+
+    //Fragments scores des donnes
+
+    @Override
+    public void onScoresFragmentInteraction() {
+
+    }
+
+    //Fragments listes des parties des joueurs
+
+    @Override
+    public void onPlayersFragmentInteraction() {
+
+    }
+
+    //Fragments statistics
+
+    @Override
+    public void onStatisticsFragmentInteraction() {
 
     }
 }

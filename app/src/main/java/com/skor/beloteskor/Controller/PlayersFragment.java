@@ -13,7 +13,7 @@ import com.skor.beloteskor.R;
 
 public class PlayersFragment extends Fragment {
 
-    private OnFragmentInteractionListener mListener;
+    private OnPlayersFragmentInteractionListener mListener;
 
     public PlayersFragment() {
         // Required empty public constructor
@@ -32,15 +32,15 @@ public class PlayersFragment extends Fragment {
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+            mListener.onPlayersFragmentInteraction();
         }
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        if (context instanceof OnPlayersFragmentInteractionListener) {
+            mListener = (OnPlayersFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -54,8 +54,8 @@ public class PlayersFragment extends Fragment {
     }
 
 
-    public interface OnFragmentInteractionListener {
+    public interface OnPlayersFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onPlayersFragmentInteraction();
     }
 }
