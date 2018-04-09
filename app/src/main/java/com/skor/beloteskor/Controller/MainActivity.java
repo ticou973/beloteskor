@@ -171,7 +171,6 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
 
         DialogFragment dialog = new DialogModeEquipeFragment();
         dialog.show(getSupportFragmentManager(),"TAG");
-
     }
 
     @Override

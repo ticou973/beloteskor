@@ -238,8 +238,9 @@ public class SettingsGameFragment extends Fragment {
         //Card View Distribution
 
         cvDistribution = getActivity().findViewById(R.id.cv_distribution);
-        cvDistribution.setVisibility(View.INVISIBLE);
+        cvDistribution.setVisibility(View.GONE);
         cvDistribution.setEnabled(false);
+
 
 
         //Sens du jeu
