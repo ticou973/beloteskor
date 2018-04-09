@@ -15,10 +15,8 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import com.skor.beloteskor.Model.ModeEquipe;
 import com.skor.beloteskor.R;
 
 
@@ -34,7 +32,6 @@ public class SettingsGameFragment extends Fragment {
 
     private String player1, player2, player3, player4;
     private String[] listPlayers;
-    private ModeEquipe modeEquipe;
     public static final String EXTRA="com.skor.beloteskor.MESSAGE";
 
 
@@ -440,8 +437,6 @@ public class SettingsGameFragment extends Fragment {
 
                 Boolean verif = verifNoms();
 
-                Toast.makeText(getContext(), String.valueOf(verif), Toast.LENGTH_SHORT).show();
-
                 listPlayers = getArguments().getStringArray(EXTRA);
 
                 player1 = listPlayers[0];
@@ -469,13 +464,9 @@ public class SettingsGameFragment extends Fragment {
 
                 } else if (verif && cvDistribution.isEnabled()){
 
-                    modeEquipe = ModeEquipe.MODE_EQUIPE_STATIQUE_NOMINATIF;
-
                     startGame();
 
                 } else if (!verif) {
-
-                    Toast.makeText(getContext(), "Lancement d'une alerte avec choix", Toast.LENGTH_SHORT).show();
 
                     ShowDialogModeEquipe();
 

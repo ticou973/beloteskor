@@ -26,6 +26,9 @@ public class PlayerScoreFragment extends Fragment {
     private ImageView triangleView;
 
     private String player1="", player2="", player3="", player4="";
+    public static final String EXTRA="com.skor.beloteskor.MESSAGE";
+
+    private String[] listPlayerName;
 
     public PlayerScoreFragment() {
         // Required empty public constructor
@@ -80,6 +83,31 @@ public class PlayerScoreFragment extends Fragment {
         totalScoreB = getActivity().findViewById(R.id.score_total_equipeB);
         triangleView = getActivity().findViewById(R.id.triangleView);
         triangleView.setVisibility(View.INVISIBLE);
+
+
+        //Gestion du mode Joueur
+
+        listPlayerName = getArguments().getStringArray(EXTRA);
+
+
+        if (listPlayerName[0] != "" && listPlayerName[1] != "" && listPlayerName[2] !="" && listPlayerName[3] != "") {
+
+
+
+            yourName.setText(listPlayerName[0]);
+            yourPartnerName.setText(listPlayerName[1]);
+            onYourLeftName.setText(listPlayerName[2]);
+            onYourRightName.setText(listPlayerName[3]);
+
+            yourName.setEnabled(false);
+            yourPartnerName.setEnabled(false);
+            onYourLeftName.setEnabled(false);
+            onYourRightName.setEnabled(false);
+            triangleView.setVisibility(View.VISIBLE);
+            totalScoreA.setText("0");
+            totalScoreB.setText("0");
+
+        }
 
 
         yourName.addTextChangedListener(new TextWatcher() {

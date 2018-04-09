@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.skor.beloteskor.Model.ModeEquipe;
 import com.skor.beloteskor.R;
 
 
@@ -29,9 +30,12 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
     private PlayerScoreFragment playerScoreFragment;
 
     public static final String EXTRA="com.skor.beloteskor.MESSAGE";
-    private String player1, player2, player3, player4;
 
-    private String[] listStartPLayers = {"","","",""};
+
+
+    private String player1, player2, player3, player4;
+    private String[] listPlayersName = {"","","",""};
+    private ModeEquipe modeEquipe = null;
 
 
 
@@ -89,12 +93,14 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
         //Lancement du fragment de settings
         settingsGameFragment = new SettingsGameFragment();
         Bundle args=new Bundle();
-        args.putStringArray(EXTRA,listStartPLayers);
+        args.putStringArray(EXTRA,listPlayersName);
         settingsGameFragment.setArguments(args);
-
         replaceFragment(settingsGameFragment);
 
         playerScoreFragment = new PlayerScoreFragment();
+        Bundle argsinit = new Bundle();
+        argsinit.putStringArray(EXTRA,listPlayersName);
+        playerScoreFragment.setArguments(args);
         transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fl_fragment_name_score, playerScoreFragment).commit();
 
@@ -138,15 +144,25 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
     }
 
 
-
                             //METHODES FRAGMENTS IMPLEMENTES
 
     //Fragments SettingsGame
 
     @Override
     public void onSettingsGameFragmentInteraction() {
+
+        modeEquipe = ModeEquipe.MODE_EQUIPE_STATIQUE_NOMINATIF;
+
         ScoresFragment scoresFragment = new ScoresFragment();
         replaceFragment(scoresFragment);
+
+
+        playerScoreFragment = new PlayerScoreFragment();
+        Bundle args = new Bundle();
+        args.putStringArray(EXTRA,listPlayersName);
+        playerScoreFragment.setArguments(args);
+        transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fl_fragment_name_score, playerScoreFragment).commit();
 
     }
 
@@ -166,9 +182,7 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
         player3 = playerScoreFragment.getPlayer3();
         player4 = playerScoreFragment.getPlayer4();
 
-        String[] listPlayersName = {player1,player2,player3,player4};
-
-        Toast.makeText(this, player1, Toast.LENGTH_SHORT).show();
+        listPlayersName = new String[]{player1, player2, player3, player4};
 
         Bundle args=new Bundle();
         args.putStringArray(EXTRA,listPlayersName);
@@ -198,11 +212,12 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
         transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fl_fragment_name_score, teamScoreFragment).commit();
 
+
         ScoresFragment scoresFragment = new ScoresFragment();
+
+        modeEquipe = ModeEquipe.MODE_EQUIPE_STATIQUE_ANONYME;
+
         replaceFragment(scoresFragment);
-
-
-
 
     }
 
