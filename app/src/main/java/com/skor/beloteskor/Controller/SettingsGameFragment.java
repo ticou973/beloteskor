@@ -33,7 +33,9 @@ public class SettingsGameFragment extends Fragment {
     private CardView cvDistribution;
 
     private String player1, player2, player3, player4;
+    private String[] listPlayers;
     private ModeEquipe modeEquipe;
+    public static final String EXTRA="com.skor.beloteskor.MESSAGE";
 
 
                              //CONSTRUCTEURS
@@ -47,6 +49,7 @@ public class SettingsGameFragment extends Fragment {
     public interface OnSettingsGameFragmentListener {
         void onSettingsGameFragmentInteraction();
         void onSettingsModeEquipeChoice();
+        boolean onSettingsVerifNoms();
     }
 
 
@@ -75,7 +78,7 @@ public class SettingsGameFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-
+        listPlayers = getArguments().getStringArray(EXTRA);
 
                                             //VARIANTES
 
@@ -431,37 +434,52 @@ public class SettingsGameFragment extends Fragment {
 
         //Bouton Start et DB
         startGameBtn = getActivity().findViewById(R.id.start_game_btn2);
-
-        verifNoms();
-
         startGameBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if (verifNoms() && !cvDistribution.isEnabled()){
+                Boolean verif = verifNoms();
+
+                Toast.makeText(getContext(), String.valueOf(verif), Toast.LENGTH_SHORT).show();
+
+                listPlayers = getArguments().getStringArray(EXTRA);
+
+                player1 = listPlayers[0];
+                player2 = listPlayers[1];
+                player3 = listPlayers[2];
+                player4 = listPlayers[3];
+
+                if (verif && !cvDistribution.isEnabled()){
 
                     cvDistribution.setVisibility(View.VISIBLE);
                     cvDistribution.setEnabled(true);
 
-                    Toast.makeText(getContext(), "Lancement du choix de distrib", Toast.LENGTH_SHORT).show();
+                    distribYouBtn.setTextOff(player1);
+                    distribYouBtn.setTextOn(player1);
+                    distribYouBtn.setText(player1);
+                    distribYourPartnerBtn.setTextOn(player2);
+                    distribYourPartnerBtn.setTextOff(player2);
+                    distribYourPartnerBtn.setText(player2);
+                    distribLeftBtn.setTextOff(player3);
+                    distribLeftBtn.setTextOn(player3);
+                    distribLeftBtn.setText(player3);
+                    distribRightBtn.setTextOn(player4);
+                    distribRightBtn.setTextOff(player4);
+                    distribRightBtn.setText(player4);
 
-                } else if (verifNoms() && cvDistribution.isEnabled()){
-
-
+                } else if (verif && cvDistribution.isEnabled()){
 
                     modeEquipe = ModeEquipe.MODE_EQUIPE_STATIQUE_NOMINATIF;
 
                     startGame();
 
-                } else if (!verifNoms()) {
+                } else if (!verif) {
 
                     Toast.makeText(getContext(), "Lancement d'une alerte avec choix", Toast.LENGTH_SHORT).show();
 
                     ShowDialogModeEquipe();
 
                 }
-
-
 
             }
         });
@@ -496,32 +514,15 @@ public class SettingsGameFragment extends Fragment {
 
     private boolean verifNoms() {
 
-        player1 = "";
-        player2 = "";
-        player3 = "";
-        player4 = "";
+        if (mListener != null) {
+            mListener.onSettingsVerifNoms();
 
-
-        if((player1.equals("")|| player2.equals("") || player3.equals("") || player4.equals(""))){
-
-            return false;
+            return mListener.onSettingsVerifNoms();
         }
 
-        distribYouBtn.setTextOff(player1);
-        distribYouBtn.setTextOn(player1);
-        distribYouBtn.setText(player1);
-        distribYourPartnerBtn.setTextOn(player2);
-        distribYourPartnerBtn.setTextOff(player2);
-        distribYourPartnerBtn.setText(player2);
-        distribLeftBtn.setTextOff(player3);
-        distribLeftBtn.setTextOn(player3);
-        distribLeftBtn.setText(player3);
-        distribRightBtn.setTextOn(player4);
-        distribRightBtn.setTextOff(player4);
-        distribRightBtn.setText(player4);
-
-        return true;
-
+        return false;
     }
+
+
 
 }

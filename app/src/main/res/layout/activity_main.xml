@@ -29,7 +29,7 @@
     <FrameLayout
         android:id="@+id/fl_fragment_name_score"
         android:layout_width="0dp"
-        android:layout_height="123dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="44dp"
         android:background="@color/colorPrimaryLight"
         android:elevation="4dp"

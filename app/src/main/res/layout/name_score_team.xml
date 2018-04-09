@@ -34,7 +34,7 @@
             app:layout_constraintEnd_toStartOf="@+id/guideline4"
             app:layout_constraintTop_toBottomOf="@+id/et_on_your_left" />
 
-        <EditText
+        <TextView
             android:id="@+id/et_on_your_left"
             android:layout_width="145dp"
             android:layout_height="0dp"
@@ -42,10 +42,10 @@
             android:background="@android:color/transparent"
             android:ems="10"
             android:fontFamily="@font/roboto"
-            android:hint="You"
             android:inputType="textPersonName"
             android:maxLength="9"
             android:paddingBottom="0dp"
+            android:text="You"
             android:textAlignment="center"
             android:textColor="#424242"
             android:textSize="24sp"
@@ -69,7 +69,7 @@
             app:layout_constraintStart_toStartOf="@+id/guideline"
             app:layout_constraintTop_toBottomOf="@+id/et_you" />
 
-        <EditText
+        <TextView
             android:id="@+id/et_you"
             android:layout_width="145dp"
             android:layout_height="0dp"
@@ -77,10 +77,10 @@
             android:background="@android:color/transparent"
             android:ems="10"
             android:fontFamily="@font/roboto"
-            android:hint="Us"
             android:inputType="textPersonName"
             android:maxLength="9"
             android:paddingBottom="0dp"
+            android:text="Us"
             android:textAlignment="center"
             android:textColor="#424242"
             android:textSize="24sp"

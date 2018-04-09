@@ -5,6 +5,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +25,7 @@ public class PlayerScoreFragment extends Fragment {
     private TextView totalScoreA, totalScoreB;
     private ImageView triangleView;
 
-    private String player1, player2, player3, player4;
+    private String player1="", player2="", player3="", player4="";
 
     public PlayerScoreFragment() {
         // Required empty public constructor
@@ -80,12 +82,84 @@ public class PlayerScoreFragment extends Fragment {
         triangleView.setVisibility(View.INVISIBLE);
 
 
+        yourName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-        /*
-           triangleView.setVisibility(View.VISIBLE);
-                    totalScoreA.setText("0");
-                    totalScoreB.setText("0");
-         */
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                player1 = yourName.getEditableText().toString();
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        yourPartnerName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                player2 = yourPartnerName.getEditableText().toString();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        onYourLeftName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                player3 = onYourLeftName.getEditableText().toString();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+
+        onYourRightName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                player4 = onYourRightName.getEditableText().toString();
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+
+
+
     }
 
     @Override
@@ -99,21 +173,42 @@ public class PlayerScoreFragment extends Fragment {
         void onPlayerScoreInteraction();
     }
 
-    private boolean verifNoms() {
+    public String[] getPlayersName() {
 
-        player1 = yourName.getEditableText().toString();
-        player2 = yourPartnerName.getEditableText().toString();
-        player3 = onYourLeftName.getEditableText().toString();
-        player4 = onYourRightName.getEditableText().toString();
+        String[] listPlayers = {player1, player2, player3, player4};
 
-
-        if((player1.equals("")|| player2.equals("") || player3.equals("") || player4.equals(""))){
-
-            return false;
-        }
-
-        return true;
-
+        return listPlayers;
     }
 
+    public String getPlayer1() {
+        return player1;
+    }
+
+    public void setPlayer1(String player1) {
+        this.player1 = player1;
+    }
+
+    public String getPlayer2() {
+        return player2;
+    }
+
+    public void setPlayer2(String player2) {
+        this.player2 = player2;
+    }
+
+    public String getPlayer3() {
+        return player3;
+    }
+
+    public void setPlayer3(String player3) {
+        this.player3 = player3;
+    }
+
+    public String getPlayer4() {
+        return player4;
+    }
+
+    public void setPlayer4(String player4) {
+        this.player4 = player4;
+    }
 }
