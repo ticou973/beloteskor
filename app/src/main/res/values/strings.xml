@@ -31,4 +31,15 @@
     <string name="start_game">Start Game</string>
     <string name="sans_annonces">Sans Annonces</string>
     <string name="dialog_text_mode_equipe">Missing names. The game continue with 2 Teams : Us and You. Would you like to continue ?</string>
+    <string name="_1">1</string>
+    <string name="arrowup">arrowup</string>
+    <string name="_52">52</string>
+    <string name="_110">110</string>
+    <string name="validation">Validation</string>
+    <string name="delimiter">delimiter</string>
+    <string name="robert">Robert</string>
+    <string name="g_raldine">Géraldine</string>
+    <string name="gis_le">Gisèle</string>
+    <string name="raymond">Raymond</string>
+    <string name="add_circle">add circle</string>
 </resources>
