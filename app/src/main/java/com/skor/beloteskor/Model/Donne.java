@@ -15,7 +15,7 @@ import android.arch.persistence.room.PrimaryKey;
 @Entity (foreignKeys = @ForeignKey(entity = Partie.class,
         parentColumns = "partieId",
         childColumns = "num_partie"),indices = {@Index(value = {"num_partie"})})
-public class Donne {
+public class Donne  {
 
     @PrimaryKey (autoGenerate = true)
     private int donneId;
@@ -46,8 +46,6 @@ public class Donne {
     private int score2;
 
 
-
-    // constructeur
 
     public Donne() {
     }
