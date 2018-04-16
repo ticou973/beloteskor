@@ -40,9 +40,12 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
 
     private String player1, player2, player3, player4;
     private String[] listPlayersName = {"","","",""};
-    private List<DonneScore> donnesScore;
+    private List<DonneScore> donnesScore = null;
     private ModeEquipe modeEquipe = null;
 
+    public List<DonneScore> getDonnesScore() {
+        return donnesScore;
+    }
 
 
     @Override
@@ -97,18 +100,19 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
 
 
         //Lancement du fragment de settings
+
+        playerScoreFragment = new PlayerScoreFragment();
+        Bundle argsinit = new Bundle();
+        argsinit.putStringArray(EXTRA,listPlayersName);
+        playerScoreFragment.setArguments(argsinit);
+        transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fl_fragment_name_score, playerScoreFragment).commit();
+
         settingsGameFragment = new SettingsGameFragment();
         Bundle args=new Bundle();
         args.putStringArray(EXTRA,listPlayersName);
         settingsGameFragment.setArguments(args);
         replaceFragment(settingsGameFragment);
-
-        playerScoreFragment = new PlayerScoreFragment();
-        Bundle argsinit = new Bundle();
-        argsinit.putStringArray(EXTRA,listPlayersName);
-        playerScoreFragment.setArguments(args);
-        transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fl_fragment_name_score, playerScoreFragment).commit();
 
 
     }
@@ -159,20 +163,20 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
 
         modeEquipe = ModeEquipe.MODE_EQUIPE_STATIQUE_NOMINATIF;
 
-
-        ScoresFragment scoresFragment = new ScoresFragment();
-        Bundle argsscore=new Bundle();
-        argsscore.putStringArray(EXTRA,listPlayersName);
-        scoresFragment.setArguments(argsscore);
-        replaceFragment(scoresFragment);
-
-
         playerScoreFragment = new PlayerScoreFragment();
         Bundle args = new Bundle();
         args.putStringArray(EXTRA,listPlayersName);
         playerScoreFragment.setArguments(args);
         transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fl_fragment_name_score, playerScoreFragment).commit();
+
+        ScoresFragment scoresFragment = new ScoresFragment();
+
+        //todo voir si obligé ?
+        Bundle argsscore=new Bundle();
+        argsscore.putStringArray(EXTRA,listPlayersName);
+        scoresFragment.setArguments(argsscore);
+        replaceFragment(scoresFragment);
 
     }
 
@@ -249,23 +253,38 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
     @Override
     public List<DonneScore> onScoresFragmentInteraction() {
 
-        donnesScore = new ArrayList<>();
 
-        player1 = listPlayersName[0];
-        player2 = listPlayersName[1];
-        player3 = listPlayersName[2];
-        player4 = listPlayersName[3];
+        if (donnesScore == null) {
 
-        for (int i = 0; i <3 ; i++) {
+            donnesScore = new ArrayList<>();
 
-            List<DonneScoreDetails> donneScoreDetails = new ArrayList<>(1);
-            donneScoreDetails.add(new DonneScoreDetails(player3, player1,player2,player3,player4,player1, 2*i, 162-2*i));
+            for (int i = 0; i < 3; i++) {
 
-            donnesScore.add(new DonneScore("Donne N° " +i, donneScoreDetails));
+                List<DonneScoreDetails> donneScoreDetails = new ArrayList<>(1);
+                donneScoreDetails.add(new DonneScoreDetails(player3, player1, player2, player3, player4, player1, 2 * i, 162 - 2 * i));
+
+                donnesScore.add(new DonneScore("Donne N° " + i, donneScoreDetails));
+
+            }
+        } else {
+
 
         }
 
         return donnesScore;
+
+    }
+
+    @Override
+    public void onPressedAddDonnesBtn() {
+
+        List<DonneScoreDetails> donneScoreDetails = new ArrayList<>(1);
+        donneScoreDetails.add(new DonneScoreDetails(player3, player1,player2,player3,player4,player1, 27, 135));
+
+        donnesScore.add(new DonneScore("Donne N° n", donneScoreDetails));
+
+        ScoresFragment scoresFragment = new ScoresFragment();
+        replaceFragment(scoresFragment);
 
     }
 

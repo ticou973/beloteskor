@@ -52,12 +52,6 @@ public class ScoresFragment extends Fragment {
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onScoresFragmentInteraction();
-        }
-    }
 
     @Override
     public void onAttach(Context context) {
@@ -75,15 +69,26 @@ public class ScoresFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        //Recycler View
+
         scoreRecyclerView = getActivity().findViewById(R.id.recycler_view_scores);
-
         donnesScore = getDonnesScores();
-
         donneAdapter = new DonneAdapter(donnesScore);
-
         layoutManager = new LinearLayoutManager(getContext());
         scoreRecyclerView.setLayoutManager(layoutManager);
         scoreRecyclerView.setAdapter(donneAdapter);
+
+        //Button add donnes
+
+        addDonneBtn = getActivity().findViewById(R.id.donne_add_btn);
+
+        addDonneBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                addDonnesBtn();
+            }
+        });
 
     }
 
@@ -99,6 +104,7 @@ public class ScoresFragment extends Fragment {
     public interface OnScoresFragmentInteractionListener {
         // TODO: Update argument type and name
         List<DonneScore> onScoresFragmentInteraction();
+        void onPressedAddDonnesBtn();
 
     }
 
@@ -113,4 +119,19 @@ public class ScoresFragment extends Fragment {
 
         return null;
     }
+
+    public void addDonnesBtn(){
+        if (mListener != null) {
+            mListener.onPressedAddDonnesBtn();
+        }
+    }
+
+    // TODO: Rename method, update argument and hook method into UI event
+    public void onButtonPressed(Uri uri) {
+        if (mListener != null) {
+            mListener.onScoresFragmentInteraction();
+        }
+    }
+
+
 }

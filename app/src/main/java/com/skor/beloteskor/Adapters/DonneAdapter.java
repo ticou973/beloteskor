@@ -42,6 +42,8 @@ public class DonneAdapter extends ExpandableRecyclerViewAdapter <DonneViewHolder
         return new DonneDetailsViewHolder(view);
     }
 
+
+
     @Override
     public void onBindChildViewHolder(final DonneDetailsViewHolder holder, int flatPosition, ExpandableGroup group, int childIndex) {
 
@@ -82,9 +84,6 @@ public class DonneAdapter extends ExpandableRecyclerViewAdapter <DonneViewHolder
         holder.setNumDonne(flatPosition + 1);
         holder.setScoreEquipeA(donneScoreDetails.getScoreDonneEquipeA());
         holder.setScoreEquipeB(donneScoreDetails.getScoreDonneEquipeB());
-
-
-
 
 
     }

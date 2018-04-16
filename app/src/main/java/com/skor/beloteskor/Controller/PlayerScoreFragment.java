@@ -1,7 +1,6 @@
 package com.skor.beloteskor.Controller;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -57,13 +56,6 @@ public class PlayerScoreFragment extends Fragment {
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onPlayerScoreInteraction();
-        }
-    }
-
 
 
     @Override
@@ -89,10 +81,7 @@ public class PlayerScoreFragment extends Fragment {
 
         listPlayerName = getArguments().getStringArray(EXTRA);
 
-
         if (listPlayerName[0] != "" && listPlayerName[1] != "" && listPlayerName[2] !="" && listPlayerName[3] != "") {
-
-
 
             yourName.setText(listPlayerName[0]);
             yourPartnerName.setText(listPlayerName[1]);
@@ -106,7 +95,6 @@ public class PlayerScoreFragment extends Fragment {
             triangleView.setVisibility(View.VISIBLE);
             totalScoreA.setText("0");
             totalScoreB.setText("0");
-
         }
 
 
