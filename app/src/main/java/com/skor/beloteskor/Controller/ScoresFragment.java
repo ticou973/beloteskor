@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,10 +15,8 @@ import android.widget.ImageView;
 
 import com.skor.beloteskor.Adapters.DonneAdapter;
 import com.skor.beloteskor.Model.DonneScore;
-import com.skor.beloteskor.Model.DonneScoreDetails;
 import com.skor.beloteskor.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -28,6 +27,14 @@ public class ScoresFragment extends Fragment {
     private DonneAdapter donneAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private ImageView addDonneBtn;
+
+    private CardView cardView;
+
+
+    public static final String EXTRA="com.skor.beloteskor.MESSAGE";
+    private String player1, player2, player3, player4;
+    private String[] listPlayers;
+
 
     private List<DonneScore> donnesScore;
 
@@ -63,13 +70,17 @@ public class ScoresFragment extends Fragment {
         }
     }
 
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         scoreRecyclerView = getActivity().findViewById(R.id.recycler_view_scores);
-        getDonneScore();
+
+        donnesScore = getDonnesScores();
+
         donneAdapter = new DonneAdapter(donnesScore);
+
         layoutManager = new LinearLayoutManager(getContext());
         scoreRecyclerView.setLayoutManager(layoutManager);
         scoreRecyclerView.setAdapter(donneAdapter);
@@ -82,22 +93,24 @@ public class ScoresFragment extends Fragment {
         mListener = null;
     }
 
-    public void getDonneScore() {
-
-        donnesScore = new ArrayList<>(6);
-        for (int i = 0; i <6 ; i++) {
-
-            List<DonneScoreDetails> donneScoreDetails = new ArrayList<>(1);
-            donneScoreDetails.add(new DonneScoreDetails("Joueur" +i, "roro","ruru","rara","riri","roro", 2*i, 162-2*i));
-
-            donnesScore.add(new DonneScore("Score N°" +i, donneScoreDetails));
-
-        }
-    }
+    //Todo à mettre dans la main activity avec l'aide du listener, idem pour le bouton d'ajout d'une mène ce qui permettra de rajouter un élément à la liste
 
 
     public interface OnScoresFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onScoresFragmentInteraction();
+        List<DonneScore> onScoresFragmentInteraction();
+
+    }
+
+
+    public List<DonneScore> getDonnesScores() {
+
+        if (mListener != null) {
+            mListener.onScoresFragmentInteraction();
+
+            return mListener.onScoresFragmentInteraction();
+        }
+
+        return null;
     }
 }

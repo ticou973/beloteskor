@@ -13,8 +13,13 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.skor.beloteskor.Model.DonneScore;
+import com.skor.beloteskor.Model.DonneScoreDetails;
 import com.skor.beloteskor.Model.ModeEquipe;
 import com.skor.beloteskor.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity implements SettingsGameFragment.OnSettingsGameFragmentListener,
@@ -35,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
 
     private String player1, player2, player3, player4;
     private String[] listPlayersName = {"","","",""};
+    private List<DonneScore> donnesScore;
     private ModeEquipe modeEquipe = null;
 
 
@@ -153,7 +159,11 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
 
         modeEquipe = ModeEquipe.MODE_EQUIPE_STATIQUE_NOMINATIF;
 
+
         ScoresFragment scoresFragment = new ScoresFragment();
+        Bundle argsscore=new Bundle();
+        argsscore.putStringArray(EXTRA,listPlayersName);
+        scoresFragment.setArguments(argsscore);
         replaceFragment(scoresFragment);
 
 
@@ -237,7 +247,25 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
     //Fragments scores des donnes
 
     @Override
-    public void onScoresFragmentInteraction() {
+    public List<DonneScore> onScoresFragmentInteraction() {
+
+        donnesScore = new ArrayList<>();
+
+        player1 = listPlayersName[0];
+        player2 = listPlayersName[1];
+        player3 = listPlayersName[2];
+        player4 = listPlayersName[3];
+
+        for (int i = 0; i <3 ; i++) {
+
+            List<DonneScoreDetails> donneScoreDetails = new ArrayList<>(1);
+            donneScoreDetails.add(new DonneScoreDetails(player3, player1,player2,player3,player4,player1, 2*i, 162-2*i));
+
+            donnesScore.add(new DonneScore("Donne N° " +i, donneScoreDetails));
+
+        }
+
+        return donnesScore;
 
     }
 

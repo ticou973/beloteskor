@@ -1,5 +1,7 @@
 package com.skor.beloteskor.Adapters;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +17,12 @@ import java.util.List;
 
 public class DonneAdapter extends ExpandableRecyclerViewAdapter <DonneViewHolder,DonneDetailsViewHolder>{
 
+    private String message;
+
 
     public DonneAdapter(List<? extends ExpandableGroup> groups) {
         super(groups);
+
     }
 
     @Override
@@ -25,6 +30,7 @@ public class DonneAdapter extends ExpandableRecyclerViewAdapter <DonneViewHolder
 
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item_donne_score, parent, false);
+
         return new DonneViewHolder(view);
     }
 
@@ -32,11 +38,12 @@ public class DonneAdapter extends ExpandableRecyclerViewAdapter <DonneViewHolder
     public DonneDetailsViewHolder onCreateChildViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item_donne_score_details, parent, false);
+
         return new DonneDetailsViewHolder(view);
     }
 
     @Override
-    public void onBindChildViewHolder(DonneDetailsViewHolder holder, int flatPosition, ExpandableGroup group, int childIndex) {
+    public void onBindChildViewHolder(final DonneDetailsViewHolder holder, int flatPosition, ExpandableGroup group, int childIndex) {
 
         DonneScoreDetails donneScoreDetails = (DonneScoreDetails) group.getItems().get(childIndex);
 
@@ -45,14 +52,42 @@ public class DonneAdapter extends ExpandableRecyclerViewAdapter <DonneViewHolder
         holder.setPlayer3Name(donneScoreDetails.getPlayer3Name());
         holder.setPlayer4Name(donneScoreDetails.getPlayer4Name());
 
+        holder.getEssai().addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                message = holder.getNameEssai();
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+
     }
 
     @Override
-    public void onBindGroupViewHolder(DonneViewHolder holder, int flatPosition, ExpandableGroup group) {
+    public void onBindGroupViewHolder(final DonneViewHolder holder, int flatPosition, ExpandableGroup group) {
 
-        holder.setNumDonne(flatPosition);
-        holder.setScoreEquipeA(60);
-        holder.setScoreEquipeB(102);
+        DonneScoreDetails donneScoreDetails = (DonneScoreDetails) group.getItems().get(0);
+
+        holder.setNumDonne(flatPosition + 1);
+        holder.setScoreEquipeA(donneScoreDetails.getScoreDonneEquipeA());
+        holder.setScoreEquipeB(donneScoreDetails.getScoreDonneEquipeB());
+
+
+
+
 
     }
+
+
 }

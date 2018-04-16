@@ -7,14 +7,19 @@ import java.util.List;
 public class DonneScore extends ExpandableGroup {
 
     private int scoreDonneA, scoreDonneB, numDonne;
+    private boolean isExpanded;
 
     public DonneScore(String title, List items) {
         super(title, items);
 
-        this.scoreDonneA =scoreDonneA;
-        this.scoreDonneB=scoreDonneB;
-        this.numDonne = numDonne;
+    }
 
+    public boolean isExpanded() {
+        return isExpanded;
+    }
+
+    public void setExpanded(boolean expanded) {
+        isExpanded = expanded;
     }
 
     public int getScoreDonneA() {
