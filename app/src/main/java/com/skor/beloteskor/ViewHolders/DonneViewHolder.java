@@ -16,6 +16,8 @@ public class DonneViewHolder extends GroupViewHolder{
     private CardView cardViewDonne;
     private Button validationBtn;
 
+    private String message;
+
 
     public DonneViewHolder(View itemView) {
         super(itemView);
@@ -71,7 +73,6 @@ public class DonneViewHolder extends GroupViewHolder{
 
 
     private void animateExpand() {
-
         cardViewDonne.setBackgroundColor(rgb(76,175,80));
 
     }

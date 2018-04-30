@@ -78,6 +78,7 @@ public class ScoresFragment extends Fragment {
         scoreRecyclerView.setLayoutManager(layoutManager);
         scoreRecyclerView.setAdapter(donneAdapter);
 
+
         //Button add donnes
 
         addDonneBtn = getActivity().findViewById(R.id.donne_add_btn);

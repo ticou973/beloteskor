@@ -13,6 +13,7 @@ public class DonneDetailsViewHolder extends ChildViewHolder{
     private EditText essai;
     private String name;
 
+
     public DonneDetailsViewHolder(View itemView) {
         super(itemView);
 
@@ -51,6 +52,11 @@ public class DonneDetailsViewHolder extends ChildViewHolder{
 
         return name;
 
+    }
+
+    public void setNameEssai (String name){
+
+        essai.setText(name);
     }
 
     public EditText getEssai() {

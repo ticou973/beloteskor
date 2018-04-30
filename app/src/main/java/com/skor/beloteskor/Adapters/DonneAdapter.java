@@ -1,7 +1,7 @@
 package com.skor.beloteskor.Adapters;
 
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +15,12 @@ import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup;
 
 import java.util.List;
 
+import static android.content.ContentValues.TAG;
+
 public class DonneAdapter extends ExpandableRecyclerViewAdapter <DonneViewHolder,DonneDetailsViewHolder>{
 
-    private String message;
+    private String [] message = {"0", "0", "0", "0", "0"};
+    private RecyclerView.AdapterDataObserver mAdapterDataObserver;
 
 
     public DonneAdapter(List<? extends ExpandableGroup> groups) {
@@ -45,7 +48,9 @@ public class DonneAdapter extends ExpandableRecyclerViewAdapter <DonneViewHolder
 
 
     @Override
-    public void onBindChildViewHolder(final DonneDetailsViewHolder holder, int flatPosition, ExpandableGroup group, int childIndex) {
+    public void onBindChildViewHolder(final DonneDetailsViewHolder holder, final int flatPosition, ExpandableGroup group, final int childIndex) {
+
+        Log.d(TAG, "coucou Child : " + String.valueOf(flatPosition));
 
         DonneScoreDetails donneScoreDetails = (DonneScoreDetails) group.getItems().get(childIndex);
 
@@ -54,7 +59,7 @@ public class DonneAdapter extends ExpandableRecyclerViewAdapter <DonneViewHolder
         holder.setPlayer3Name(donneScoreDetails.getPlayer3Name());
         holder.setPlayer4Name(donneScoreDetails.getPlayer4Name());
 
-        holder.getEssai().addTextChangedListener(new TextWatcher() {
+       /* holder.getEssai().addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -62,16 +67,26 @@ public class DonneAdapter extends ExpandableRecyclerViewAdapter <DonneViewHolder
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                message[flatPosition-1] = holder.getNameEssai();
 
-                message = holder.getNameEssai();
+
+
 
             }
 
             @Override
             public void afterTextChanged(Editable s) {
 
+                Log.d(TAG, "coucou Child suite : " + String.valueOf(message[flatPosition-1]));
+                Log.d(TAG, "coucou Child suite 1 : " + String.valueOf(flatPosition-1));
+
+
             }
-        });
+        });*/
+
+        message[flatPosition-1] = holder.getNameEssai();
+        Log.d(TAG, "coucou Child suite : " + String.valueOf(message[flatPosition-1]));
+        Log.d(TAG, "coucou Child suite 1 : " + String.valueOf(flatPosition-1));
 
 
     }
@@ -79,14 +94,31 @@ public class DonneAdapter extends ExpandableRecyclerViewAdapter <DonneViewHolder
     @Override
     public void onBindGroupViewHolder(final DonneViewHolder holder, int flatPosition, ExpandableGroup group) {
 
+
+        Log.d(TAG, "coucou Father: " + String.valueOf(flatPosition));
+
+        for (int i = 0; i <4 ; i++) {
+            Log.d(TAG, "coucou x: " + String.valueOf(message[i]));
+
+        }
+
+
         DonneScoreDetails donneScoreDetails = (DonneScoreDetails) group.getItems().get(0);
 
         holder.setNumDonne(flatPosition + 1);
-        holder.setScoreEquipeA(donneScoreDetails.getScoreDonneEquipeA());
+        holder.setScoreEquipeA(Integer.parseInt(message[flatPosition]));
         holder.setScoreEquipeB(donneScoreDetails.getScoreDonneEquipeB());
-
 
     }
 
+    @Override
+    public int getItemCount() {
+        return super.getItemCount();
+    }
 
+
+    @Override
+    public int getItemViewType(int position) {
+        return super.getItemViewType(position);
+    }
 }
