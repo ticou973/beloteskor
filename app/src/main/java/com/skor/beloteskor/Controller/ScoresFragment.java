@@ -1,7 +1,6 @@
 package com.skor.beloteskor.Controller;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -73,6 +72,7 @@ public class ScoresFragment extends Fragment {
 
         scoreRecyclerView = getActivity().findViewById(R.id.recycler_view_scores);
         donnesScore = getDonnesScores();
+
         donneAdapter = new DonneAdapter(donnesScore);
         layoutManager = new LinearLayoutManager(getContext());
         scoreRecyclerView.setLayoutManager(layoutManager);
@@ -126,13 +126,5 @@ public class ScoresFragment extends Fragment {
             mListener.onPressedAddDonnesBtn();
         }
     }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onScoresFragmentInteraction();
-        }
-    }
-
 
 }

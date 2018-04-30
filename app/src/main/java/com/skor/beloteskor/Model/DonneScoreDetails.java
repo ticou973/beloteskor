@@ -17,6 +17,10 @@ public class DonneScoreDetails {
         this.scoreDonneEquipeB = scoreDonneEquipeB;
     }
 
+    @Override
+    public String toString() {
+        return String.valueOf(getScoreDonneEquipeA()) + " " + String.valueOf(getScoreDonneEquipeB());
+    }
 
     public String getPreneurName() {
         return preneurName;

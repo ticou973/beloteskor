@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.skor.beloteskor.Adapters.DonneAdapter;
 import com.skor.beloteskor.Model.DonneScore;
 import com.skor.beloteskor.Model.DonneScoreDetails;
 import com.skor.beloteskor.Model.ModeEquipe;
@@ -24,7 +25,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements SettingsGameFragment.OnSettingsGameFragmentListener,
         ScoresFragment.OnScoresFragmentInteractionListener, PlayersFragment.OnPlayersFragmentInteractionListener, StatisticsFragment.OnStatisticsFragmentInteractionListener,
-        DialogModeEquipeFragment.DialogModeEquipeFragmentListener, PlayerScoreFragment.OnPlayerScoreFragmentListener, TeamScoreFragment.OnTeamFragmentInteractionListener{
+        DialogModeEquipeFragment.DialogModeEquipeFragmentListener, PlayerScoreFragment.OnPlayerScoreFragmentListener, TeamScoreFragment.OnTeamFragmentInteractionListener, DonneAdapter.OnDonneAdapterListener{
 
     private android.support.v7.widget.Toolbar toolbar;
     private BottomNavigationView navigation;
@@ -253,17 +254,17 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
     @Override
     public List<DonneScore> onScoresFragmentInteraction() {
 
-
         if (donnesScore == null) {
 
             donnesScore = new ArrayList<>();
 
             for (int i = 0; i < 3; i++) {
 
-                List<DonneScoreDetails> donneScoreDetails = new ArrayList<>(1);
-                donneScoreDetails.add(new DonneScoreDetails(player3, player1, player2, player3, player4, player1, 2 * i, 162 - 2 * i));
+                DonneScoreDetails donneScoreDetails = new DonneScoreDetails(player3, player1, player2, player3, player4, player1, 2 * i, 162 - 2 * i) ;
 
-                donnesScore.add(new DonneScore("Donne N° " + i, donneScoreDetails));
+                donnesScore.add(new DonneScore(i+1, donneScoreDetails.getScoreDonneEquipeA(), donneScoreDetails.getScoreDonneEquipeB()));
+
+
 
             }
         } else {
@@ -278,10 +279,10 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
     @Override
     public void onPressedAddDonnesBtn() {
 
-        List<DonneScoreDetails> donneScoreDetails = new ArrayList<>(1);
-        donneScoreDetails.add(new DonneScoreDetails(player3, player1,player2,player3,player4,player1, 27, 135));
 
-        donnesScore.add(new DonneScore("Donne N° n", donneScoreDetails));
+        DonneScoreDetails donneScoreDetails = new DonneScoreDetails(player3, player1, player2, player3, player4, player1, 60, 102) ;
+
+        donnesScore.add(new DonneScore(donnesScore.size(), donneScoreDetails.getScoreDonneEquipeA(), donneScoreDetails.getScoreDonneEquipeB()));
 
         ScoresFragment scoresFragment = new ScoresFragment();
         replaceFragment(scoresFragment);
@@ -312,5 +313,11 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
         transaction.replace(R.id.fl_fragment_main, fragment);
         transaction.commit();
 
+    }
+
+    @Override
+    public String[] onDonneAdapterPlayers() {
+
+        return listPlayersName;
     }
 }

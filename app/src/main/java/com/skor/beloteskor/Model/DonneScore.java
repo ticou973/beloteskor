@@ -1,17 +1,24 @@
 package com.skor.beloteskor.Model;
 
-import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup;
 
-import java.util.List;
-
-public class DonneScore extends ExpandableGroup {
+public class DonneScore {
 
     private int scoreDonneA, scoreDonneB, numDonne;
     private boolean isExpanded;
+    private String title;
+    private DonneScoreDetails donneScoreDetails;
 
-    public DonneScore(String title, List items) {
-        super(title, items);
+    public DonneScore(int numDonne, int scoreDonneA, int scoreDonneB) {
 
+        this.numDonne = numDonne;
+        this.scoreDonneA = scoreDonneA;
+        this.scoreDonneB = scoreDonneB;
+
+    }
+
+    @Override
+    public String toString() {
+        return title + String.valueOf(donneScoreDetails.getScoreDonneEquipeA());
     }
 
     public boolean isExpanded() {
