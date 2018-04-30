@@ -129,13 +129,13 @@ public class DonneViewHolder extends RecyclerView.ViewHolder {
         return cardViewDonne;
     }
 
-    private void animateExpand() {
+    public void expand() {
         cardViewDonne.setBackgroundColor(rgb(76,175,80));
 
     }
 
 
-    private void animateCollapse() {
+    public void collapse() {
 
         cardViewDonne.setBackgroundColor(rgb(255,255,255));
 

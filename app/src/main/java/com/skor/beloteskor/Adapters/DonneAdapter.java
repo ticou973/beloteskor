@@ -44,7 +44,10 @@ public class DonneAdapter extends RecyclerView.Adapter <DonneViewHolder>{
     @Override
     public void onBindViewHolder(final DonneViewHolder holder, int position) {
 
+        //get the players with an interface
         getPlayers();
+
+        //gestion du ViewHolder
 
         holder.setScoreEquipeA(donnesScore.get(position).getScoreDonneA());
         holder.setScoreEquipeB(donnesScore.get(position).getScoreDonneB());
@@ -57,6 +60,7 @@ public class DonneAdapter extends RecyclerView.Adapter <DonneViewHolder>{
                     isExpanded = true;
 
                     holder.getCardViewDonneDetails().setVisibility(View.VISIBLE);
+                    holder.expand();
                     holder.setPlayer1Name(getPlayers()[0]);
                     holder.setPlayer2Name(getPlayers()[1]);
                     holder.setPlayer3Name(getPlayers()[2]);
@@ -65,13 +69,10 @@ public class DonneAdapter extends RecyclerView.Adapter <DonneViewHolder>{
                 } else {
                     isExpanded = false;
                     holder.getCardViewDonneDetails().setVisibility(View.GONE);
+                    holder.collapse();
                 }
             }
         });
-
-
-
-
 
     }
 
