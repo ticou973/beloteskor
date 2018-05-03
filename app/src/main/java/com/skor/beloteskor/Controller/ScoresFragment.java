@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +37,10 @@ public class ScoresFragment extends Fragment {
 
 
     private List<DonneScore> donnesScore;
+
+
+    private GestureDetector detector;
+
 
     public ScoresFragment() {
         // Required empty public constructor
@@ -93,11 +98,16 @@ public class ScoresFragment extends Fragment {
 
     }
 
+
+
+
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
     }
+
+
 
     //Todo à mettre dans la main activity avec l'aide du listener, idem pour le bouton d'ajout d'une mène ce qui permettra de rajouter un élément à la liste
 
@@ -106,6 +116,7 @@ public class ScoresFragment extends Fragment {
         // TODO: Update argument type and name
         List<DonneScore> onScoresFragmentInteraction();
         void onPressedAddDonnesBtn();
+
 
     }
 
@@ -126,5 +137,7 @@ public class ScoresFragment extends Fragment {
             mListener.onPressedAddDonnesBtn();
         }
     }
+
+
 
 }

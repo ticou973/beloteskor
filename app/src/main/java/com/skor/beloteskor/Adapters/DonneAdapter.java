@@ -2,7 +2,9 @@ package com.skor.beloteskor.Adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -10,13 +12,20 @@ import com.skor.beloteskor.Model.DonneScore;
 import com.skor.beloteskor.R;
 import com.skor.beloteskor.ViewHolders.DonneViewHolder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DonneAdapter extends RecyclerView.Adapter <DonneViewHolder>{
 
     List<DonneScore> donnesScore;
-    private boolean isExpanded = false;
+    private ArrayList<Boolean> isExpanded = new ArrayList<>();
     private String player1, player2, player3, player4;
+    private float beginX, beginY;
+
+
+    private Context mContext;
+    private GestureDetector detector;
+
 
 
     private OnDonneAdapterListener mListener;
@@ -42,37 +51,132 @@ public class DonneAdapter extends RecyclerView.Adapter <DonneViewHolder>{
     }
 
     @Override
-    public void onBindViewHolder(final DonneViewHolder holder, int position) {
+    public void onBindViewHolder(final DonneViewHolder holder, final int position) {
+
+        // Get the application context
+        mContext = holder.itemView.getContext();
+        isExpanded.add(false);
 
         //get the players with an interface
         getPlayers();
 
         //gestion du ViewHolder
 
-        holder.setScoreEquipeA(donnesScore.get(position).getScoreDonneA());
-        holder.setScoreEquipeB(donnesScore.get(position).getScoreDonneB());
+        //CardView Parent
+
+        holder.setScoreEquipeA(0);
+        holder.setScoreEquipeB(0);
         holder.setNumDonne(position + 1);
+        holder.getCardViewDonneDetails().setVisibility(View.GONE);
 
         holder.getCardViewDonne().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!isExpanded){
-                    isExpanded = true;
+                if (!isExpanded.get(position)){
+                    isExpanded.set(position,true);
 
+                    //cardView Child
                     holder.getCardViewDonneDetails().setVisibility(View.VISIBLE);
-                    holder.expand();
+                    holder.expand(position + 1);
+
+                    //Récupération des noms de joueurs
                     holder.setPlayer1Name(getPlayers()[0]);
                     holder.setPlayer2Name(getPlayers()[1]);
                     holder.setPlayer3Name(getPlayers()[2]);
                     holder.setPlayer4Name(getPlayers()[3]);
 
+
+                   //belote
+
+                    //gestion du detector
+
+                    detector = new GestureDetector(mContext, new GestureDetector.OnGestureListener() {
+                        @Override
+                        public boolean onDown(MotionEvent e) {
+                            return true;
+                        }
+
+                        @Override
+                        public void onShowPress(MotionEvent e) {
+
+                        }
+
+                        @Override
+                        public boolean onSingleTapUp(MotionEvent e) {
+                            return true;
+                        }
+
+                        @Override
+                        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+                            return true;
+                        }
+
+                        @Override
+                        public void onLongPress(MotionEvent e) {
+
+                        }
+
+                        @Override
+                        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+
+                            //Toast.makeText(mContext, "Hello", Toast.LENGTH_SHORT).show();
+
+                            if(e2.getX()< e1.getX()){
+
+                                holder.setColorFlLeft(true);
+                                holder.setColorFlRight(false);
+
+
+                                float endX = beginX/2;
+                                float endY = beginY;
+
+                                //Toast.makeText(mContext, String.valueOf(endX) + String.valueOf(endY), Toast.LENGTH_SHORT).show();
+
+                                //Toast.makeText(mContext, "mvt à gauche", Toast.LENGTH_SHORT).show();
+                                holder.animateBelote(endX,endY);
+
+                            }else{
+
+                                holder.setColorFlRight(true);
+                                holder.setColorFlLeft(false);
+
+                                float endX = beginX + beginX/2;
+                                float endY = beginY;
+
+                                //Toast.makeText(mContext, String.valueOf(endX) + String.valueOf(endY), Toast.LENGTH_SHORT).show();
+
+                                holder.animateBelote(endX,endY);
+
+
+                                //Toast.makeText(mContext, "mvt à droite", Toast.LENGTH_SHORT).show();
+
+                            }
+                            return true;
+                        }
+                    });
+
+                    holder.getBelote().setOnTouchListener(new View.OnTouchListener() {
+                        @Override
+                        public boolean onTouch(View v, MotionEvent event) {
+                            beginX = v.getLeft();
+                            beginY = v.getTop();
+                            //Toast.makeText(mContext, String.valueOf(beginX) + String.valueOf(beginY), Toast.LENGTH_SHORT).show();
+
+                            return detector.onTouchEvent(event);
+                        }
+                    });
+
+
+
                 } else {
-                    isExpanded = false;
+                    isExpanded.set(position, false);
                     holder.getCardViewDonneDetails().setVisibility(View.GONE);
-                    holder.collapse();
+                    holder.collapse(position+1);
                 }
             }
         });
+
+
 
     }
 
@@ -115,6 +219,12 @@ public class DonneAdapter extends RecyclerView.Adapter <DonneViewHolder>{
 
         return null;
     }
+
+
+
+
+
+
 
 
 }

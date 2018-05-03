@@ -4,27 +4,24 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.skor.beloteskor.R;
 
 import static android.graphics.Color.rgb;
 
-public class DonneViewHolder extends RecyclerView.ViewHolder {
+public class DonneViewHolder extends RecyclerView.ViewHolder  {
 
     private TextView scoreDonneEquipeA, scoreDonneEquipeB, numDonne;
     private CardView cardViewDonne, cardViewDonneDetails;
     private Button validationBtn;
 
-    private String message;
-
-
     //child
 
     private TextView player1Name, player2Name, player3Name, player4Name;
-    private EditText essai;
-    private String name;
+    private Button belote;
+    private FrameLayout flLeft, flRight;
 
 
     public DonneViewHolder(View itemView) {
@@ -42,8 +39,10 @@ public class DonneViewHolder extends RecyclerView.ViewHolder {
         player2Name = itemView.findViewById(R.id.details_donne_player2_name);
         player3Name = itemView.findViewById(R.id.details_donne_player3_name);
         player4Name = itemView.findViewById(R.id.details_donne_player4_name);
-        essai = itemView.findViewById(R.id.et_essai);
         cardViewDonneDetails = itemView.findViewById(R.id.cardView_donne_details);
+        belote = itemView.findViewById(R.id.btn_belote);
+        flLeft = itemView.findViewById(R.id.fl_bckg_left);
+        flRight = itemView.findViewById(R.id.fl_bckg_right);
 
     }
 
@@ -83,37 +82,17 @@ public class DonneViewHolder extends RecyclerView.ViewHolder {
     }
 
 
-    public String getNameEssai (){
-
-        name = essai.getText().toString();
-
-        return name;
-
-    }
-
-    public void setNameEssai (String name){
-
-        essai.setText(name);
-    }
-
-    public EditText getEssai() {
-        return essai;
-    }
-
-    public void setEssai(EditText essai) {
-        this.essai = essai;
-    }
-
     public void setBGColor (int color){
 
         cardViewDonne.setBackgroundColor(color);
     }
 
-    public void setVisibilityBtn (boolean visible){
+    public void setVisibilityBtn (boolean visible, int numDonne){
 
         if (visible) {
 
             validationBtn.setVisibility(View.VISIBLE);
+            validationBtn.setText(String.valueOf(numDonne));
 
         }else{
 
@@ -129,18 +108,79 @@ public class DonneViewHolder extends RecyclerView.ViewHolder {
         return cardViewDonne;
     }
 
-    public void expand() {
+    public Button getBelote() {
+        return belote;
+    }
+
+    public void expand(int numDonne) {
         cardViewDonne.setBackgroundColor(rgb(76,175,80));
+        setVisibilityBtn(true,numDonne);
 
     }
 
 
-    public void collapse() {
+    public void collapse(int numDonne) {
 
         cardViewDonne.setBackgroundColor(rgb(255,255,255));
+        setVisibilityBtn(false,numDonne);
 
     }
 
+    public void animateBelote(float x, float y) {
+
+        belote.animate()
+                .x(x)
+                .y(y)
+                .setDuration(100)
+                .start();
+
+    }
+
+
+
+    public void setColorFlLeft(boolean focus) {
+
+        int red, green, blue;
+        float opacity;
+
+        if(focus) {
+
+            red = 76;
+            green = 175;
+            blue = 80;
+            opacity = 1;
+
+        }else{
+            red = 128;
+            green = 226;
+            blue = 126;
+            opacity = 0.3f;
+        }
+
+        flLeft.setBackgroundColor(rgb(red,green,blue));
+        flLeft.setAlpha(opacity);
+
+    }
+
+    public void setColorFlRight(boolean focus) {
+
+        int red, green, blue;
+
+        if(focus) {
+
+            red = 76;
+            green = 175;
+            blue = 80;
+
+        }else{
+            red = 128;
+            green = 226;
+            blue = 126;
+        }
+
+        flRight.setBackgroundColor(rgb(red,green,blue));
+
+    }
 
 
 }

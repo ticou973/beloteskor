@@ -116,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
         replaceFragment(settingsGameFragment);
 
 
+
     }
 
                                 //MENU OPTIONS
@@ -289,6 +290,8 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
 
     }
 
+
+
     //Fragments listes des parties des joueurs
 
     @Override
@@ -315,9 +318,12 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
 
     }
 
+    //Méthode impléme,ter par le donne Adapter
+
     @Override
     public String[] onDonneAdapterPlayers() {
 
         return listPlayersName;
     }
+
 }
