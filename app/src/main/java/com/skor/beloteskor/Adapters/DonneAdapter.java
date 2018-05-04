@@ -19,14 +19,11 @@ public class DonneAdapter extends RecyclerView.Adapter <DonneViewHolder>{
 
     List<DonneScore> donnesScore;
     private ArrayList<Boolean> isExpanded = new ArrayList<>();
-    private String player1, player2, player3, player4;
     private float beginX, beginY;
 
 
     private Context mContext;
     private GestureDetector detector;
-
-
 
     private OnDonneAdapterListener mListener;
 
@@ -64,20 +61,45 @@ public class DonneAdapter extends RecyclerView.Adapter <DonneViewHolder>{
 
         //CardView Parent
 
+
         holder.setScoreEquipeA(0);
         holder.setScoreEquipeB(0);
         holder.setNumDonne(position + 1);
         holder.getCardViewDonneDetails().setVisibility(View.GONE);
 
+
+        //CardView Child
+
         holder.getCardViewDonne().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!isExpanded.get(position)){
-                    isExpanded.set(position,true);
 
-                    //cardView Child
-                    holder.getCardViewDonneDetails().setVisibility(View.VISIBLE);
+                //Gestion de l'item courant
+
+                if (!isExpanded.get(position)){
+
+                    //ouverture de l'item courant
                     holder.expand(position + 1);
+
+                    //fermeture des autres items
+
+                    //todo gérer la fermeture des autres items
+
+                    /*for (int i = 0; i <donnesScore.size() ; i++) {
+
+                        if (i != position && isExpanded.get(i)) {
+
+                            holder.collapse(i+1);
+
+                        }else {
+
+                            Toast.makeText(mContext, "coucou", Toast.LENGTH_SHORT).show();
+                        }
+                    }*/
+
+
+
+                    isExpanded.set(position,true);
 
                     //Récupération des noms de joueurs
                     holder.setPlayer1Name(getPlayers()[0]);
@@ -86,9 +108,9 @@ public class DonneAdapter extends RecyclerView.Adapter <DonneViewHolder>{
                     holder.setPlayer4Name(getPlayers()[3]);
 
 
-                   //belote
+                   //NumberPickerScore
 
-                    //gestion du detector
+                      //gestion du detector
 
                     detector = new GestureDetector(mContext, new GestureDetector.OnGestureListener() {
                         @Override
@@ -121,41 +143,49 @@ public class DonneAdapter extends RecyclerView.Adapter <DonneViewHolder>{
 
                             //Toast.makeText(mContext, "Hello", Toast.LENGTH_SHORT).show();
 
+                            //todo gérer le fling gauche et droite pour envoyer le numberpicker et le fling vertical pour selection numberpicker. peut être dupliquer dans le scroll
+
                             if(e2.getX()< e1.getX()){
 
                                 holder.setColorFlLeft(true);
                                 holder.setColorFlRight(false);
 
 
-                                float endX = beginX/2;
+                                float endX = beginX/4;
                                 float endY = beginY;
 
                                 //Toast.makeText(mContext, String.valueOf(endX) + String.valueOf(endY), Toast.LENGTH_SHORT).show();
 
                                 //Toast.makeText(mContext, "mvt à gauche", Toast.LENGTH_SHORT).show();
-                                holder.animateBelote(endX,endY);
+                                holder.animateNumberPicker(endX,endY);
 
                             }else{
 
                                 holder.setColorFlRight(true);
                                 holder.setColorFlLeft(false);
 
-                                float endX = beginX + beginX/2;
+                                float endX = beginX + beginX*3/4;
                                 float endY = beginY;
 
                                 //Toast.makeText(mContext, String.valueOf(endX) + String.valueOf(endY), Toast.LENGTH_SHORT).show();
 
-                                holder.animateBelote(endX,endY);
-
+                                holder.animateNumberPicker(endX,endY);
 
                                 //Toast.makeText(mContext, "mvt à droite", Toast.LENGTH_SHORT).show();
 
                             }
+
+                            holder.getNumberPicker().setOnTouchListener(null);
+
                             return true;
                         }
                     });
 
-                    holder.getBelote().setOnTouchListener(new View.OnTouchListener() {
+                    //todo gerer le perform Click
+
+                    //Gestion du mouvement OnFling
+
+                    holder.getNumberPicker().setOnTouchListener(new View.OnTouchListener() {
                         @Override
                         public boolean onTouch(View v, MotionEvent event) {
                             beginX = v.getLeft();
@@ -168,9 +198,10 @@ public class DonneAdapter extends RecyclerView.Adapter <DonneViewHolder>{
 
 
 
+
+
                 } else {
                     isExpanded.set(position, false);
-                    holder.getCardViewDonneDetails().setVisibility(View.GONE);
                     holder.collapse(position+1);
                 }
             }

@@ -55,12 +55,36 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/delimiters" />
 
+            <com.shawnlin.numberpicker.NumberPicker
+                android:id="@+id/numberPicker"
+                android:layout_width="66dp"
+                android:layout_height="77dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="64dp"
+                android:background="@drawable/radius_button"
+                android:backgroundTint="@color/color_accent2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:np_dividerDistance="48dp"
+                app:np_dividerThickness="1dp"
+                app:np_max="162"
+                app:np_min="0"
+                app:np_orientation="vertical"
+                app:np_selectedTextColor="@color/colorPrimaryDark"
+                app:np_selectedTextSize="30sp"
+                app:np_textSize="18sp">
+
+            </com.shawnlin.numberpicker.NumberPicker>
+
             <TextView
                 android:id="@+id/details_donne_player1_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:background="@color/color_accent2"
+                android:background="@drawable/radius_button"
+                android:backgroundTint="@color/color_accent2"
                 android:fontFamily="@font/roboto"
                 android:text="@string/robert"
                 android:textAlignment="center"
@@ -112,21 +136,6 @@
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toEndOf="@+id/details_donne_player3_name"
                 app:layout_constraintTop_toTopOf="parent" />
-
-
-            <Button
-                android:id="@+id/btn_belote"
-                android:layout_width="81dp"
-                android:layout_height="27dp"
-                android:layout_marginBottom="16dp"
-                android:background="@color/color_accent2"
-                android:text="@string/belote"
-                android:textAllCaps="false"
-                android:textSize="18sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.501"
-                app:layout_constraintStart_toStartOf="parent" />
 
 
         </android.support.constraint.ConstraintLayout>

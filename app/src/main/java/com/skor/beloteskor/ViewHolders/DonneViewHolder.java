@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.shawnlin.numberpicker.NumberPicker;
 import com.skor.beloteskor.R;
 
 import static android.graphics.Color.rgb;
@@ -20,8 +21,8 @@ public class DonneViewHolder extends RecyclerView.ViewHolder  {
     //child
 
     private TextView player1Name, player2Name, player3Name, player4Name;
-    private Button belote;
     private FrameLayout flLeft, flRight;
+    private NumberPicker numberPicker;
 
 
     public DonneViewHolder(View itemView) {
@@ -40,11 +41,13 @@ public class DonneViewHolder extends RecyclerView.ViewHolder  {
         player3Name = itemView.findViewById(R.id.details_donne_player3_name);
         player4Name = itemView.findViewById(R.id.details_donne_player4_name);
         cardViewDonneDetails = itemView.findViewById(R.id.cardView_donne_details);
-        belote = itemView.findViewById(R.id.btn_belote);
         flLeft = itemView.findViewById(R.id.fl_bckg_left);
         flRight = itemView.findViewById(R.id.fl_bckg_right);
+        numberPicker = itemView.findViewById(R.id.numberPicker);
 
     }
+
+
 
     public void setScoreEquipeA(int scoreEquipeA) {
         scoreDonneEquipeA.setText(String.valueOf(scoreEquipeA));
@@ -108,11 +111,13 @@ public class DonneViewHolder extends RecyclerView.ViewHolder  {
         return cardViewDonne;
     }
 
-    public Button getBelote() {
-        return belote;
+
+    public NumberPicker getNumberPicker() {
+        return numberPicker;
     }
 
     public void expand(int numDonne) {
+        getCardViewDonneDetails().setVisibility(View.VISIBLE);
         cardViewDonne.setBackgroundColor(rgb(76,175,80));
         setVisibilityBtn(true,numDonne);
 
@@ -120,15 +125,16 @@ public class DonneViewHolder extends RecyclerView.ViewHolder  {
 
 
     public void collapse(int numDonne) {
-
+        getCardViewDonneDetails().setVisibility(View.GONE);
         cardViewDonne.setBackgroundColor(rgb(255,255,255));
         setVisibilityBtn(false,numDonne);
 
+
     }
 
-    public void animateBelote(float x, float y) {
+    public void animateNumberPicker(float x, float y) {
 
-        belote.animate()
+        numberPicker.animate()
                 .x(x)
                 .y(y)
                 .setDuration(100)
