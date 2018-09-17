@@ -150,7 +150,7 @@ public class SettingsGameFragment extends Fragment {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
 
-                if(hasFocus ){
+                if(hasFocus){
                     tilPoints.setBackgroundColor(getResources().getColor(R.color.color_accent2));
                     tilPoints.setAlpha(1.0f);
                     tilDonnes.setBackgroundColor(getResources().getColor(R.color.colorbuttonfalse));

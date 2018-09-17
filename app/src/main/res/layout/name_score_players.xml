@@ -35,14 +35,14 @@
             app:layout_constraintTop_toBottomOf="@+id/et_on_your_left" />
 
         <EditText
-            android:id="@+id/et_on_your_left"
+            android:id="@+id/et_you"
             android:layout_width="145dp"
             android:layout_height="0dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
             android:background="@android:color/transparent"
             android:ems="10"
             android:fontFamily="@font/roboto"
-            android:hint="@string/on_your_left"
+            android:hint="@string/you"
             android:inputType="textPersonName"
             android:maxLength="9"
             android:paddingBottom="0dp"
@@ -50,8 +50,10 @@
             android:textColor="#424242"
             android:textSize="24sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/guideline4"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideline"
             app:layout_constraintTop_toTopOf="parent" />
+
 
         <EditText
             android:id="@+id/et_on_your_right"
@@ -74,6 +76,27 @@
             app:layout_constraintEnd_toStartOf="@+id/guideline4"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/score_total_equipeB" />
+
+
+        <EditText
+            android:id="@+id/et_on_your_left"
+            android:layout_width="145dp"
+            android:layout_height="0dp"
+            android:layout_marginEnd="16dp"
+            android:background="@android:color/transparent"
+            android:ems="10"
+            android:fontFamily="@font/roboto"
+            android:hint="@string/on_your_left"
+            android:inputType="textPersonName"
+            android:maxLength="9"
+            android:paddingBottom="0dp"
+            android:textAlignment="center"
+            android:textColor="#424242"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/guideline4"
+            app:layout_constraintTop_toTopOf="parent" />
+
 
         <EditText
             android:id="@+id/et_your_partner"
@@ -113,25 +136,7 @@
             app:layout_constraintStart_toStartOf="@+id/guideline"
             app:layout_constraintTop_toBottomOf="@+id/et_you" />
 
-        <EditText
-            android:id="@+id/et_you"
-            android:layout_width="145dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="16dp"
-            android:background="@android:color/transparent"
-            android:ems="10"
-            android:fontFamily="@font/roboto"
-            android:hint="@string/you"
-            android:inputType="textPersonName"
-            android:maxLength="9"
-            android:paddingBottom="0dp"
-            android:textAlignment="center"
-            android:textColor="#424242"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toTopOf="parent" />
+
 
         <android.support.constraint.Guideline
             android:id="@+id/guideline"

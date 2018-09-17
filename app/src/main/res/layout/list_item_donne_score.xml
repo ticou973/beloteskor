@@ -11,7 +11,6 @@
         android:layout_height="155dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
         android:backgroundTint="@color/colorPrimaryLight"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -22,14 +21,111 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <ToggleButton
+                android:id="@+id/capot_team2_btn"
+                android:layout_width="75dp"
+                android:layout_height="38dp"
+                android:layout_marginEnd="8dp"
+                android:textAllCaps="false"
+                android:textOff="@string/capot"
+                android:textOn="@string/capot"
+                app:layout_constraintBaseline_toBaselineOf="@+id/capot_team1_btn"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <ToggleButton
+                android:id="@+id/belote_team2_btn"
+                android:layout_width="75dp"
+                android:layout_height="38dp"
+                android:layout_marginEnd="8dp"
+                android:textAllCaps="false"
+                android:textOff="@string/belote"
+                android:textOn="@string/belote"
+                app:layout_constraintBaseline_toBaselineOf="@+id/belote_team1_btn"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <ToggleButton
+                android:id="@+id/belote_team1_btn"
+                android:layout_width="75dp"
+                android:layout_height="38dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:textAllCaps="false"
+                android:textOff="@string/belote"
+                android:textOn="@string/belote"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/numberPicker"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.598" />
+
+            <ToggleButton
+                android:id="@+id/capot_team1_btn"
+                android:layout_width="75dp"
+                android:layout_height="38dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:textAllCaps="false"
+                android:textOff="@string/capot"
+                android:textOn="@string/capot"
+                app:layout_constraintEnd_toStartOf="@+id/numberPicker"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/belote_team1_btn" />
+
+            <ImageView
+                android:id="@+id/preneur_trefle"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginEnd="8dp"
+                android:contentDescription="@string/trefle"
+                app:layout_constraintEnd_toEndOf="@+id/delimiter"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/trefle" />
+
+            <ImageView
+                android:id="@+id/preneur_pique"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:background="@color/color_accent2"
+                android:contentDescription="@string/pique"
+                app:layout_constraintStart_toStartOf="@+id/delimiter"
+                app:layout_constraintTop_toBottomOf="@+id/preneur_carreau"
+                app:srcCompat="@drawable/pique" />
+
+            <ImageView
+                android:id="@+id/preneur_carreau"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginStart="8dp"
+                android:contentDescription="@string/carreau"
+                app:layout_constraintStart_toStartOf="@+id/delimiter"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/carreau" />
+
+            <ImageView
+                android:id="@+id/preneur_coeur"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="4dp"
+                android:contentDescription="@string/coeur"
+                app:layout_constraintEnd_toEndOf="@+id/fl_bckg_left"
+                app:layout_constraintTop_toBottomOf="@+id/preneur_trefle"
+                app:srcCompat="@drawable/coeur" />
+
             <FrameLayout
                 android:id="@+id/fl_bckg_right"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/fl_bckg_left"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0">
 
             </FrameLayout>
 
@@ -39,8 +135,10 @@
                 android:layout_height="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/delimiter"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/delimiter">
+                app:layout_constraintTop_toTopOf="@+id/delimiter"
+                app:layout_constraintVertical_bias="0.0">
 
             </FrameLayout>
 
@@ -61,7 +159,7 @@
                 android:layout_height="77dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="64dp"
+                android:layout_marginTop="70dp"
                 android:background="@drawable/radius_button"
                 android:backgroundTint="@color/color_accent2"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -82,6 +180,7 @@
                 android:id="@+id/details_donne_player1_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
                 android:layout_marginTop="4dp"
                 android:background="@drawable/radius_button"
                 android:backgroundTint="@color/color_accent2"
@@ -90,7 +189,6 @@
                 android:textAlignment="center"
                 android:textSize="18sp"
                 android:textStyle="bold|italic"
-                app:layout_constraintEnd_toStartOf="@+id/details_donne_player2_name"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -98,34 +196,35 @@
                 android:id="@+id/details_donne_player2_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
                 android:layout_marginTop="4dp"
                 android:fontFamily="@font/roboto"
                 android:text="@string/g_raldine"
                 android:textAlignment="center"
                 android:textSize="18sp"
                 android:textStyle="bold|italic"
-                app:layout_constraintEnd_toStartOf="@+id/delimiter"
-                app:layout_constraintStart_toEndOf="@+id/details_donne_player1_name"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/details_donne_player1_name" />
 
             <TextView
                 android:id="@+id/details_donne_player3_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
                 android:layout_marginTop="4dp"
                 android:fontFamily="@font/roboto"
                 android:text="@string/gis_le"
                 android:textAlignment="center"
                 android:textSize="18sp"
                 android:textStyle="bold|italic"
-                app:layout_constraintEnd_toStartOf="@+id/details_donne_player4_name"
-                app:layout_constraintStart_toEndOf="@+id/details_donne_player2_name"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/details_donne_player4_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
                 android:layout_marginTop="4dp"
                 android:fontFamily="@font/roboto"
                 android:text="@string/raymond"
@@ -133,9 +232,7 @@
                 android:textSize="18sp"
                 android:textStyle="bold|italic"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toEndOf="@+id/details_donne_player3_name"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/details_donne_player3_name" />
 
 
         </android.support.constraint.ConstraintLayout>
@@ -144,8 +241,9 @@
     <ImageView
         android:id="@+id/arrow_down"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="26dp"
+        android:layout_height="23dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginTop="27dp"
         android:contentDescription="@string/arrowup"
         android:elevation="2dp"
         app:layout_constraintEnd_toEndOf="parent"

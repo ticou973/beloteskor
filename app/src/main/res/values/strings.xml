@@ -40,4 +40,11 @@
     <string name="robert">Robert</string>
     <string name="add_circle">add circle</string>
     <string name="belote">Belote</string>
+    <string name="trefle">trefle</string>
+    <string name="pique">pique</string>
+    <string name="carreau">carreau</string>
+    <string name="coeur">coeur</string>
+    <string name="capot">Capot</string>
+
+
 </resources>

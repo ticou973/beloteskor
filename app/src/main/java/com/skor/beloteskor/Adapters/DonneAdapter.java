@@ -7,7 +7,9 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.shawnlin.numberpicker.NumberPicker;
 import com.skor.beloteskor.Model.DonneScore;
 import com.skor.beloteskor.R;
 import com.skor.beloteskor.ViewHolders.DonneViewHolder;
@@ -20,6 +22,8 @@ public class DonneAdapter extends RecyclerView.Adapter <DonneViewHolder>{
     List<DonneScore> donnesScore;
     private ArrayList<Boolean> isExpanded = new ArrayList<>();
     private float beginX, beginY;
+    private int width;
+    private int numberPickerposition = 0; //Center
 
 
     private Context mContext;
@@ -36,7 +40,7 @@ public class DonneAdapter extends RecyclerView.Adapter <DonneViewHolder>{
 
     public interface OnDonneAdapterListener {
 
-        public String[] onDonneAdapterPlayers();
+        String[] onDonneAdapterPlayers();
 
     }
 
@@ -46,6 +50,7 @@ public class DonneAdapter extends RecyclerView.Adapter <DonneViewHolder>{
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_donne_score, parent, false);
         return new DonneViewHolder(view);
     }
+
 
     @Override
     public void onBindViewHolder(final DonneViewHolder holder, final int position) {
@@ -60,7 +65,6 @@ public class DonneAdapter extends RecyclerView.Adapter <DonneViewHolder>{
         //gestion du ViewHolder
 
         //CardView Parent
-
 
         holder.setScoreEquipeA(0);
         holder.setScoreEquipeB(0);
@@ -96,7 +100,6 @@ public class DonneAdapter extends RecyclerView.Adapter <DonneViewHolder>{
                             Toast.makeText(mContext, "coucou", Toast.LENGTH_SHORT).show();
                         }
                     }*/
-
 
 
                     isExpanded.set(position,true);
@@ -141,41 +144,48 @@ public class DonneAdapter extends RecyclerView.Adapter <DonneViewHolder>{
                         @Override
                         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
 
-                            //Toast.makeText(mContext, "Hello", Toast.LENGTH_SHORT).show();
+
 
                             //todo gérer le fling gauche et droite pour envoyer le numberpicker et le fling vertical pour selection numberpicker. peut être dupliquer dans le scroll
 
-                            if(e2.getX()< e1.getX()){
+                            if(e2.getX()< e1.getX() && Math.abs(e2.getY()-e1.getY())<100){
+
+                                numberPickerposition = 1; //Left
 
                                 holder.setColorFlLeft(true);
                                 holder.setColorFlRight(false);
 
 
-                                float endX = beginX/4;
+                                float endX = beginX - width/2 - 40 ;
+                                Toast.makeText(mContext, String.valueOf(endX), Toast.LENGTH_SHORT).show();
                                 float endY = beginY;
 
-                                //Toast.makeText(mContext, String.valueOf(endX) + String.valueOf(endY), Toast.LENGTH_SHORT).show();
 
-                                //Toast.makeText(mContext, "mvt à gauche", Toast.LENGTH_SHORT).show();
                                 holder.animateNumberPicker(endX,endY);
 
-                            }else{
+
+                            }else if (e2.getX() > e1.getX() && Math.abs(e2.getY()-e1.getY())<100){
+
+                                numberPickerposition = 2; //Right
 
                                 holder.setColorFlRight(true);
                                 holder.setColorFlLeft(false);
 
-                                float endX = beginX + beginX*3/4;
+                                float endX = beginX + width/2 +40;
+                                Toast.makeText(mContext, String.valueOf(endX), Toast.LENGTH_SHORT).show();
+
                                 float endY = beginY;
 
-                                //Toast.makeText(mContext, String.valueOf(endX) + String.valueOf(endY), Toast.LENGTH_SHORT).show();
 
                                 holder.animateNumberPicker(endX,endY);
 
-                                //Toast.makeText(mContext, "mvt à droite", Toast.LENGTH_SHORT).show();
+
+                            } else if (Math.abs(e2.getY()-e1.getY())>100) {
+
+                                holder.getNumberPicker().setOnTouchListener(null);
 
                             }
 
-                            holder.getNumberPicker().setOnTouchListener(null);
 
                             return true;
                         }
@@ -188,17 +198,36 @@ public class DonneAdapter extends RecyclerView.Adapter <DonneViewHolder>{
                     holder.getNumberPicker().setOnTouchListener(new View.OnTouchListener() {
                         @Override
                         public boolean onTouch(View v, MotionEvent event) {
+                            width = v.getWidth();
                             beginX = v.getLeft();
                             beginY = v.getTop();
-                            //Toast.makeText(mContext, String.valueOf(beginX) + String.valueOf(beginY), Toast.LENGTH_SHORT).show();
+
+
 
                             return detector.onTouchEvent(event);
                         }
                     });
 
 
+                        holder.getNumberPicker().setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+                            @Override
+                            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+
+                                if (numberPickerposition == 1) {
+
+                                    holder.setScoreEquipeA(newVal);
+                                    holder.setScoreEquipeB(162 - newVal);
+
+                                } else if (numberPickerposition == 2) {
+
+                                    holder.setScoreEquipeB(newVal);
+                                    holder.setScoreEquipeA(162 - newVal);
+
+                                }
 
 
+                            }
+                        });
 
                 } else {
                     isExpanded.set(position, false);
@@ -250,12 +279,5 @@ public class DonneAdapter extends RecyclerView.Adapter <DonneViewHolder>{
 
         return null;
     }
-
-
-
-
-
-
-
 
 }

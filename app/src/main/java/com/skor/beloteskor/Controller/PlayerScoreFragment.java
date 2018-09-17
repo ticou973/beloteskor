@@ -25,7 +25,10 @@ public class PlayerScoreFragment extends Fragment {
     private ImageView triangleView;
 
     private String player1="", player2="", player3="", player4="";
+    private Boolean isInScoreFragment = false;
     public static final String EXTRA="com.skor.beloteskor.MESSAGE";
+    public static final String EXTRA1="com.skor.beloteskor.MESSAGE1";
+
 
     private String[] listPlayerName;
 
@@ -80,8 +83,10 @@ public class PlayerScoreFragment extends Fragment {
         //Gestion du mode Joueur
 
         listPlayerName = getArguments().getStringArray(EXTRA);
+        isInScoreFragment = getArguments().getBoolean(EXTRA1);
 
-        if (listPlayerName[0] != "" && listPlayerName[1] != "" && listPlayerName[2] !="" && listPlayerName[3] != "") {
+
+        if (isInScoreFragment) {
 
             yourName.setText(listPlayerName[0]);
             yourPartnerName.setText(listPlayerName[1]);
@@ -174,8 +179,6 @@ public class PlayerScoreFragment extends Fragment {
         });
 
 
-
-
     }
 
     @Override
@@ -183,6 +186,8 @@ public class PlayerScoreFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
+
+
 
 
     public interface OnPlayerScoreFragmentListener {

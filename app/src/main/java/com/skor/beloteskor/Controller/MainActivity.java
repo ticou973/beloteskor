@@ -6,6 +6,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -36,11 +37,11 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
     private PlayerScoreFragment playerScoreFragment;
 
     public static final String EXTRA="com.skor.beloteskor.MESSAGE";
-
+    public static final String EXTRA1="com.skor.beloteskor.MESSAGE1";
 
 
     private String player1, player2, player3, player4;
-    private String[] listPlayersName = {"","","",""};
+    private String[] listPlayersName={"","","",""};
     private List<DonneScore> donnesScore = null;
     private ModeEquipe modeEquipe = null;
 
@@ -58,7 +59,10 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
         //gestion de la Toolbar
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("BeloteSkor");
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("  BeloteSkor");
+        actionBar.setIcon(R.drawable.ic_clubs_33561);
+
 
         //gestion de la bottom navigation view
         navigation = findViewById(R.id.navigation);
@@ -94,23 +98,36 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
         });
 
 
+        /*SharedPreferences sh1 = getSharedPreferences("UsersName", MODE_PRIVATE);
+        player1 = sh1.getString("Player1","");
+        player2 = sh1.getString("Player2","");
+        player3 = sh1.getString("Player3","");
+        player4 = sh1.getString("Player4","");*/
+
+       // Toast.makeText(this, player2, Toast.LENGTH_SHORT).show();
+
+
+        //listPlayersName = new String[]{player1, player2, player3, player4};
+
+
                                     //FRAGMENTS
 
         flFragmentMain = findViewById(R.id.fl_fragment_main);
         flFragmentNameScore = findViewById(R.id.fl_fragment_name_score);
 
-
         //Lancement du fragment de settings
 
         playerScoreFragment = new PlayerScoreFragment();
+        Boolean isInScoresFragment = false;
         Bundle argsinit = new Bundle();
         argsinit.putStringArray(EXTRA,listPlayersName);
+        argsinit.putBoolean(EXTRA1,isInScoresFragment);
         playerScoreFragment.setArguments(argsinit);
         transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fl_fragment_name_score, playerScoreFragment).commit();
 
         settingsGameFragment = new SettingsGameFragment();
-        Bundle args=new Bundle();
+        Bundle args = new Bundle();
         args.putStringArray(EXTRA,listPlayersName);
         settingsGameFragment.setArguments(args);
         replaceFragment(settingsGameFragment);
@@ -119,7 +136,24 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
 
     }
 
-                                //MENU OPTIONS
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        /*SharedPreferences sh = getSharedPreferences("UsersName",MODE_PRIVATE);
+        SharedPreferences.Editor myEdit = sh.edit();
+        myEdit.putString("Player1", player1);
+        myEdit.putString("Player2", player2);
+        myEdit.putString("Player3", player3);
+        myEdit.putString("Player4", player4);
+        myEdit.apply();
+
+        Toast.makeText(this, player2, Toast.LENGTH_SHORT).show();*/
+    }
+
+
+    //MENU OPTIONS
 
     //Méthode qui inflate le menu d'option
     @Override
@@ -164,10 +198,12 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
     public void onSettingsGameFragmentInteraction() {
 
         modeEquipe = ModeEquipe.MODE_EQUIPE_STATIQUE_NOMINATIF;
+        Boolean isInScoresFragment = true;
 
         playerScoreFragment = new PlayerScoreFragment();
         Bundle args = new Bundle();
         args.putStringArray(EXTRA,listPlayersName);
+        args.putBoolean(EXTRA1,isInScoresFragment);
         playerScoreFragment.setArguments(args);
         transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fl_fragment_name_score, playerScoreFragment).commit();
@@ -175,7 +211,7 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
         ScoresFragment scoresFragment = new ScoresFragment();
 
         //todo voir si obligé ?
-        Bundle argsscore=new Bundle();
+        Bundle argsscore = new Bundle();
         argsscore.putStringArray(EXTRA,listPlayersName);
         scoresFragment.setArguments(argsscore);
         replaceFragment(scoresFragment);
@@ -199,7 +235,7 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
 
         listPlayersName = new String[]{player1, player2, player3, player4};
 
-        Bundle args=new Bundle();
+        Bundle args = new Bundle();
         args.putStringArray(EXTRA,listPlayersName);
         settingsGameFragment.setArguments(args);
 
@@ -318,12 +354,13 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
 
     }
 
-    //Méthode impléme,ter par le donne Adapter
+    //Méthode implémentée par le donne Adapter
 
     @Override
     public String[] onDonneAdapterPlayers() {
 
-        return listPlayersName;
+        return listPlayersName ;
     }
+
 
 }
