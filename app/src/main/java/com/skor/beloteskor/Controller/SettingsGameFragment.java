@@ -77,7 +77,7 @@ public class SettingsGameFragment extends Fragment {
 
         listPlayers = getArguments().getStringArray(EXTRA);
 
-                                            //VARIANTES
+                                            //VARIANTES DE JEU
 
         //Settings du type de jeu sans ou avec annonces
 
@@ -102,7 +102,7 @@ public class SettingsGameFragment extends Fragment {
                 }  else if (!isChecked && !annoncesBtn.isChecked()) {
 
                     sansAnnonceBtn.setChecked(true);
-                   sansAnnonceBtn.setAlpha(1.0f);
+                    sansAnnonceBtn.setAlpha(1.0f);
                     sansAnnonceBtn.setBackgroundResource(R.drawable.radius_button_accent);
                 }
             }

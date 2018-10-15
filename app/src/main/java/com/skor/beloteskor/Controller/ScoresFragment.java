@@ -80,6 +80,7 @@ public class ScoresFragment extends Fragment {
 
         donneAdapter = new DonneAdapter(donnesScore);
         layoutManager = new LinearLayoutManager(getContext());
+
         scoreRecyclerView.setLayoutManager(layoutManager);
         scoreRecyclerView.setAdapter(donneAdapter);
 

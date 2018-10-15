@@ -50,6 +50,8 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
     }
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,17 +100,6 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
         });
 
 
-        /*SharedPreferences sh1 = getSharedPreferences("UsersName", MODE_PRIVATE);
-        player1 = sh1.getString("Player1","");
-        player2 = sh1.getString("Player2","");
-        player3 = sh1.getString("Player3","");
-        player4 = sh1.getString("Player4","");*/
-
-       // Toast.makeText(this, player2, Toast.LENGTH_SHORT).show();
-
-
-        //listPlayersName = new String[]{player1, player2, player3, player4};
-
 
                                     //FRAGMENTS
 
@@ -141,15 +132,6 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
     protected void onPause() {
         super.onPause();
 
-        /*SharedPreferences sh = getSharedPreferences("UsersName",MODE_PRIVATE);
-        SharedPreferences.Editor myEdit = sh.edit();
-        myEdit.putString("Player1", player1);
-        myEdit.putString("Player2", player2);
-        myEdit.putString("Player3", player3);
-        myEdit.putString("Player4", player4);
-        myEdit.apply();
-
-        Toast.makeText(this, player2, Toast.LENGTH_SHORT).show();*/
     }
 
 
@@ -193,7 +175,7 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
                             //METHODES FRAGMENTS IMPLEMENTES
 
     //Fragments SettingsGame
-
+//todo changer onSettingsGameFragmentInteraction en OnSettingsStartGame
     @Override
     public void onSettingsGameFragmentInteraction() {
 
@@ -288,6 +270,8 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
 
     //Fragments scores des donnes
 
+    //todo changer avec un nom plus significatif la méthode
+    //todo changer le mode des donnes scores avec la db
     @Override
     public List<DonneScore> onScoresFragmentInteraction() {
 
@@ -300,7 +284,6 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
                 DonneScoreDetails donneScoreDetails = new DonneScoreDetails(player3, player1, player2, player3, player4, player1, 2 * i, 162 - 2 * i) ;
 
                 donnesScore.add(new DonneScore(i+1, donneScoreDetails.getScoreDonneEquipeA(), donneScoreDetails.getScoreDonneEquipeB()));
-
 
 
             }
@@ -316,7 +299,7 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
     @Override
     public void onPressedAddDonnesBtn() {
 
-
+//todo changer dès que l'ensemble des données est en place
         DonneScoreDetails donneScoreDetails = new DonneScoreDetails(player3, player1, player2, player3, player4, player1, 60, 102) ;
 
         donnesScore.add(new DonneScore(donnesScore.size(), donneScoreDetails.getScoreDonneEquipeA(), donneScoreDetails.getScoreDonneEquipeB()));
@@ -325,7 +308,6 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
         replaceFragment(scoresFragment);
 
     }
-
 
 
     //Fragments listes des parties des joueurs
@@ -343,6 +325,14 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
 
     }
 
+    //Méthode implémentée par le donne Adapter
+
+    @Override
+    public String[] onDonneAdapterPlayers() {
+
+        return listPlayersName ;
+    }
+
 
     //Autres méthodes
 
@@ -354,13 +344,7 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
 
     }
 
-    //Méthode implémentée par le donne Adapter
 
-    @Override
-    public String[] onDonneAdapterPlayers() {
-
-        return listPlayersName ;
-    }
 
 
 }

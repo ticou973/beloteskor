@@ -45,6 +45,9 @@
     <string name="carreau">carreau</string>
     <string name="coeur">coeur</string>
     <string name="capot">Capot</string>
+    <string name="right">Right</string>
+    <string name="left">Left</string>
+
 
 
 </resources>
