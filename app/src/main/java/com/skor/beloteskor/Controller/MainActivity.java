@@ -1,5 +1,6 @@
 package com.skor.beloteskor.Controller;
 
+import android.arch.persistence.room.Room;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -15,6 +16,7 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.skor.beloteskor.Adapters.DonneAdapter;
+import com.skor.beloteskor.Model.AppDatabase;
 import com.skor.beloteskor.Model.DonneScore;
 import com.skor.beloteskor.Model.DonneScoreDetails;
 import com.skor.beloteskor.Model.ModeEquipe;
@@ -49,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
         return donnesScore;
     }
 
-
+    public AppDatabase beloteSkorDb;
 
 
     @Override
@@ -57,6 +59,9 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Gestion de la DB : instance de la DB
+
+        beloteSkorDb = Room.databaseBuilder(getApplicationContext(),AppDatabase.class,"BeloteSkorDb").build();
 
         //gestion de la Toolbar
         toolbar = findViewById(R.id.toolbar);

@@ -1,5 +1,6 @@
 package com.skor.beloteskor.Model;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
@@ -16,14 +17,14 @@ import java.util.List;
 public interface DonneDao {
 
     @Query("SELECT * FROM donne")
-    List<Donne> getAllDonnes();
+    LiveData<List<Donne>> getAllDonnes();
 
 
     @Query("SELECT * FROM donne WHERE num_partie IN (:partieId)")
-    List<Donne> getAllDonnesPartiesCourantes(int partieId);
+    LiveData<List<Donne>> getAllDonnesPartiesCourantes(int partieId);
 
     @Query("SELECT * FROM donne WHERE donneId IN (:donneId)")
-    Donne loadDonneById(int donneId);
+    LiveData<Donne> loadDonneById(int donneId);
 
 
     @Insert
