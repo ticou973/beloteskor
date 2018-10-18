@@ -505,7 +505,13 @@ public class SettingsGameFragment extends Fragment {
         //todo voir les simplifications pour joueur et player, cela semble redondant
         //Joueurs
 
-        Joueur joueur1 = new Joueur();
+
+        Joueur joueur1 = new Joueur(player1);
+        Joueur joueur2 = new Joueur(player2);
+        Joueur joueur3 = new Joueur(player3);
+        Joueur joueur4 = new Joueur(player4);
+
+        /*Joueur joueur1 = new Joueur();
         Joueur joueur2 = new Joueur();
         Joueur joueur3 = new Joueur();
         Joueur joueur4 = new Joueur();
@@ -513,22 +519,32 @@ public class SettingsGameFragment extends Fragment {
         joueur1.setNomJoueur(player1);
         joueur2.setNomJoueur(player2);
         joueur3.setNomJoueur(player3);
-        joueur4.setNomJoueur(player4);
+        joueur4.setNomJoueur(player4);*/
 
-        MainActivity.beloteSkorDb.joueurDao().insertPlayer(joueur1);
+
+
+
+       MainActivity.beloteSkorDb.joueurDao().insertPlayers(joueur1,joueur2,joueur3,joueur4);
+
+        /*MainActivity.beloteSkorDb.joueurDao().insertPlayer(joueur1);
         MainActivity.beloteSkorDb.joueurDao().insertPlayer(joueur2);
         MainActivity.beloteSkorDb.joueurDao().insertPlayer(joueur3);
-        MainActivity.beloteSkorDb.joueurDao().insertPlayer(joueur4);
+        MainActivity.beloteSkorDb.joueurDao().insertPlayer(joueur4);*/
 
-        for (int i = 1; i <=16 ; i++) {
+        /*MainActivity.beloteSkorDb.joueurDao().insertPlayer(new Joueur(player1););
+        MainActivity.beloteSkorDb.joueurDao().insertPlayer(new Joueur(player2););
+        MainActivity.beloteSkorDb.joueurDao().insertPlayer(new Joueur(player3););
+        MainActivity.beloteSkorDb.joueurDao().insertPlayer(new Joueur(player4););*/
 
-            Joueur joueurdb1 = MainActivity.beloteSkorDb.joueurDao().loadJoueurById(i);
+        int playersDbLength = MainActivity.beloteSkorDb.joueurDao().getCountJoueur();
 
-            String nomJoueur1 = joueurdb1.getNomJoueur();
+        Toast.makeText(getContext(), String.valueOf(playersDbLength), Toast.LENGTH_SHORT).show();
 
-            Toast.makeText(getContext(), nomJoueur1, Toast.LENGTH_SHORT).show();
+        String nomJoueur1 = MainActivity.beloteSkorDb.joueurDao().loadJoueurByName(player1).getValue().getNomJoueur();
 
-        }
+        Toast.makeText(getContext(), nomJoueur1, Toast.LENGTH_SHORT).show();
+
+
 
 
 

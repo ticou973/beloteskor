@@ -22,10 +22,18 @@ public interface JoueurDao {
     @Query("SELECT * FROM joueur WHERE joueurId IN (:joueurId)")
     Joueur loadJoueurById(int joueurId);
 
-
     @Query("SELECT * FROM joueur WHERE nom_joueur IN (:nomJoueur)")
     LiveData<Joueur> loadJoueurByName(String nomJoueur);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertPlayer(Joueur joueur);
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    void insertPlayers(Joueur... joueurs);
+
+    @Query("SELECT COUNT(*) FROM joueur")
+    int getCountJoueur();
+
+    @Query("DELETE FROM joueur")
+    void deleteAll();
 }

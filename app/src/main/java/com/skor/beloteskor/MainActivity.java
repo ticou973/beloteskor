@@ -15,18 +15,18 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import com.skor.beloteskor.Scores.Adapters.DonneAdapter;
-import com.skor.beloteskor.Statistics.StatisticsFragment;
 import com.skor.beloteskor.Model_DB.MainDb.AppDatabase;
 import com.skor.beloteskor.Model_DB.UtilsDb.DonneScore;
 import com.skor.beloteskor.Model_DB.UtilsDb.DonneScoreDetails;
 import com.skor.beloteskor.Model_DB.UtilsDb.ModeEquipe;
 import com.skor.beloteskor.Players.PlayersFragment;
+import com.skor.beloteskor.Scores.Adapters.DonneAdapter;
 import com.skor.beloteskor.Scores.DialogModeEquipeFragment;
 import com.skor.beloteskor.Scores.PlayerScoreFragment;
 import com.skor.beloteskor.Scores.ScoresFragment;
 import com.skor.beloteskor.Scores.SettingsGameFragment;
 import com.skor.beloteskor.Scores.TeamScoreFragment;
+import com.skor.beloteskor.Statistics.StatisticsFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -185,6 +185,30 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
                 return true;
 
             case R.id.logout:
+
+                return true;
+
+                //todo penser à retirer ces 2 menus plus tard et dands le menu.xml
+
+            case R.id.reset_db:
+
+                MainActivity.beloteSkorDb.joueurDao().deleteAll();
+
+                return true;
+
+            case R.id.relaunch:
+
+                replaceFragment(settingsGameFragment);
+
+                Boolean isInScoresFragment = false;
+
+                playerScoreFragment = new PlayerScoreFragment();
+                Bundle args = new Bundle();
+                args.putStringArray(EXTRA,listPlayersName);
+                args.putBoolean(EXTRA1,isInScoresFragment);
+                playerScoreFragment.setArguments(args);
+                transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.fl_fragment_name_score, playerScoreFragment).commit();
 
                 return true;
 

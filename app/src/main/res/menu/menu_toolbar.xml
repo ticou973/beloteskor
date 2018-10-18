@@ -19,4 +19,14 @@
         android:title="@string/logout"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/reset_db"
+        android:title="reset DB"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/relaunch"
+        android:title="relaunch"
+        app:showAsAction="never"/>
+
 </menu>
