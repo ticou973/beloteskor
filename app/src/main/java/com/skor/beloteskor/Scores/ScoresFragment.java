@@ -13,9 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.skor.beloteskor.Scores.Adapters.DonneAdapter;
+import com.skor.beloteskor.Model_DB.MainDb.Partie;
 import com.skor.beloteskor.Model_DB.UtilsDb.DonneScore;
 import com.skor.beloteskor.R;
+import com.skor.beloteskor.Scores.Adapters.DonneAdapter;
 
 import java.util.List;
 
@@ -37,6 +38,8 @@ public class ScoresFragment extends Fragment {
 
 
     private List<DonneScore> donnesScore;
+
+    private Partie partie;
 
 
     private GestureDetector detector;
