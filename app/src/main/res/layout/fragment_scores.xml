@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.skor.beloteskor.Controller.ScoresFragment">
+    tools:context="com.skor.beloteskor.Scores.ScoresFragment">
 
     <!-- TODO: Update blank fragment layout -->
 

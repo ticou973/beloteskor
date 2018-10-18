@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.skor.beloteskor.Controller.SettingsGameFragment">
+    tools:context="com.skor.beloteskor.Scores.SettingsGameFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
