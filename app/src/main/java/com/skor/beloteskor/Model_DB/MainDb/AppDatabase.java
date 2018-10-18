@@ -11,7 +11,7 @@ import com.skor.beloteskor.Model_DB.UtilsDb.Converters;
  */
 
 
-@Database(entities ={Partie.class, Joueur.class, Equipe.class, Donne.class }, version = 4, exportSchema = false)
+@Database(entities ={Partie.class, Joueur.class, Equipe.class, Donne.class }, version = 2, exportSchema = false)
 @TypeConverters({Converters.class})
 
 public abstract class AppDatabase extends RoomDatabase {
@@ -20,6 +20,6 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract PartieDao partieDao();
     public abstract JoueurDao joueurDao();
     public abstract DonneDao donneDao();
-    public abstract EquipeDao EquipeDao();
+    public abstract EquipeDao equipeDao();
 
 }

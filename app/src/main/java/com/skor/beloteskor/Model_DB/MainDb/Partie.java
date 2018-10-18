@@ -5,6 +5,7 @@ import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
+import com.skor.beloteskor.Model_DB.UtilsDb.SensJeu;
 import com.skor.beloteskor.Model_DB.UtilsDb.Table;
 import com.skor.beloteskor.Model_DB.UtilsDb.TypeDePartie;
 
@@ -31,7 +32,7 @@ public class Partie {
     private Joueur premierDistributeur;
 
     @ColumnInfo(name ="sens_jeu")
-    private boolean sensJeu;
+    private SensJeu sensJeu;
 
     @ColumnInfo(name ="score_equipeA")
     private int scoreEquipeA;
@@ -46,7 +47,7 @@ public class Partie {
 
     //Méthodes constructeurs
 
-    public Partie(TypeDePartie type, Table table, Joueur premierDistributeur, boolean sensJeu, int scoreEquipeA, int scoreEquipeB, boolean partieterminee) {
+    public Partie(TypeDePartie type, Table table, Joueur premierDistributeur, SensJeu sensJeu, int scoreEquipeA, int scoreEquipeB, boolean partieterminee) {
         this.type = type;
         this.table = table;
         this.premierDistributeur = premierDistributeur;
@@ -96,14 +97,6 @@ public class Partie {
         this.premierDistributeur = premierDistributeur;
     }
 
-    public boolean isSensJeu() {
-        return sensJeu;
-    }
-
-    public void setSensJeu(boolean sensJeu) {
-        this.sensJeu = sensJeu;
-    }
-
     public int getScoreEquipeA() {
         return scoreEquipeA;
     }
@@ -128,4 +121,11 @@ public class Partie {
         this.partieterminee = partieterminee;
     }
 
+    public SensJeu getSensJeu() {
+        return sensJeu;
+    }
+
+    public void setSensJeu(SensJeu sensJeu) {
+        this.sensJeu = sensJeu;
+    }
 }

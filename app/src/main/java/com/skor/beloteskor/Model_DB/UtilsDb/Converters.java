@@ -73,4 +73,21 @@ public class Converters {
         return null;
     }
 
+    @TypeConverter
+    public static SensJeu CodeSensJeutoSensJeu (Boolean codeSensJeu) {
+        if (codeSensJeu) return SensJeu.SENS_AIGUILLE;
+        if(codeSensJeu==false) return SensJeu.SENS_INVERSE_AIGUILLE;
+
+        return null;
+    }
+
+    @TypeConverter
+    public static  Boolean SensJeutoCodeSensJeu (SensJeu sensJeu) {
+
+        if(sensJeu==SensJeu.SENS_AIGUILLE) return true;
+        if(sensJeu==SensJeu.SENS_INVERSE_AIGUILLE) return false;
+
+        return true;
+    }
+
 }

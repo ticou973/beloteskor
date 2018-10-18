@@ -13,5 +13,8 @@ import android.arch.persistence.room.OnConflictStrategy;
 public interface EquipeDao {
 
     @Insert (onConflict = OnConflictStrategy.IGNORE)
-    void insertAll(Equipe equipe);
+    void insertEquipe(Equipe equipe);
+
+    @Insert (onConflict = OnConflictStrategy.IGNORE)
+    void insertAll(Equipe ... equipes);
 }

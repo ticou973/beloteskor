@@ -3,7 +3,6 @@ package com.skor.beloteskor.Model_DB.MainDb;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 /**
@@ -34,15 +33,12 @@ public class Equipe {
 
     public Equipe() {}
 
-
-    @Ignore
     public Equipe(String nomEquipe, Joueur joueur1, Joueur joueur2) {
         this.nomEquipe = nomEquipe;
         this.joueur1 = joueur1;
         this.Joueur2 = joueur2;
     }
 
-    @Ignore
     public Equipe(String nomEquipe) {
         this.nomEquipe = nomEquipe;
     }

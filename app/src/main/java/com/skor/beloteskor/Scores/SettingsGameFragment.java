@@ -19,12 +19,18 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.skor.beloteskor.MainActivity;
+import com.skor.beloteskor.Model_DB.MainDb.Equipe;
 import com.skor.beloteskor.Model_DB.MainDb.Joueur;
+import com.skor.beloteskor.Model_DB.MainDb.Partie;
 import com.skor.beloteskor.Model_DB.UtilsDb.ModeEquipe;
+import com.skor.beloteskor.Model_DB.UtilsDb.SensJeu;
+import com.skor.beloteskor.Model_DB.UtilsDb.Table;
 import com.skor.beloteskor.Model_DB.UtilsDb.TypeAnnonce;
 import com.skor.beloteskor.Model_DB.UtilsDb.TypeDePartie;
 import com.skor.beloteskor.Model_DB.UtilsDb.TypeJeu;
 import com.skor.beloteskor.R;
+
+import java.util.List;
 
 
 public class SettingsGameFragment extends Fragment {
@@ -40,6 +46,8 @@ public class SettingsGameFragment extends Fragment {
     private String player1, player2, player3, player4;
     private int nbPoints, nbDonnes;
     private String[] listPlayers;
+    private List<Joueur> playersList;
+    private SensJeu sensJeu;
 
 
 //todo penser à faire des méthodes pour enlever les quantités énormes de codes plus loin
@@ -505,49 +513,12 @@ public class SettingsGameFragment extends Fragment {
         //todo voir les simplifications pour joueur et player, cela semble redondant
         //Joueurs
 
-
         Joueur joueur1 = new Joueur(player1);
         Joueur joueur2 = new Joueur(player2);
         Joueur joueur3 = new Joueur(player3);
         Joueur joueur4 = new Joueur(player4);
 
-        /*Joueur joueur1 = new Joueur();
-        Joueur joueur2 = new Joueur();
-        Joueur joueur3 = new Joueur();
-        Joueur joueur4 = new Joueur();
-
-        joueur1.setNomJoueur(player1);
-        joueur2.setNomJoueur(player2);
-        joueur3.setNomJoueur(player3);
-        joueur4.setNomJoueur(player4);*/
-
-
-
-
-       MainActivity.beloteSkorDb.joueurDao().insertPlayers(joueur1,joueur2,joueur3,joueur4);
-
-        /*MainActivity.beloteSkorDb.joueurDao().insertPlayer(joueur1);
-        MainActivity.beloteSkorDb.joueurDao().insertPlayer(joueur2);
-        MainActivity.beloteSkorDb.joueurDao().insertPlayer(joueur3);
-        MainActivity.beloteSkorDb.joueurDao().insertPlayer(joueur4);*/
-
-        /*MainActivity.beloteSkorDb.joueurDao().insertPlayer(new Joueur(player1););
-        MainActivity.beloteSkorDb.joueurDao().insertPlayer(new Joueur(player2););
-        MainActivity.beloteSkorDb.joueurDao().insertPlayer(new Joueur(player3););
-        MainActivity.beloteSkorDb.joueurDao().insertPlayer(new Joueur(player4););*/
-
-        int playersDbLength = MainActivity.beloteSkorDb.joueurDao().getCountJoueur();
-
-        Toast.makeText(getContext(), String.valueOf(playersDbLength), Toast.LENGTH_SHORT).show();
-
-        String nomJoueur1 = MainActivity.beloteSkorDb.joueurDao().loadJoueurByName(player1).getValue().getNomJoueur();
-
-        Toast.makeText(getContext(), nomJoueur1, Toast.LENGTH_SHORT).show();
-
-
-
-
-
+        MainActivity.beloteSkorDb.joueurDao().insertPlayers(joueur1,joueur2,joueur3,joueur4);
 
         //Type de partie
 
@@ -572,6 +543,63 @@ public class SettingsGameFragment extends Fragment {
             typeDePartie.setNbPoints(nbPoints);
             typeDePartie.setNbDonnes(0);
         }
+
+        //Equipes et Table
+        Equipe equipeA = new Equipe("EquipeA",joueur1,joueur2);
+        Equipe equipeB = new Equipe("EquipeB",joueur3,joueur4);
+
+        MainActivity.beloteSkorDb.equipeDao().insertAll(equipeA,equipeB);
+
+        Table table = new Table(equipeA,equipeB);
+
+        //Distribution
+
+        if (sensAiguillesBtn.isChecked()){
+
+            sensJeu = SensJeu.SENS_AIGUILLE;
+
+        }else{
+            sensJeu = SensJeu.SENS_INVERSE_AIGUILLE;
+        }
+
+        Joueur premierDistrib = new Joueur();
+
+        if (distribYouBtn.isChecked()){
+
+            premierDistrib.setNomJoueur(player1);
+
+        }else if(distribYourPartnerBtn.isChecked()){
+
+            premierDistrib.setNomJoueur(player2);
+
+        }else if(distribLeftBtn.isChecked()){
+
+            premierDistrib.setNomJoueur(player3);
+
+        }else if(distribRightBtn.isChecked()){
+
+            premierDistrib.setNomJoueur(player4);
+        }
+
+        //Partie
+
+        Partie partie = new Partie(typeDePartie,table,premierDistrib,sensJeu,0,0,false);
+
+        MainActivity.beloteSkorDb.partieDao().insertPartie(partie);
+
+        //test
+
+        //todo virer le test dès que implémenter ailleurs
+
+        Partie lastPartie = MainActivity.beloteSkorDb.partieDao().getLastPartie();
+
+        Joueur lastPArtiePremDistrib = lastPartie.getPremierDistributeur();
+
+        String namePremDistrib = lastPArtiePremDistrib.getNomJoueur();
+
+        Toast.makeText(getContext(), namePremDistrib, Toast.LENGTH_SHORT).show();
+
+
 
 
         if (mListener != null) {

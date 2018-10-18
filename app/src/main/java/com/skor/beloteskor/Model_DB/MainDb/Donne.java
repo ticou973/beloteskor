@@ -4,7 +4,6 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
-import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
@@ -52,7 +51,7 @@ public class Donne  {
     public Donne() {
     }
 
-    @Ignore
+
     public Donne(int partieId, int numDonne, Joueur preneur, Couleur couleur, boolean belote, boolean capot, int score1, int score2) {
         this.partieId = partieId;
         this.numDonne = numDonne;
@@ -64,19 +63,18 @@ public class Donne  {
         this.score2 = score2;
     }
 
-    @Ignore
+
     public Donne(int partieId, int numDonne, Couleur couleur) {
         this.partieId = partieId;
         this.numDonne = numDonne;
         this.couleur = couleur;
     }
 
-    @Ignore
+
     public Donne(int partieId, int numDonne) {
         this.partieId = partieId;
         this.numDonne = numDonne;
     }
-
 
 
 
