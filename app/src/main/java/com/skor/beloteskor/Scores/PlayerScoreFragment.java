@@ -9,18 +9,23 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.skor.beloteskor.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class PlayerScoreFragment extends Fragment {
 
     private OnPlayerScoreFragmentListener mListener;
 
-    private EditText yourName, yourPartnerName, onYourLeftName, onYourRightName;
+    private EditText yourPartnerName, onYourLeftName, onYourRightName;
+    private AutoCompleteTextView yourName;
     private TextView totalScoreA, totalScoreB;
     private ImageView triangleView;
 
@@ -31,6 +36,9 @@ public class PlayerScoreFragment extends Fragment {
 
 
     private String[] listPlayerName;
+    private ArrayList<String> listPlayers;
+    List<String> nomJoueurs;
+    String[] players;
 
     public PlayerScoreFragment() {
         // Required empty public constructor
@@ -65,8 +73,12 @@ public class PlayerScoreFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        //todo penser à gérer le format des noms (longueur...)
+        //todo penser à gérer les doublons dans les 4 noms
+        //todo penser à un autofill pour les noms déjà connus
 
         //JOUEURS
+
 
         //Noms des joueurs et Scores
 
@@ -102,6 +114,7 @@ public class PlayerScoreFragment extends Fragment {
             totalScoreB.setText("0");
         }
 
+        //todo mettre un autocomplete à partir de la base des joueurs
 
         yourName.addTextChangedListener(new TextWatcher() {
             @Override

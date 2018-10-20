@@ -1,6 +1,7 @@
 package com.skor.beloteskor;
 
 import android.arch.persistence.room.Room;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -12,6 +13,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -221,9 +224,9 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
                             //METHODES FRAGMENTS IMPLEMENTES
 
     //Fragments SettingsGame
-//todo changer onSettingsGameFragmentInteraction en OnSettingsStartGame
+
     @Override
-    public void onSettingsGameFragmentInteraction() {
+    public void onSettingsStartGamePLayers() {
 
         //todo vérifier si modeEquipe intéressant ici ou à supprimer
         modeEquipe = ModeEquipe.MODE_EQUIPE_STATIQUE_NOMINATIF;
@@ -244,9 +247,6 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
         argsscore.putStringArray(EXTRA,listPlayersName);
         scoresFragment.setArguments(argsscore);
         replaceFragment(scoresFragment);
-
-
-
 
     }
 
@@ -395,6 +395,13 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
     }
 
 
+    public void showSoftKeyboard(View view) {
+        if (view.requestFocus()) {
+            InputMethodManager imm = (InputMethodManager)
+                    getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
+        }
+    }
 
 
 }
