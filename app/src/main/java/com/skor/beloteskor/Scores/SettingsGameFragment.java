@@ -8,6 +8,8 @@ import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +19,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.skor.beloteskor.MainActivity;
@@ -32,8 +33,6 @@ import com.skor.beloteskor.Model_DB.UtilsDb.TypeDePartie;
 import com.skor.beloteskor.Model_DB.UtilsDb.TypeJeu;
 import com.skor.beloteskor.R;
 
-import java.util.List;
-
 
 public class SettingsGameFragment extends Fragment {
 
@@ -46,10 +45,13 @@ public class SettingsGameFragment extends Fragment {
     private CardView cvDistribution;
 
     private String player1, player2, player3, player4;
-    private int nbPoints, nbDonnes, data;
+    private int nbPoints, nbDonnes;
     private String[] listPlayers;
-    private List<Joueur> playersList;
     private SensJeu sensJeu;
+
+    //Todo virer dès que test viré
+    private static String TAG = "coucou";
+
 
 
 //todo penser à faire des méthodes pour enlever les quantités énormes de codes plus loin
@@ -97,26 +99,10 @@ public class SettingsGameFragment extends Fragment {
 
         initSettings();
 
-        setListenerCheckedToToogleButton(sansAnnonceBtn,annoncesBtn);
-        setListenerCheckedToToogleButton(annoncesBtn,sansAnnonceBtn);
-        setListenerCheckedToToogleButton(sensAiguillesBtn,sensInverseBtn);
-        setListenerCheckedToToogleButton(sensInverseBtn,sensAiguillesBtn);
+        setListenerSettings();
 
-        setListenerFocusToTiet(tietPoints,tilPoints,tietDonnes,tilDonnes);
-        setListenerFocusToTiet(tietDonnes,tilDonnes,tietPoints,tilPoints);
-
-        nbPoints = setListenerEditorToTiet(tietPoints);
-        nbDonnes = setListenerEditorToTiet(tietDonnes);
-
-
-//todo gérer le fait d'obliger à valider l'un des deux (touche DOne)
-        //todo limiter les nombres en grandeur à l'intérieur
-
-        setListenerCheckedTo4ToggleButton(distribYouBtn,distribYourPartnerBtn,distribLeftBtn,distribRightBtn);
-        setListenerCheckedTo4ToggleButton(distribYourPartnerBtn,distribYouBtn,distribLeftBtn,distribRightBtn);
-        setListenerCheckedTo4ToggleButton(distribLeftBtn,distribYouBtn,distribYourPartnerBtn,distribRightBtn);
-        setListenerCheckedTo4ToggleButton(distribRightBtn,distribYouBtn,distribYourPartnerBtn,distribLeftBtn);
-
+        setListenerEditorToTiet(tietPoints);
+        setListenerEditorToTiet(tietDonnes);
 
 
                                     //LANCEMENT D'UNE PARTIE
@@ -180,8 +166,6 @@ public class SettingsGameFragment extends Fragment {
 
         saveSettings();
 
-        Toast.makeText(getContext(), String.valueOf(nbPoints), Toast.LENGTH_SHORT).show();
-        Toast.makeText(getContext(), String.valueOf(nbDonnes), Toast.LENGTH_SHORT).show();
 
         if (mListener != null) {
             mListener.onSettingsStartGamePLayers();
@@ -231,15 +215,16 @@ public class SettingsGameFragment extends Fragment {
         tietPoints = getActivity().findViewById(R.id.nb_points_joues);
 
 
-        nbPoints=R.integer.nb_points_classic_partie;
-        nbDonnes=R.integer.nb_donnes_classic_partie;
-        tietPoints.setHint(nbPoints);
+        nbPoints= getResources().getInteger(R.integer.nb_points_classic_partie);
+        nbDonnes= getResources().getInteger(R.integer.nb_donnes_classic_partie);
+
+        tietPoints.setHint(String.valueOf(nbPoints));
         tilPoints.setHint("Nb de Points : ");
         tilPoints.setBackgroundColor(getResources().getColor(R.color.color_accent2));
         tilPoints.setAlpha(1.0f);
         tilDonnes.setBackgroundColor(getResources().getColor(R.color.colorbuttonfalse));
         tilDonnes.setAlpha(0.3f);
-        tietDonnes.setHint(nbDonnes);
+        tietDonnes.setHint(String.valueOf(nbDonnes));
         tilDonnes.setHint("Nb de Donnes");
 
         //DISTRIBUTION
@@ -286,6 +271,40 @@ public class SettingsGameFragment extends Fragment {
 
     }
 
+    private void setListenerSettings() {
+
+        setListenerCheckedToToogleButton(sansAnnonceBtn,annoncesBtn);
+        setListenerCheckedToToogleButton(annoncesBtn,sansAnnonceBtn);
+        setListenerCheckedToToogleButton(sensAiguillesBtn,sensInverseBtn);
+        setListenerCheckedToToogleButton(sensInverseBtn,sensAiguillesBtn);
+
+        setListenerFocusToTiet(tietPoints,tilPoints,tietDonnes,tilDonnes);
+        setListenerFocusToTiet(tietDonnes,tilDonnes,tietPoints,tilPoints);
+
+        tietPoints.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tietPoints.setCursorVisible(true);
+            }
+        });
+
+        tietDonnes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tietDonnes.setCursorVisible(true);
+            }
+        });
+
+        //todo gérer le fait d'obliger à valider l'un des deux (touche DOne)
+        //todo limiter les nombres en grandeur à l'intérieur
+
+        setListenerCheckedTo4ToggleButton(distribYouBtn,distribYourPartnerBtn,distribLeftBtn,distribRightBtn);
+        setListenerCheckedTo4ToggleButton(distribYourPartnerBtn,distribYouBtn,distribLeftBtn,distribRightBtn);
+        setListenerCheckedTo4ToggleButton(distribLeftBtn,distribYouBtn,distribYourPartnerBtn,distribRightBtn);
+        setListenerCheckedTo4ToggleButton(distribRightBtn,distribYouBtn,distribYourPartnerBtn,distribLeftBtn);
+
+    }
+
     private void setListenerCheckedToToogleButton (final ToggleButton mainTb, final ToggleButton secondTb){
 
         mainTb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -318,6 +337,7 @@ public class SettingsGameFragment extends Fragment {
 
                 if(hasFocus){
                     mainTil.setBackgroundColor(getResources().getColor(R.color.color_accent2));
+                    //todo mettre une ressource pour les alphas
                     mainTil.setAlpha(1.0f);
                     secondTil.setBackgroundColor(getResources().getColor(R.color.colorbuttonfalse));
                     secondTil.setAlpha(0.3f);
@@ -336,9 +356,7 @@ public class SettingsGameFragment extends Fragment {
 
     }
 
-    private int setListenerEditorToTiet(final TextInputEditText mainTiet) {
-
-        data = 0;
+    private void setListenerEditorToTiet(final TextInputEditText mainTiet) {
 
         mainTiet.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -347,8 +365,6 @@ public class SettingsGameFragment extends Fragment {
                 boolean handled = false;
 
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-
-                    data = Integer.parseInt(v.getEditableText().toString());
 
                     mainTiet.setCursorVisible(false);
 
@@ -360,10 +376,6 @@ public class SettingsGameFragment extends Fragment {
 
             }
         });
-
-
-
-        return data;
 
     }
 
@@ -409,11 +421,27 @@ public class SettingsGameFragment extends Fragment {
 
         MainActivity.beloteSkorDb.joueurDao().insertPlayers(joueur1,joueur2,joueur3,joueur4);
 
-        //Type de partie
+                            //Type de partie
 
         TypeDePartie typeDePartie = new TypeDePartie();
 
         typeDePartie.setModeEquipe(ModeEquipe.MODE_EQUIPE_STATIQUE_NOMINATIF.toString());
+
+        //nbpoints ou nbDonnes
+
+        if (tilPoints.getAlpha()==1.0f){
+            nbDonnes =0;
+
+            if (!TextUtils.isEmpty(tietPoints.getEditableText())) {
+                nbPoints = Integer.parseInt(tietPoints.getEditableText().toString());
+            }
+
+        }else{
+            nbPoints =0;
+            if (!TextUtils.isEmpty(tietDonnes.getEditableText())) {
+                nbDonnes = Integer.parseInt(tietDonnes.getEditableText().toString());            }
+        }
+
 
         if (sansAnnonceBtn.isChecked()){
             typeDePartie.setTypeAnnonce(TypeAnnonce.SANS_ANNONCE.toString());
@@ -476,25 +504,41 @@ public class SettingsGameFragment extends Fragment {
 
         MainActivity.beloteSkorDb.partieDao().insertPartie(partie);
 
-        //test
+        //TEST
 
         //todo virer le test dès que implémenter ailleurs
 
         Partie lastPartie = MainActivity.beloteSkorDb.partieDao().getLastPartie();
 
         TypeDePartie lastTypePartie = lastPartie.getType();
+        Table lastTable = lastPartie.getTable();
+        Joueur lastPremierDistrib = lastPartie.getPremierDistributeur();
+        String lastNomPremierDistrib = lastPremierDistrib.getNomJoueur();
+        SensJeu lastSensJeu = lastPartie.getSensJeu();
+        int lastScoreEquipeA = lastPartie.getScoreEquipeA();
+        int lastScoreEquipeB = lastPartie.getScoreEquipeB();
+        boolean lastPartieterm = lastPartie.isPartieterminee();
 
+        String lastTypeJeu = lastTypePartie.getTypeJeu();
+        String lastTypeAnnonce = lastTypePartie.getTypeAnnonce();
+        String lastModeEquipe = lastTypePartie.getModeEquipe();
         int lastNbPoints = lastTypePartie.getNbPoints();
         int lastNbDonnes = lastTypePartie.getNbDonnes();
 
-        //Joueur lastPArtiePremDistrib = lastPartie.getPremierDistributeur();
+        Equipe lastEquipeA = lastTable.getEquipeA();
+        Equipe lastEquipeB = lastTable.getEquipeB();
 
-        //String namePremDistrib = lastPArtiePremDistrib.getNomJoueur();
+        String lastJoueur1EqA = lastEquipeA.getJoueur1().getNomJoueur();
+        String lastJoueur2EqA = lastEquipeA.getJoueur2().getNomJoueur();
+        String lastJoueur1EqB = lastEquipeB.getJoueur1().getNomJoueur();
+        String lastJoueur2EqB = lastEquipeB.getJoueur2().getNomJoueur();
 
-        //Toast.makeText(getContext(), namePremDistrib, Toast.LENGTH_SHORT).show();
+        String newligne=System.getProperty("line.separator");
 
-        //Toast.makeText(getContext(), String.valueOf(lastNbPoints), Toast.LENGTH_SHORT).show();
-        //Toast.makeText(getContext(), String.valueOf(lastNbDonnes), Toast.LENGTH_SHORT).show();
+        Log.i(TAG, newligne + lastPartie.getPartieId() + newligne + "type jeu : " + lastTypeJeu + newligne + "type Annonce : " + lastTypeAnnonce + newligne + "Mode Equipe : " + lastModeEquipe + newligne +  "Nb Points : " + lastNbPoints + newligne + "Nb Donnes : " + lastNbDonnes
+                + newligne + "joueurs : " + lastJoueur1EqA + ", "  + lastJoueur2EqA + ", " + lastJoueur1EqB + ", " + lastJoueur2EqB + newligne + "premier distributeur : " + lastNomPremierDistrib + newligne + "Sens Jeu : "
+                 + lastSensJeu + newligne + "lastScoreEqA : " + lastScoreEquipeA + newligne + "lastScoreEquipeB : " + lastScoreEquipeB + newligne + "statut partie : " + lastPartieterm);
+
 
 
     }
@@ -503,10 +547,6 @@ public class SettingsGameFragment extends Fragment {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
-
-
-
-
 
 
 }

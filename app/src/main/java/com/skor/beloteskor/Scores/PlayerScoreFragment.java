@@ -114,7 +114,9 @@ public class PlayerScoreFragment extends Fragment {
             totalScoreB.setText("0");
         }
 
-        //todo mettre un autocomplete à partir de la base des joueurs
+        //todo mettre un autocomplete à partir de la base des joueurs - A retirer dès que test fini
+
+        joueursAutoComplete();
 
         yourName.addTextChangedListener(new TextWatcher() {
             @Override
@@ -244,5 +246,21 @@ public class PlayerScoreFragment extends Fragment {
 
     public void setPlayer4(String player4) {
         this.player4 = player4;
+    }
+
+
+    //todo a virer dès que les test sont terminés
+    private void joueursAutoComplete() {
+
+        player1 = "Alfred";
+        player2 = "Berangère";
+        player3 = "Charles";
+        player4 = "Dorothée";
+
+        yourName.setText(player1);
+        yourPartnerName.setText(player2);
+        onYourLeftName.setText(player3);
+        onYourRightName.setText(player4);
+
     }
 }
