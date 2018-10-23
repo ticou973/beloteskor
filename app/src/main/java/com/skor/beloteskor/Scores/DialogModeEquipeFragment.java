@@ -13,8 +13,6 @@ import com.skor.beloteskor.R;
 
 public class DialogModeEquipeFragment extends DialogFragment {
 
-
-
     public DialogModeEquipeFragment() {
         // Required empty public constructor
     }
@@ -22,8 +20,8 @@ public class DialogModeEquipeFragment extends DialogFragment {
 
 
     public interface DialogModeEquipeFragmentListener {
-        public void onDialogPositiveClick(DialogFragment dialog);
-        public void onDialogNegativeClick(DialogFragment dialog);
+         void onDialogPositiveClick(DialogFragment dialog);
+         void onDialogNegativeClick(DialogFragment dialog);
     }
 
     // Use this instance of the interface to deliver action events

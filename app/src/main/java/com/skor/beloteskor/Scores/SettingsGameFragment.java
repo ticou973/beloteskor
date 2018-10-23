@@ -90,7 +90,7 @@ public class SettingsGameFragment extends Fragment {
         return view;
     }
 
-
+// todo A voir si pas dans le OncreateView
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);

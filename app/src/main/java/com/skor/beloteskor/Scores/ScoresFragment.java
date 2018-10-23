@@ -4,17 +4,23 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.GestureDetector;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.skor.beloteskor.MainActivity;
+import com.skor.beloteskor.Model_DB.MainDb.Donne;
+import com.skor.beloteskor.Model_DB.MainDb.Equipe;
+import com.skor.beloteskor.Model_DB.MainDb.Joueur;
 import com.skor.beloteskor.Model_DB.MainDb.Partie;
-import com.skor.beloteskor.Model_DB.UtilsDb.DonneScore;
+import com.skor.beloteskor.Model_DB.UtilsDb.SensJeu;
+import com.skor.beloteskor.Model_DB.UtilsDb.Table;
+import com.skor.beloteskor.Model_DB.UtilsDb.TypeDePartie;
 import com.skor.beloteskor.R;
 import com.skor.beloteskor.Scores.Adapters.DonneAdapter;
 
@@ -29,35 +35,36 @@ public class ScoresFragment extends Fragment {
     private RecyclerView.LayoutManager layoutManager;
     private ImageView addDonneBtn;
 
-    private CardView cardView;
-
 
     public static final String EXTRA="com.skor.beloteskor.MESSAGE";
-    private String player1, player2, player3, player4;
-    private String[] listPlayers;
+    private Context context;
+
+    private static String TAG = "coucou";
 
 
-    private List<DonneScore> donnesScore;
 
-    private Partie partie;
+    //todo vérifier si nécessaire à ce niveau ou dans le init
+    //variables de parties
 
+    private Partie lastPartie;
+    private List<Donne> donnes;
+    private Donne currentDonne, firstDonne, nextDonne;
 
-    private GestureDetector detector;
+    private TypeDePartie lastTypePartie;
+    private Table lastTable;
+    private Joueur lastPremierDistrib;
+    private String lastNomPremierDistrib,lastTypeJeu,lastTypeAnnonce,lastModeEquipe,lastJoueur1EqA,lastJoueur2EqA,lastJoueur1EqB,lastJoueur2EqB;
+    private SensJeu lastSensJeu;
+    private int lastScoreEquipeA, lastScoreEquipeB,lastNbPoints,lastNbDonnes, scoreA, scoreB;
+    private boolean lastPartieterm;
+    private Equipe lastEquipeA;
+    private Equipe lastEquipeB;
 
 
     public ScoresFragment() {
         // Required empty public constructor
     }
 
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_scores, container, false);
-
-        return view;
-    }
 
 
     @Override
@@ -69,43 +76,54 @@ public class ScoresFragment extends Fragment {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
+
+        this.context = context;
+
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        initData();
+    }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_scores, container, false);
 
         //Recycler View
 
         //todo voir pour additemdecoration pour les recyclerview
-        //todo voir pour ajouter le recyclerview dans le oncreateview
 
-        scoreRecyclerView = getActivity().findViewById(R.id.recycler_view_scores);
-        donnesScore = getDonnesScores();
+        scoreRecyclerView = view.findViewById(R.id.recycler_view_scores);
 
-        donneAdapter = new DonneAdapter(donnesScore);
-        layoutManager = new LinearLayoutManager(getContext());
-
+        layoutManager = new LinearLayoutManager(context);
         scoreRecyclerView.setLayoutManager(layoutManager);
+
+        donneAdapter = new DonneAdapter(donnes);
         scoreRecyclerView.setAdapter(donneAdapter);
 
 
         //Button add donnes
+        addDonneBtn = view.findViewById(R.id.donne_add_btn);
 
-        addDonneBtn = getActivity().findViewById(R.id.donne_add_btn);
-
+        //todo voir pour insérer le cas de la mauvaise donne qui donne 162
         addDonneBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+         //todo voir le cas où il y 0 avant à la donne précédente pour faire un dialog pour valider la donne suivante
 
                 addDonnesBtn();
             }
+
+
         });
 
+        return view;
     }
-
 
 
 
@@ -116,34 +134,93 @@ public class ScoresFragment extends Fragment {
     }
 
 
+    //Todo à mettre dans la main activity avec l'aide du listener, idem pour le bouton d'ajout d'une mène ce qui permettra de rajouter un élément à la liste ?
 
-    //Todo à mettre dans la main activity avec l'aide du listener, idem pour le bouton d'ajout d'une mène ce qui permettra de rajouter un élément à la liste
-
-
-    public interface OnScoresFragmentInteractionListener {
-        // TODO: Update argument type and name
-        List<DonneScore> onScoresFragmentInteraction();
+   public interface OnScoresFragmentInteractionListener {
         void onPressedAddDonnesBtn();
-
-
     }
 
 
-    public List<DonneScore> getDonnesScores() {
-
-        if (mListener != null) {
-            mListener.onScoresFragmentInteraction();
-
-            return mListener.onScoresFragmentInteraction();
-        }
-
-        return null;
-    }
-
-    public void addDonnesBtn(){
+    /*public void addDonnesBtn(){
         if (mListener != null) {
             mListener.onPressedAddDonnesBtn();
         }
+    }*/
+
+                    //METHODES INTERNES
+    private void initData() {
+        //Appel de la dernière partie
+
+        lastPartie = MainActivity.beloteSkorDb.partieDao().getLastPartie();
+
+        lastTypePartie = lastPartie.getType();
+        lastTable = lastPartie.getTable();
+        lastPremierDistrib = lastPartie.getPremierDistributeur();
+        lastNomPremierDistrib = lastPremierDistrib.getNomJoueur();
+        lastSensJeu = lastPartie.getSensJeu();
+        lastScoreEquipeA = lastPartie.getScoreEquipeA();
+        lastScoreEquipeB = lastPartie.getScoreEquipeB();
+        lastPartieterm = lastPartie.isPartieterminee();
+
+        lastTypeJeu = lastTypePartie.getTypeJeu();
+        lastTypeAnnonce = lastTypePartie.getTypeAnnonce();
+        lastModeEquipe = lastTypePartie.getModeEquipe();
+        lastNbPoints = lastTypePartie.getNbPoints();
+        lastNbDonnes = lastTypePartie.getNbDonnes();
+
+        lastEquipeA = lastTable.getEquipeA();
+        lastEquipeB = lastTable.getEquipeB();
+
+        lastJoueur1EqA = lastEquipeA.getJoueur1().getNomJoueur();
+        lastJoueur2EqA = lastEquipeA.getJoueur2().getNomJoueur();
+        lastJoueur1EqB = lastEquipeB.getJoueur1().getNomJoueur();
+        lastJoueur2EqB = lastEquipeB.getJoueur2().getNomJoueur();
+
+        //Donnes
+        firstDonne = new Donne(lastPartie.getPartieId(),1,lastPremierDistrib,0,0);
+
+        MainActivity.beloteSkorDb.donneDao().insertDonne(firstDonne);
+
+        donnes = MainActivity.beloteSkorDb.donneDao().getAllDonnesPartiesCourantes(lastPartie.getPartieId());
+
+        //todo à retirer en production
+
+        String newligne=System.getProperty("line.separator");
+
+        Log.i(TAG, newligne + lastPartie.getPartieId() + newligne + "type jeu : " + lastTypeJeu + newligne + "type Annonce : " + lastTypeAnnonce + newligne + "Mode Equipe : " + lastModeEquipe + newligne +  "Nb Points : " + lastNbPoints + newligne + "Nb Donnes : " + lastNbDonnes
+                + newligne + "joueurs : " + lastJoueur1EqA + ", "  + lastJoueur2EqA + ", " + lastJoueur1EqB + ", " + lastJoueur2EqB + newligne + "premier distributeur : " + lastNomPremierDistrib + newligne + "Sens Jeu : "
+                + lastSensJeu + newligne + "lastScoreEqA : " + lastScoreEquipeA + newligne + "lastScoreEquipeB : " + lastScoreEquipeB + newligne + "statut partie : " + lastPartieterm);
+    }
+
+    private void addDonnesBtn() {
+
+        saveScoreDonne();
+        donnes = MainActivity.beloteSkorDb.donneDao().getAllDonnesPartiesCourantes(lastPartie.getPartieId());
+
+
+        if (donnes.get(donnes.size()-1).getScore1() == 0 && donnes.get(donnes.size()-1).getScore2() == 0) {
+
+            Toast.makeText(context, "donne non complète", Toast.LENGTH_SHORT).show();
+
+        } else {
+            //todo gérer le distributeur
+            nextDonne = new Donne(lastPartie.getPartieId(), donnes.size() + 1, lastPremierDistrib, 0, 0);
+            MainActivity.beloteSkorDb.donneDao().insertDonne(nextDonne);
+            donnes = MainActivity.beloteSkorDb.donneDao().getAllDonnesPartiesCourantes(lastPartie.getPartieId());
+            donneAdapter.setNotifyDonneAdapter(donnes);
+        }
+    }
+
+    private void saveScoreDonne(){
+        scoreA = donneAdapter.getScoreA();
+        scoreB = donneAdapter.getScoreB();
+
+        currentDonne = new Donne(lastPartie.getPartieId(),donnes.size());
+        currentDonne.setScore1(scoreA);
+        currentDonne.setScore2(scoreB);
+
+        MainActivity.beloteSkorDb.donneDao().updateDonne(currentDonne);
+
     }
 
 

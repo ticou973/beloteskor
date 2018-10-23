@@ -60,94 +60,7 @@ public class DonneViewHolder extends RecyclerView.ViewHolder  {
     }
 
 
-    public TextView getPlayer1Name() {
-        return player1Name;
-    }
-
-    public TextView getPlayer2Name() {
-        return player2Name;
-    }
-
-    public TextView getPlayer3Name() {
-        return player3Name;
-    }
-
-    public TextView getPlayer4Name() {
-        return player4Name;
-    }
-
-    public ToggleButton getCapot_team1() {
-        return capot_team1;
-    }
-
-    public ToggleButton getCapot_team2() {
-        return capot_team2;
-    }
-
-    public ToggleButton getBelote_team1() {
-        return belote_team1;
-    }
-
-    public ToggleButton getBelote_team2() {
-        return belote_team2;
-    }
-
-    public ImageView getPreneur_trefle() {
-        return preneur_trefle;
-    }
-
-    public ImageView getPreneur_carreau() {
-        return preneur_carreau;
-    }
-
-    public ImageView getPreneur_pique() {
-        return preneur_pique;
-    }
-
-    public ImageView getPreneur_coeur() {
-        return preneur_coeur;
-    }
-
-    public void setScoreEquipeA(int scoreEquipeA) {
-        scoreDonneEquipeA.setText(String.valueOf(scoreEquipeA));
-    }
-
-    public void setScoreEquipeB(int scoreEquipeB) {
-
-        scoreDonneEquipeB.setText(String.valueOf(scoreEquipeB));
-    }
-
-    public void setNumDonne (int numeroDonne) {
-
-        numDonne.setText(String.valueOf(numeroDonne));
-    }
-
-
-    public void setPlayer1Name (String name){
-
-        player1Name.setText(name);
-    }
-
-    public void setPlayer2Name (String name){
-
-        player2Name.setText(name);
-    }
-
-    public void setPlayer3Name (String name){
-
-        player3Name.setText(name);
-    }
-
-    public void setPlayer4Name (String name){
-
-        player4Name.setText(name);
-    }
-
-
-    public void setBGColor (int color){
-
-        cardViewDonne.setBackgroundColor(color);
-    }
+                        //Méthodes du ViewHolder
 
     public void setVisibilityBtn (boolean visible, int numDonne){
 
@@ -202,51 +115,6 @@ public class DonneViewHolder extends RecyclerView.ViewHolder  {
     }
 
 
-
-    public void setColorFlLeft(boolean focus) {
-
-        int red, green, blue;
-        float opacity;
-
-        if(focus) {
-
-            red = 76;
-            green = 175;
-            blue = 80;
-            opacity = 1;
-
-        }else{
-            red = 128;
-            green = 226;
-            blue = 126;
-            opacity = 0.3f;
-        }
-
-        flLeft.setBackgroundColor(rgb(red,green,blue));
-        flLeft.setAlpha(opacity);
-
-    }
-
-    public void setColorFlRight(boolean focus) {
-
-        int red, green, blue;
-
-        if(focus) {
-
-            red = 76;
-            green = 175;
-            blue = 80;
-
-        }else{
-            red = 128;
-            green = 226;
-            blue = 126;
-        }
-
-        flRight.setBackgroundColor(rgb(red,green,blue));
-
-    }
-
     public void setColorPreneurCouleur (ImageView couleur, boolean focus) {
 
         int red, green, blue;
@@ -290,46 +158,115 @@ public class DonneViewHolder extends RecyclerView.ViewHolder  {
 
     }
 
-    public void setColorBelote (ToggleButton belote, boolean focus) {
-
-        int red, green, blue;
-
-        if(focus) {
-
-            red = 76;
-            green = 175;
-            blue = 80;
-
-        }else{
-            red = 128;
-            green = 226;
-            blue = 126;
-        }
-
-        belote.setBackgroundColor(rgb(red,green,blue));
-
+    public void setScoreEquipeA(int scoreEquipeA) {
+        scoreDonneEquipeA.setText(String.valueOf(scoreEquipeA));
     }
 
-    public void setColorCapot (ToggleButton capot, boolean focus) {
+    public int getScoreEquipeA(){
 
-        int red, green, blue;
+        int scoreA;
 
-        if(focus) {
+        scoreA = Integer.parseInt(scoreDonneEquipeA.getText().toString());
 
-            red = 76;
-            green = 175;
-            blue = 80;
-
-        }else{
-            red = 128;
-            green = 226;
-            blue = 126;
-        }
-
-        capot.setBackgroundColor(rgb(red,green,blue));
-
+        return scoreA;
     }
 
+    public void setScoreEquipeB(int scoreEquipeB) {
+
+        scoreDonneEquipeB.setText(String.valueOf(scoreEquipeB));
+    }
+
+    public int getScoreEquipeB(){
+
+        int scoreB;
+
+        scoreB = Integer.parseInt(scoreDonneEquipeB.getText().toString());
+
+        return scoreB;
+    }
+
+
+    public void setNumDonne (int numeroDonne) {
+
+        numDonne.setText(String.valueOf(numeroDonne));
+    }
+
+
+    public void setPlayer1Name (String name){
+
+        player1Name.setText(name);
+    }
+
+    public void setPlayer2Name (String name){
+
+        player2Name.setText(name);
+    }
+
+    public void setPlayer3Name (String name){
+
+        player3Name.setText(name);
+    }
+
+    public void setPlayer4Name (String name){
+
+        player4Name.setText(name);
+    }
+
+
+    public void setBGColor (int color){
+
+        cardViewDonne.setBackgroundColor(color);
+    }
+
+                        //GETTER ET SETTER
+
+    public TextView getPlayer1Name() {
+        return player1Name;
+    }
+
+    public TextView getPlayer2Name() {
+        return player2Name;
+    }
+
+    public TextView getPlayer3Name() {
+        return player3Name;
+    }
+
+    public TextView getPlayer4Name() {
+        return player4Name;
+    }
+
+    public ToggleButton getCapot_team1() {
+        return capot_team1;
+    }
+
+    public ToggleButton getCapot_team2() {
+        return capot_team2;
+    }
+
+    public ToggleButton getBelote_team1() {
+        return belote_team1;
+    }
+
+    public ToggleButton getBelote_team2() {
+        return belote_team2;
+    }
+
+    public ImageView getPreneur_trefle() {
+        return preneur_trefle;
+    }
+
+    public ImageView getPreneur_carreau() {
+        return preneur_carreau;
+    }
+
+    public ImageView getPreneur_pique() {
+        return preneur_pique;
+    }
+
+    public ImageView getPreneur_coeur() {
+        return preneur_coeur;
+    }
 
 
 

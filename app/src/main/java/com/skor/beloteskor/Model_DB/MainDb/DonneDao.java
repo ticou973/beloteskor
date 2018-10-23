@@ -1,6 +1,5 @@
 package com.skor.beloteskor.Model_DB.MainDb;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
@@ -18,18 +17,18 @@ import java.util.List;
 public interface DonneDao {
 
     @Query("SELECT * FROM donne")
-    LiveData<List<Donne>> getAllDonnes();
+    List<Donne> getAllDonnes();
 
 
     @Query("SELECT * FROM donne WHERE num_partie IN (:partieId)")
-    LiveData<List<Donne>> getAllDonnesPartiesCourantes(int partieId);
+    List<Donne> getAllDonnesPartiesCourantes(int partieId);
 
     @Query("SELECT * FROM donne WHERE donneId IN (:donneId)")
-    LiveData<Donne> loadDonneById(int donneId);
+    Donne loadDonneById(int donneId);
 
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insertAll(Donne donne);
+    void insertDonne(Donne donne);
 
     @Update
     void updateDonne(Donne donne);

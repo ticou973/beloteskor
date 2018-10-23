@@ -76,6 +76,7 @@ public class PlayerScoreFragment extends Fragment {
         //todo penser à gérer le format des noms (longueur...)
         //todo penser à gérer les doublons dans les 4 noms
         //todo penser à un autofill pour les noms déjà connus
+        //todo penser à ajouter le distributeur courant
 
         //JOUEURS
 

@@ -2,17 +2,19 @@ package com.skor.beloteskor.Model_DB.UtilsDb;
 
 public class DonneScoreDetails {
 
-    private String preneurName ="";
-    private String player1Name, player2Name, player3Name, player4Name, belote="";
-    private int scoreDonneEquipeA=0, scoreDonneEquipeB=0;
+    private String preneurName;
+    private String player1Name, player2Name, player3Name, player4Name;
+    private boolean belote, capot;
+    private int scoreDonneEquipeA, scoreDonneEquipeB;
 
-    public DonneScoreDetails(String preneurName, String player1Name, String player2Name, String player3Name, String player4Name, String belote, int scoreDonneEquipeA, int scoreDonneEquipeB) {
+    public DonneScoreDetails(String preneurName, String player1Name, String player2Name, String player3Name, String player4Name, boolean belote, boolean capot, int scoreDonneEquipeA, int scoreDonneEquipeB) {
         this.preneurName = preneurName;
         this.player1Name = player1Name;
         this.player2Name = player2Name;
         this.player3Name = player3Name;
         this.player4Name = player4Name;
         this.belote = belote;
+        this.capot = capot;
         this.scoreDonneEquipeA = scoreDonneEquipeA;
         this.scoreDonneEquipeB = scoreDonneEquipeB;
     }
@@ -63,12 +65,20 @@ public class DonneScoreDetails {
         this.player4Name = player4Name;
     }
 
-    public String getBelote() {
+    public boolean isBelote() {
         return belote;
     }
 
-    public void setBelote(String belote) {
+    public void setBelote(boolean belote) {
         this.belote = belote;
+    }
+
+    public boolean isCapot() {
+        return capot;
+    }
+
+    public void setCapot(boolean capot) {
+        this.capot = capot;
     }
 
     public int getScoreDonneEquipeA() {

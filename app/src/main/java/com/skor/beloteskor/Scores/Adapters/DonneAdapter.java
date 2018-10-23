@@ -8,10 +8,13 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.shawnlin.numberpicker.NumberPicker;
-import com.skor.beloteskor.Model_DB.UtilsDb.DonneScore;
+import com.skor.beloteskor.Model_DB.MainDb.Donne;
 import com.skor.beloteskor.R;
 import com.skor.beloteskor.Scores.ViewHolders.DonneViewHolder;
 
@@ -20,11 +23,13 @@ import java.util.List;
 
 public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
 
-    List<DonneScore> donnesScore;
+    List<Donne> donnes;
     private ArrayList<Boolean> isExpanded = new ArrayList<>();
     private float beginX, beginY;
     private int width;
     private int numberPickerposition = 0; //Center
+    private int scoreA, scoreB;
+
 
 
     private Context mContext;
@@ -33,19 +38,16 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
     private OnDonneAdapterListener mListener;
 
 
-    public DonneAdapter(List<DonneScore> donnesScore) {
-
-        this.donnesScore = donnesScore;
-
+    public DonneAdapter(List<Donne> donnes) {
+        this.donnes = donnes;
     }
 
     public interface OnDonneAdapterListener {
-
         String[] onDonneAdapterPlayers();
-
     }
 
 
+                                    //LifeCycle
     @Override
     public DonneViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_donne_score, parent, false);
@@ -56,35 +58,78 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
     @Override
     public void onBindViewHolder(final DonneViewHolder holder, final int position) {
 
+        //todo voir comment le recycler view se place toujours à la fin (dernier item)
 
-//todo a enlever lorsque les scores arriveront
-        DonneScore donneScore= donnesScore.get(position);
-        int scoreA = donneScore.getScoreDonneA();
-        int scoreB = donneScore.getScoreDonneB();
-
+        Donne donne= donnes.get(position);
+        scoreA = donne.getScore1();
+        scoreB = donne.getScore2();
 
         // Get the application context
         mContext = holder.itemView.getContext();
 
-        //todo revoir le isExpanded
-        isExpanded.add(false);
+                                 //ViewHolder
 
-        //get the players with an interface
-        getPlayers();
+        initCardViewParent(holder,position);
+        initCarrdViewChild(holder,position);
 
-        //gestion du ViewHolder
+    }
 
-        //CardView Parent
+    @Override
+    public int getItemCount() {
+        return donnes.size();
+    }
+
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+
+        Context context = recyclerView.getContext();
+
+        if (context instanceof OnDonneAdapterListener) {
+            mListener = (OnDonneAdapterListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+
+    }
+
+    @Override
+    public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView);
+
+        mListener = null;
+
+    }
 
 
+                            // Méthodes Adapter
+
+    private void initCardViewParent(DonneViewHolder holder, int position) {
         holder.setScoreEquipeA(scoreA);
         holder.setScoreEquipeB(scoreB);
         holder.setNumDonne(position + 1);
+        isExpanded.add(false);
+
+
+        //todo revoir gestion de l'ouverture initiale
+        /*if (position == donnes.size()-1) {
+            holder.getCardViewDonne().performClick();
+            Toast.makeText(mContext, "hello", Toast.LENGTH_SHORT).show();
+        }else{
+            holder.getCardViewDonneDetails().setVisibility(View.GONE);
+            isExpanded.set(position,false);
+        }*/
+
         holder.getCardViewDonneDetails().setVisibility(View.GONE);
 
+    }
 
-        //CardView Child
+    private void initCarrdViewChild(final DonneViewHolder holder, final int position) {
 
+        //get the players with an interface
+        //todo à voir avec la bdd pour les players
+        getPlayers();
 
         holder.getCardViewDonne().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,24 +141,6 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
 
                     //ouverture de l'item courant
                     holder.expand(position + 1);
-
-                    //fermeture des autres items
-
-                    //todo gérer la fermeture des autres items
-
-                    /*for (int i = 0; i <donnesScore.size() ; i++) {
-
-                        if (i != position && isExpanded.get(i)) {
-
-                            holder.collapse(i+1);
-
-                        }else {
-
-                            Toast.makeText(mContext, "coucou", Toast.LENGTH_SHORT).show();
-                        }
-                    }*/
-
-
                     isExpanded.set(position, true);
 
 
@@ -133,208 +160,28 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
                     holder.getCapot_team1().setBackgroundResource(R.drawable.radius_button_accent);
                     holder.getCapot_team2().setBackgroundResource(R.drawable.radius_button_accent);
 
+                    setListenerChecked(holder.getBelote_team1(),holder.getBelote_team2());
+                    setListenerChecked(holder.getBelote_team2(),holder.getBelote_team1());
+                    setListenerChecked(holder.getCapot_team1(),holder.getCapot_team2());
+                    setListenerChecked(holder.getCapot_team2(),holder.getCapot_team1());
 
-                    holder.getBelote_team1().setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                        @Override
-                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                            if (isChecked && holder.getBelote_team2().isChecked()) {
-
-                                holder.getBelote_team2().setChecked(false);
-                                holder.getBelote_team2().setAlpha(0.3f);
-
-                                //todo voir si cela fonctionne avec buttonView et pour les autres plus bas
-                                holder.getBelote_team1().setAlpha(1.0f);
-
-
-                            } else if (isChecked && !holder.getBelote_team2().isChecked()) {
-
-
-                                holder.getBelote_team2().setAlpha(0.3f);
-                                holder.getBelote_team1().setAlpha(1.0f);
-
-                            } else if (!isChecked && !holder.getBelote_team2().isChecked()) {
-
-                                holder.getBelote_team1().setAlpha(1.0f);
-                                holder.getBelote_team2().setAlpha(1.0f);
-                            }
-
-
-                        }
-                    });
-
-                    holder.getBelote_team2().setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                        @Override
-                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                            if (isChecked && holder.getBelote_team1().isChecked()) {
-                                holder.getBelote_team1().setChecked(false);
-                                holder.getBelote_team1().setAlpha(0.3f);
-                                holder.getBelote_team2().setAlpha(1.0f);
-
-
-                            } else if (isChecked && !holder.getBelote_team1().isChecked()) {
-
-                                holder.getBelote_team1().setAlpha(0.3f);
-                                holder.getBelote_team2().setAlpha(1.0f);
-
-                            } else if (!isChecked && !holder.getBelote_team1().isChecked()) {
-
-                                holder.getBelote_team1().setAlpha(1.0f);
-                                holder.getBelote_team2().setAlpha(1.0f);
-
-                            }
-
-
-                        }
-                    });
-
-                    //Gestion du capot
-
-                    holder.getCapot_team1().setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                        @Override
-                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                            if (isChecked && holder.getCapot_team2().isChecked()) {
-                                holder.getCapot_team2().setChecked(false);
-                                holder.getCapot_team2().setAlpha(0.3f);
-                                holder.getCapot_team1().setAlpha(1.0f);
-
-
-                            } else if (isChecked && !holder.getCapot_team2().isChecked()) {
-
-                                holder.getCapot_team1().setAlpha(1.0f);
-                                holder.getCapot_team2().setAlpha(0.3f);
-
-                            } else if (!isChecked && !holder.getCapot_team2().isChecked()) {
-                                holder.getCapot_team1().setAlpha(1.0f);
-                                holder.getCapot_team2().setAlpha(1.0f);
-
-
-                            }
-
-
-                        }
-                    });
-
-                    holder.getCapot_team2().setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                        @Override
-                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                            if (isChecked && holder.getCapot_team1().isChecked()) {
-                                holder.getCapot_team1().setChecked(false);
-                                holder.getCapot_team1().setAlpha(0.3f);
-                                holder.getCapot_team2().setAlpha(1.0f);
-
-                            } else if (isChecked && !holder.getCapot_team1().isChecked()) {
-
-                                holder.getCapot_team2().setAlpha(1.0f);
-                                holder.getCapot_team1().setAlpha(0.3f);
-
-                            } else if (!isChecked && !holder.getCapot_team1().isChecked()) {
-                                holder.getCapot_team1().setAlpha(1.0f);
-                                holder.getCapot_team2().setAlpha(1.0f);
-
-
-                            }
-
-                        }
-                    });
 
 
                     //Gestion de la couleur prise
+                    setListenerClickCouleur(holder, holder.getPreneur_carreau(),holder.getPreneur_coeur(),holder.getPreneur_pique(),holder.getPreneur_trefle());
+                    setListenerClickCouleur(holder, holder.getPreneur_coeur(),holder.getPreneur_carreau(),holder.getPreneur_pique(),holder.getPreneur_trefle());
+                    setListenerClickCouleur(holder, holder.getPreneur_pique(),holder.getPreneur_coeur(),holder.getPreneur_carreau(),holder.getPreneur_trefle());
+                    setListenerClickCouleur(holder, holder.getPreneur_trefle(),holder.getPreneur_coeur(),holder.getPreneur_pique(),holder.getPreneur_carreau());
 
-                    holder.getPreneur_carreau().setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
 
-                            //todo vérifier si on change par v
-                            holder.setColorPreneurCouleur(holder.getPreneur_carreau(), true);
-                            holder.setColorPreneurCouleur(holder.getPreneur_coeur(), false);
-                            holder.setColorPreneurCouleur(holder.getPreneur_pique(), false);
-                            holder.setColorPreneurCouleur(holder.getPreneur_trefle(), false);
-
-                        }
-                    });
-
-                    holder.getPreneur_pique().setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            holder.setColorPreneurCouleur(holder.getPreneur_carreau(), false);
-                            holder.setColorPreneurCouleur(holder.getPreneur_coeur(), false);
-                            holder.setColorPreneurCouleur(holder.getPreneur_pique(), true);
-                            holder.setColorPreneurCouleur(holder.getPreneur_trefle(), false);
-                        }
-                    });
-
-                    holder.getPreneur_coeur().setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            holder.setColorPreneurCouleur(holder.getPreneur_carreau(), false);
-                            holder.setColorPreneurCouleur(holder.getPreneur_coeur(), true);
-                            holder.setColorPreneurCouleur(holder.getPreneur_pique(), false);
-                            holder.setColorPreneurCouleur(holder.getPreneur_trefle(), false);
-                        }
-                    });
-
-                    holder.getPreneur_trefle().setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-
-                            holder.setColorPreneurCouleur(holder.getPreneur_carreau(), false);
-                            holder.setColorPreneurCouleur(holder.getPreneur_coeur(), false);
-                            holder.setColorPreneurCouleur(holder.getPreneur_pique(), false);
-                            holder.setColorPreneurCouleur(holder.getPreneur_trefle(), true);
-
-                        }
-                    });
 
                     //Gestion du preneur
 
-                    holder.getPlayer1Name().setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
+                    setListenerClickPreneur(holder, holder.getPlayer1Name(),holder.getPlayer2Name(),holder.getPlayer3Name(),holder.getPlayer4Name());
+                    setListenerClickPreneur(holder, holder.getPlayer2Name(),holder.getPlayer1Name(),holder.getPlayer3Name(),holder.getPlayer4Name());
+                    setListenerClickPreneur(holder, holder.getPlayer3Name(),holder.getPlayer2Name(),holder.getPlayer1Name(),holder.getPlayer4Name());
+                    setListenerClickPreneur(holder, holder.getPlayer4Name(),holder.getPlayer2Name(),holder.getPlayer3Name(),holder.getPlayer1Name());
 
-                            //todo vérifier si on change par v
-                            holder.setColorPlayerPreneur((holder.getPlayer1Name()), true);
-                            holder.setColorPlayerPreneur((holder.getPlayer2Name()), false);
-                            holder.setColorPlayerPreneur((holder.getPlayer3Name()), false);
-                            holder.setColorPlayerPreneur((holder.getPlayer4Name()), false);
-
-                        }
-                    });
-
-                    holder.getPlayer2Name().setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            holder.setColorPlayerPreneur((holder.getPlayer1Name()), false);
-                            holder.setColorPlayerPreneur((holder.getPlayer2Name()), true);
-                            holder.setColorPlayerPreneur((holder.getPlayer3Name()), false);
-                            holder.setColorPlayerPreneur((holder.getPlayer4Name()), false);
-                        }
-                    });
-
-                    holder.getPlayer3Name().setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            holder.setColorPlayerPreneur((holder.getPlayer1Name()), false);
-                            holder.setColorPlayerPreneur((holder.getPlayer2Name()), false);
-                            holder.setColorPlayerPreneur((holder.getPlayer3Name()), true);
-                            holder.setColorPlayerPreneur((holder.getPlayer4Name()), false);
-                        }
-                    });
-
-                    holder.getPlayer4Name().setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-
-                            holder.setColorPlayerPreneur((holder.getPlayer1Name()), false);
-                            holder.setColorPlayerPreneur((holder.getPlayer2Name()), false);
-                            holder.setColorPlayerPreneur((holder.getPlayer3Name()), false);
-                            holder.setColorPlayerPreneur((holder.getPlayer4Name()), true);
-
-                        }
-                    });
 
 
                     //NumberPickerScore
@@ -377,9 +224,6 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
 
                                 numberPickerposition = 1; //Left
 
-                               // holder.setColorFlLeft(true);
-                                //holder.setColorFlRight(false);
-
 
                                 float endX = beginX - width / 2 - 40;
                                 Toast.makeText(mContext, String.valueOf(endX), Toast.LENGTH_SHORT).show();
@@ -393,11 +237,7 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
 
                                 numberPickerposition = 2; //Right
 
-                                //holder.setColorFlRight(true);
-                               // holder.setColorFlLeft(false);
-
                                 float endX = beginX + width / 2 + 40;
-                                Toast.makeText(mContext, String.valueOf(endX), Toast.LENGTH_SHORT).show();
 
                                 float endY = beginY;
 
@@ -411,7 +251,6 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
 
                             }
 
-
                             return true;
                         }
                     });
@@ -419,6 +258,13 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
                     //todo gerer le perform Click
 
                     //Gestion du mouvement OnFling
+
+                    holder.getNumberPicker().setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+                        }
+                    });
 
                     holder.getNumberPicker().setOnTouchListener(new View.OnTouchListener() {
                         @Override
@@ -433,6 +279,9 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
                     });
 
 
+
+
+                    //todo voir si intéressant de gérer le capot à 0 plutot que touche
                     holder.getNumberPicker().setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
                         @Override
                         public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
@@ -446,48 +295,86 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
 
                                 holder.setScoreEquipeB(newVal);
                                 holder.setScoreEquipeA(162 - newVal);
-
                             }
-
-
                         }
                     });
 
                 } else {
                     isExpanded.set(position, false);
                     holder.collapse(position + 1);
+                    scoreA = holder.getScoreEquipeA();
+                    scoreB = holder.getScoreEquipeB();
+
                 }
+            }
+        });
+
+    }
+
+    private void setListenerClickPreneur(final DonneViewHolder holder, final TextView mainJoueur, final TextView secondJoueur, final TextView thirdJoueur, final TextView fourthJoueur) {
+
+        mainJoueur.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                holder.setColorPlayerPreneur(mainJoueur, true);
+                holder.setColorPlayerPreneur(secondJoueur, false);
+                holder.setColorPlayerPreneur(thirdJoueur, false);
+                holder.setColorPlayerPreneur(fourthJoueur, false);
+
             }
         });
 
 
     }
 
-    @Override
-    public int getItemCount() {
-        return donnesScore.size();
-    }
+    private void setListenerClickCouleur(final DonneViewHolder holder, final ImageView mainCouleur, final ImageView secondCouleur, final ImageView thirdCouleur, final ImageView fourthCouleur) {
+        mainCouleur.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                holder.setColorPreneurCouleur(mainCouleur, true);
+                holder.setColorPreneurCouleur(secondCouleur, false);
+                holder.setColorPreneurCouleur(thirdCouleur, false);
+                holder.setColorPreneurCouleur(fourthCouleur, false);
 
-    @Override
-    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
-        super.onAttachedToRecyclerView(recyclerView);
-
-        Context context = recyclerView.getContext();
-
-        if (context instanceof OnDonneAdapterListener) {
-            mListener = (OnDonneAdapterListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
+            }
+        });
 
     }
 
-    @Override
-    public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
-        super.onDetachedFromRecyclerView(recyclerView);
+    private void setListenerChecked(ToggleButton mainTb, final ToggleButton secondTb) {
 
-        mListener = null;
+        mainTb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                if (isChecked && secondTb.isChecked()) {
+
+                    secondTb.setChecked(false);
+                    secondTb.setAlpha(0.3f);
+                    buttonView.setAlpha(1.0f);
+
+
+                } else if (isChecked && !secondTb.isChecked()) {
+
+                    secondTb.setAlpha(0.3f);
+                    buttonView.setAlpha(1.0f);
+
+                } else if (!isChecked && !secondTb.isChecked()) {
+
+                    buttonView.setAlpha(1.0f);
+                    secondTb.setAlpha(1.0f);
+                }
+            }
+        });
+    }
+
+
+    //todo voir si simplifiable le notify avec le ViewModel
+    public void setNotifyDonneAdapter(List<Donne> donnes){
+
+        this.donnes = donnes;
+        notifyDataSetChanged();
 
     }
 
@@ -502,5 +389,14 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
 
         return null;
     }
+
+    public int getScoreA() {
+        return scoreA;
+    }
+
+    public int getScoreB() {
+        return scoreB;
+    }
+
 
 }

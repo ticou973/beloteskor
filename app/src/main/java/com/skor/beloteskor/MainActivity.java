@@ -19,8 +19,7 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.skor.beloteskor.Model_DB.MainDb.AppDatabase;
-import com.skor.beloteskor.Model_DB.UtilsDb.DonneScore;
-import com.skor.beloteskor.Model_DB.UtilsDb.DonneScoreDetails;
+import com.skor.beloteskor.Model_DB.MainDb.Donne;
 import com.skor.beloteskor.Model_DB.UtilsDb.ModeEquipe;
 import com.skor.beloteskor.Players.PlayersFragment;
 import com.skor.beloteskor.Scores.Adapters.DonneAdapter;
@@ -31,13 +30,11 @@ import com.skor.beloteskor.Scores.SettingsGameFragment;
 import com.skor.beloteskor.Scores.TeamScoreFragment;
 import com.skor.beloteskor.Statistics.StatisticsFragment;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity implements SettingsGameFragment.OnSettingsGameFragmentListener,
-        ScoresFragment.OnScoresFragmentInteractionListener, PlayersFragment.OnPlayersFragmentInteractionListener, StatisticsFragment.OnStatisticsFragmentInteractionListener,
-        DialogModeEquipeFragment.DialogModeEquipeFragmentListener, PlayerScoreFragment.OnPlayerScoreFragmentListener, TeamScoreFragment.OnTeamFragmentInteractionListener, DonneAdapter.OnDonneAdapterListener{
+public class MainActivity extends AppCompatActivity implements SettingsGameFragment.OnSettingsGameFragmentListener, PlayersFragment.OnPlayersFragmentInteractionListener, StatisticsFragment.OnStatisticsFragmentInteractionListener,
+        DialogModeEquipeFragment.DialogModeEquipeFragmentListener, PlayerScoreFragment.OnPlayerScoreFragmentListener, TeamScoreFragment.OnTeamFragmentInteractionListener, DonneAdapter.OnDonneAdapterListener, ScoresFragment.OnScoresFragmentInteractionListener{
 
     private android.support.v7.widget.Toolbar toolbar;
     private BottomNavigationView navigation;
@@ -53,12 +50,8 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
 
     private String player1, player2, player3, player4;
     private String[] listPlayersName={"","","",""};
-    private List<DonneScore> donnesScore = null;
+    private List<Donne> donnes = null;
     private ModeEquipe modeEquipe = null;
-
-    public List<DonneScore> getDonnesScore() {
-        return donnesScore;
-    }
 
     public static AppDatabase beloteSkorDb;
 
@@ -320,44 +313,22 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
 
     //Fragments scores des donnes
 
-    //todo changer avec un nom plus significatif la méthode
-    //todo changer le mode des donnes scores avec la db
-    @Override
-    public List<DonneScore> onScoresFragmentInteraction() {
 
-        if (donnesScore == null) {
-
-            donnesScore = new ArrayList<>();
-
-            for (int i = 0; i < 3; i++) {
-
-                DonneScoreDetails donneScoreDetails = new DonneScoreDetails(player3, player1, player2, player3, player4, player1, 2 * i, 162 - 2 * i) ;
-
-                donnesScore.add(new DonneScore(i+1, donneScoreDetails.getScoreDonneEquipeA(), donneScoreDetails.getScoreDonneEquipeB()));
-
-
-            }
-        } else {
-
-
-        }
-
-        return donnesScore;
-
-    }
-
-    @Override
+    /*@Override
     public void onPressedAddDonnesBtn() {
 
-//todo changer dès que l'ensemble des données est en place
-        DonneScoreDetails donneScoreDetails = new DonneScoreDetails(player3, player1, player2, player3, player4, player1, 60, 102) ;
+
+        Donne donne = new Donne(l)
+
+
+        DonneScoreDetails donneScoreDetails = new DonneScoreDetails(player3, player1, player2, player3, player4, false, false, 60, 102) ;
 
         donnesScore.add(new DonneScore(donnesScore.size(), donneScoreDetails.getScoreDonneEquipeA(), donneScoreDetails.getScoreDonneEquipeB()));
 
         ScoresFragment scoresFragment = new ScoresFragment();
         replaceFragment(scoresFragment);
 
-    }
+    }*/
 
 
     //Fragments listes des parties des joueurs
@@ -401,6 +372,12 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
                     getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
         }
+    }
+
+
+    @Override
+    public void onPressedAddDonnesBtn() {
+
     }
 
 
