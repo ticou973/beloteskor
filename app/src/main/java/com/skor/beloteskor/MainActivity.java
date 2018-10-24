@@ -45,6 +45,9 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
 
     public static final String EXTRA="com.skor.beloteskor.MESSAGE";
     public static final String EXTRA1="com.skor.beloteskor.MESSAGE1";
+    public static final String EXTRA2="com.skor.beloteskor.MESSAGE2";
+    public static final String EXTRA3="com.skor.beloteskor.MESSAGE3";
+
 
 
     private String player1, player2, player3, player4;
@@ -123,9 +126,11 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
 
         playerScoreFragment = new PlayerScoreFragment();
         Boolean isInScoresFragment = false;
+        Boolean isFromMainActivity = false;
         Bundle argsinit = new Bundle();
         argsinit.putStringArray(EXTRA,listPlayersName);
         argsinit.putBoolean(EXTRA1,isInScoresFragment);
+        argsinit.putBoolean(EXTRA2,isFromMainActivity);
         playerScoreFragment.setArguments(argsinit);
         transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fl_fragment_name_score, playerScoreFragment).commit();
@@ -184,11 +189,15 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
                 replaceFragment(settingsGameFragment);
 
                 Boolean isInScoresFragment = false;
+                Boolean isFromMainActivity = false;
+
 
                 playerScoreFragment = new PlayerScoreFragment();
                 Bundle args = new Bundle();
                 args.putStringArray(EXTRA,listPlayersName);
                 args.putBoolean(EXTRA1,isInScoresFragment);
+                args.putBoolean(EXTRA2,isFromMainActivity);
+
                 playerScoreFragment.setArguments(args);
                 transaction = getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.fl_fragment_name_score, playerScoreFragment).commit();
@@ -211,11 +220,14 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
         //todo vérifier si modeEquipe intéressant ici ou à supprimer
         modeEquipe = ModeEquipe.MODE_EQUIPE_STATIQUE_NOMINATIF;
         Boolean isInScoresFragment = true;
+        Boolean isFromMainActivity = false;
 
         playerScoreFragment = new PlayerScoreFragment();
         Bundle args = new Bundle();
         args.putStringArray(EXTRA,listPlayersName);
         args.putBoolean(EXTRA1,isInScoresFragment);
+        args.putBoolean(EXTRA2,isFromMainActivity);
+
         playerScoreFragment.setArguments(args);
         transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fl_fragment_name_score, playerScoreFragment).commit();
@@ -291,6 +303,26 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
 
         DialogFragment dialog1 = new DialogDonneNullFragment();
         dialog1.show(getSupportFragmentManager(),"TAG");
+
+    }
+
+    @Override
+    public void onScoreChangePreneur() {
+
+        Boolean isInScoresFragment = true;
+        Boolean isFromMainActivity = true;
+        String currentDistrib = playerScoreFragment.currentDistrib.getNomJoueur();
+
+        playerScoreFragment = new PlayerScoreFragment();
+        Bundle args = new Bundle();
+        args.putStringArray(EXTRA,listPlayersName);
+        args.putBoolean(EXTRA1,isInScoresFragment);
+        args.putBoolean(EXTRA2,isFromMainActivity);
+        args.putString(EXTRA3,currentDistrib);
+
+        playerScoreFragment.setArguments(args);
+        transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fl_fragment_name_score, playerScoreFragment).commit();
 
     }
 

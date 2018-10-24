@@ -35,16 +35,21 @@ public class PlayerScoreFragment extends Fragment {
 
     private String player1="", player2="", player3="", player4="";
     private Boolean isInScoreFragment = false;
+    private Boolean isFromMainActivity = false;
     public static final String EXTRA="com.skor.beloteskor.MESSAGE";
     public static final String EXTRA1="com.skor.beloteskor.MESSAGE1";
+    public static final String EXTRA2="com.skor.beloteskor.MESSAGE2";
+    public static final String EXTRA3="com.skor.beloteskor.MESSAGE3";
+
 
     private String[] listPlayerName;
     private ArrayList<String> listPreneurs;;
 
     private Partie lastPartie;
-    private Joueur currentDistrib;
+    public Joueur currentDistrib;
     private SensJeu sensJeu;
-    private int i;
+    public int i;
+    private String currentDistribName;
 
     public PlayerScoreFragment() {
         // Required empty public constructor
@@ -74,6 +79,13 @@ public class PlayerScoreFragment extends Fragment {
 
         listPlayerName = getArguments().getStringArray(EXTRA);
         isInScoreFragment = getArguments().getBoolean(EXTRA1);
+        isFromMainActivity = getArguments().getBoolean(EXTRA2);
+
+        if(isFromMainActivity){
+
+           currentDistribName= getArguments().getString(EXTRA3);
+        }
+
         listPreneurs = new ArrayList<>();
 
     }
@@ -113,10 +125,14 @@ public class PlayerScoreFragment extends Fragment {
         if (isInScoreFragment) {
             initTableScore();
 
+            if(isFromMainActivity) {
+                currentDistrib.setNomJoueur(currentDistribName);
+            }
+
             //gestion du sens de jeu
             getListPreneurs();
 
-            changePreneurManually();
+            changePreneur();
 
         }
 
@@ -262,43 +278,65 @@ public class PlayerScoreFragment extends Fragment {
             listPreneurs.add(player2);
             listPreneurs.add(player3);
         }
+
         i = listPreneurs.indexOf(currentDistrib.getNomJoueur());
 
     }
 
 
-    private void changePreneurManually() {
+    private void changePreneur() {
+
+        changeManually();
+
+        if (isFromMainActivity) {
+
+            changeCouleurPreneur();
+        }
+
+
+    }
+
+    private void changeCouleurPreneur() {
+
+        if (i<3) {
+            currentDistrib.setNomJoueur(listPreneurs.get(i+1));
+
+            changeColorPreneur(listPreneurs.get(i+1));
+
+        }else{
+            i=-1;
+            currentDistrib.setNomJoueur(listPreneurs.get(i+1));
+            changeColorPreneur(listPreneurs.get(i+1));                }
+
+        for (String preneur:listPreneurs) {
+
+            for (int j = 0; j < 4; j++) {
+
+                if (j!=i+1){
+
+                    preneur = listPreneurs.get(j);
+
+                    ChangeColorNonPreneur(preneur);
+                }
+            }
+        }
+
+        i++;
+    }
+
+    private void changeManually() {
 
         distribBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                if (i<3) {
-                    currentDistrib.setNomJoueur(listPreneurs.get(i+1));
+                changeCouleurPreneur();
 
-                    changeColorPreneur(listPreneurs.get(i+1));
-
-                }else{
-                    i=-1;
-                    currentDistrib.setNomJoueur(listPreneurs.get(i+1));
-                    changeColorPreneur(listPreneurs.get(i+1));                }
-
-                for (String preneur:listPreneurs) {
-
-                    for (int j = 0; j < 4; j++) {
-
-                        if (j!=i+1){
-
-                            preneur = listPreneurs.get(j);
-
-                            ChangeColorNonPreneur(preneur);
-                        }
-                    }
-                }
-
-                i++;
             }
         });
+
+
+
     }
 
     private void ChangeColorNonPreneur(String mainName) {

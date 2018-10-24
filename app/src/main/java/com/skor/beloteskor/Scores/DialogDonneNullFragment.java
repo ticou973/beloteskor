@@ -63,13 +63,13 @@ public class DialogDonneNullFragment extends DialogFragment {
         builder.setTitle("Donne actuelle non renseignée");
 
 
-        builder.setPositiveButton("Oui !", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("Passer à la donne suivante", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // Send the positive button event back to the host activity
                  mListener.onDialogDonnePositiveClick(DialogDonneNullFragment.this);
             }
         })
-                .setNegativeButton("Modifier donne actuelle", new DialogInterface.OnClickListener() {
+                .setNegativeButton("Modifier la donne", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // Send the negative button event back to the host activity
                        mListener.onDialogDonneNegativeClick(DialogDonneNullFragment.this);

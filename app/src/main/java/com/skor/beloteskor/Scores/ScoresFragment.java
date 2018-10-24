@@ -106,7 +106,7 @@ public class ScoresFragment extends Fragment {
         addDonneBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-         //todo voir le cas où il y 0 avant à la donne précédente pour faire un dialog pour valider la donne suivante
+
                 addDonnesBtn();
             }
         });
@@ -124,6 +124,7 @@ public class ScoresFragment extends Fragment {
 
    public interface OnScoresFragmentInteractionListener {
         void onScoresDonneNullChoice();
+        void onScoreChangePreneur();
     }
 
 
@@ -157,7 +158,6 @@ public class ScoresFragment extends Fragment {
 
             showDialogModeEquipe();
 
-
         }else{
             CreateDonne();
         }
@@ -165,6 +165,10 @@ public class ScoresFragment extends Fragment {
     }
 
     public void CreateDonne() {
+        if (mListener != null) {
+            mListener.onScoreChangePreneur();
+
+        }
 
         //todo gérer le distributeur
         nextDonne = new Donne(lastPartie.getPartieId(), donnes.size() + 1, lastPremierDistrib, 0, 0);
