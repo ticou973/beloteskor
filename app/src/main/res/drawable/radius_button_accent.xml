@@ -32,4 +32,22 @@
         </shape>
     </item>
 
+    <item android:state_active="false">
+        <shape android:shape="rectangle"  >
+            <corners android:radius="2dip" />
+            <stroke android:width="1dip" android:color="@color/colorbuttonfalse" />
+            <gradient android:angle="-90" android:startColor="@color/colorbuttonfalse" android:endColor="@color/colorbuttonfalse"  />
+        </shape>
+    </item>
+
+    <item android:state_enabled="true">
+        <shape android:shape="rectangle"  >
+            <corners android:radius="2dip" />
+            <stroke android:width="1dip" android:color="@color/color_accent2" />
+            <gradient android:angle="-90" android:startColor="@color/color_accent2" android:endColor="@color/color_accent2"  />
+        </shape>
+    </item>
+
+
+
 </selector>

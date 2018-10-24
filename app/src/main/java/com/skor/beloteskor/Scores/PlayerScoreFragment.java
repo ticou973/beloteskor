@@ -9,41 +9,52 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.skor.beloteskor.MainActivity;
+import com.skor.beloteskor.Model_DB.MainDb.Joueur;
+import com.skor.beloteskor.Model_DB.MainDb.Partie;
+import com.skor.beloteskor.Model_DB.UtilsDb.SensJeu;
 import com.skor.beloteskor.R;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class PlayerScoreFragment extends Fragment {
 
     private OnPlayerScoreFragmentListener mListener;
 
-    private EditText yourPartnerName, onYourLeftName, onYourRightName;
-    private AutoCompleteTextView yourName;
+    private EditText yourName, yourPartnerName, onYourLeftName, onYourRightName;
     private TextView totalScoreA, totalScoreB;
     private ImageView triangleView;
+    private Button distribBtn;
 
     private String player1="", player2="", player3="", player4="";
     private Boolean isInScoreFragment = false;
     public static final String EXTRA="com.skor.beloteskor.MESSAGE";
     public static final String EXTRA1="com.skor.beloteskor.MESSAGE1";
 
-
     private String[] listPlayerName;
-    private ArrayList<String> listPlayers;
-    List<String> nomJoueurs;
-    String[] players;
+    private ArrayList<String> listPreneurs;;
+
+    private Partie lastPartie;
+    private Joueur currentDistrib;
+    private SensJeu sensJeu;
+    private int i;
 
     public PlayerScoreFragment() {
         // Required empty public constructor
     }
 
+    public interface OnPlayerScoreFragmentListener {
+        void onPlayerScoreInteraction();
+    }
+
+                                     //LIFECYCLE
 
     @Override
     public void onAttach(Context context) {
@@ -56,6 +67,16 @@ public class PlayerScoreFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //Gestion du mode Joueur
+
+        listPlayerName = getArguments().getStringArray(EXTRA);
+        isInScoreFragment = getArguments().getBoolean(EXTRA1);
+        listPreneurs = new ArrayList<>();
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,138 +85,46 @@ public class PlayerScoreFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.name_score_players, container, false);
 
-        return view;
-    }
+        //JOUEURS
 
-
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
 
         //todo penser à gérer le format des noms (longueur...)
         //todo penser à gérer les doublons dans les 4 noms
         //todo penser à un autofill pour les noms déjà connus
         //todo penser à ajouter le distributeur courant
-
-        //JOUEURS
-
-
         //Noms des joueurs et Scores
 
-        yourName = getActivity().findViewById(R.id.et_you);
-        yourPartnerName = getActivity().findViewById(R.id.et_your_partner);
-        onYourLeftName = getActivity().findViewById(R.id.et_on_your_left);
-        onYourRightName = getActivity().findViewById(R.id.et_on_your_right);
-        totalScoreA = getActivity().findViewById(R.id.score_total_equipeA);
-        totalScoreB = getActivity().findViewById(R.id.score_total_equipeB);
-        triangleView = getActivity().findViewById(R.id.triangleView);
+        yourName = view.findViewById(R.id.et_you);
+        yourPartnerName = view.findViewById(R.id.et_your_partner);
+        onYourLeftName = view.findViewById(R.id.et_on_your_left);
+        onYourRightName = view.findViewById(R.id.et_on_your_right);
+        totalScoreA = view.findViewById(R.id.score_total_equipeA);
+        totalScoreB = view.findViewById(R.id.score_total_equipeB);
+        triangleView = view.findViewById(R.id.triangleView);
         triangleView.setVisibility(View.INVISIBLE);
+        distribBtn=view.findViewById(R.id.btn_distrib);
+        distribBtn.setVisibility(View.INVISIBLE);
 
-
-        //Gestion du mode Joueur
-
-        listPlayerName = getArguments().getStringArray(EXTRA);
-        isInScoreFragment = getArguments().getBoolean(EXTRA1);
-
-
-        if (isInScoreFragment) {
-
-            yourName.setText(listPlayerName[0]);
-            yourPartnerName.setText(listPlayerName[1]);
-            onYourLeftName.setText(listPlayerName[2]);
-            onYourRightName.setText(listPlayerName[3]);
-
-            yourName.setEnabled(false);
-            yourPartnerName.setEnabled(false);
-            onYourLeftName.setEnabled(false);
-            onYourRightName.setEnabled(false);
-            triangleView.setVisibility(View.VISIBLE);
-            totalScoreA.setText("0");
-            totalScoreB.setText("0");
-        }
 
         //todo mettre un autocomplete à partir de la base des joueurs - A retirer dès que test fini
-
         joueursAutoComplete();
+        setListenerTextName();
 
-        yourName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        if (isInScoreFragment) {
+            initTableScore();
 
-            }
+            //gestion du sens de jeu
+            getListPreneurs();
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            changePreneurManually();
 
-                player1 = yourName.getEditableText().toString();
+        }
 
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-        yourPartnerName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                player2 = yourPartnerName.getEditableText().toString();
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-        onYourLeftName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                player3 = onYourLeftName.getEditableText().toString();
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-
-        onYourRightName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                player4 = onYourRightName.getEditableText().toString();
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-
+        return view;
     }
+
+
+
 
     @Override
     public void onDetach() {
@@ -205,11 +134,220 @@ public class PlayerScoreFragment extends Fragment {
 
 
 
+    // AUTRES MÉTHODES DU FRAGMENT
 
-    public interface OnPlayerScoreFragmentListener {
-        void onPlayerScoreInteraction();
+    private void setListenerTextName() {
+
+        yourName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                player1 = yourName.getEditableText().toString();
+            }
+            @Override
+            public void afterTextChanged(Editable s) { }
+        });
+
+        yourPartnerName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                player2 = yourPartnerName.getEditableText().toString();
+            }
+            @Override
+            public void afterTextChanged(Editable s) { }
+        });
+
+        onYourLeftName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                player3 = onYourLeftName.getEditableText().toString();
+            }
+            @Override
+            public void afterTextChanged(Editable s) { }
+        });
+
+
+        onYourRightName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                player4 = onYourRightName.getEditableText().toString();
+            }
+            @Override
+            public void afterTextChanged(Editable s) { }
+        });
+
+
+    }
+    //todo a virer dès que les test sont terminés
+    private void joueursAutoComplete() {
+
+        player1 = "Alfred";
+        player2 = "Berangère";
+        player3 = "Charles";
+        player4 = "Dorothée";
+
+        yourName.setText(player1);
+        yourPartnerName.setText(player2);
+        onYourLeftName.setText(player3);
+        onYourRightName.setText(player4);
+
     }
 
+    private void initTableScore() {
+
+       //UI
+        yourName.setText(listPlayerName[0]);
+        yourPartnerName.setText(listPlayerName[1]);
+        onYourLeftName.setText(listPlayerName[2]);
+        onYourRightName.setText(listPlayerName[3]);
+
+        yourName.setEnabled(false);
+        yourPartnerName.setEnabled(false);
+        onYourLeftName.setEnabled(false);
+        onYourRightName.setEnabled(false);
+        triangleView.setVisibility(View.VISIBLE);
+        distribBtn.setVisibility(View.VISIBLE);
+        totalScoreA.setText("0");
+        totalScoreB.setText("0");
+
+        //DataBase
+        lastPartie = MainActivity.beloteSkorDb.partieDao().getLastPartie();
+        currentDistrib = lastPartie.getPremierDistributeur();
+        sensJeu = lastPartie.getSensJeu();
+
+        setColorDistrib(currentDistrib);
+
+    }
+
+    private void setColorDistrib(Joueur currentDistrib) {
+
+        if (currentDistrib.getNomJoueur().equals(player1)){
+            yourName.setBackgroundResource(R.drawable.radius_button_accent);
+            yourName.setBackgroundColor(getResources().getColor(R.color.color_accent2));
+        }else if (currentDistrib.getNomJoueur().equals(player2)){
+            yourPartnerName.setBackgroundResource(R.drawable.radius_button_accent);
+            yourPartnerName.setBackgroundColor(getResources().getColor(R.color.color_accent2));
+        }else if (currentDistrib.getNomJoueur().equals(player3)){
+            onYourLeftName.setBackgroundResource(R.drawable.radius_button_accent);
+            onYourLeftName.setBackgroundColor(getResources().getColor(R.color.color_accent2));
+        }else if (currentDistrib.getNomJoueur().equals(player4)){
+            onYourRightName.setBackgroundResource(R.drawable.radius_button_accent);
+            onYourRightName.setBackgroundColor(getResources().getColor(R.color.color_accent2));
+        }
+    }
+
+    private void getListPreneurs() {
+
+        if (sensJeu == SensJeu.SENS_AIGUILLE) {
+
+            listPreneurs.add(player1);
+            listPreneurs.add(player3);
+            listPreneurs.add(player2);
+            listPreneurs.add(player4);
+
+        }else{
+            listPreneurs.add(player1);
+            listPreneurs.add(player4);
+            listPreneurs.add(player2);
+            listPreneurs.add(player3);
+        }
+        i = listPreneurs.indexOf(currentDistrib.getNomJoueur());
+
+    }
+
+
+    private void changePreneurManually() {
+
+        distribBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (i<3) {
+                    currentDistrib.setNomJoueur(listPreneurs.get(i+1));
+
+                    changeColorPreneur(listPreneurs.get(i+1));
+
+                }else{
+                    i=-1;
+                    currentDistrib.setNomJoueur(listPreneurs.get(i+1));
+                    changeColorPreneur(listPreneurs.get(i+1));                }
+
+                for (String preneur:listPreneurs) {
+
+                    for (int j = 0; j < 4; j++) {
+
+                        if (j!=i+1){
+
+                            preneur = listPreneurs.get(j);
+
+                            ChangeColorNonPreneur(preneur);
+                        }
+                    }
+                }
+
+                i++;
+            }
+        });
+    }
+
+    private void ChangeColorNonPreneur(String mainName) {
+
+        if (mainName == player1){
+
+            yourName.setBackgroundColor(getResources().getColor(R.color.colorPrimaryLight));
+
+        }else if (mainName == player2){
+            yourPartnerName.setBackgroundColor(getResources().getColor(R.color.colorPrimaryLight));
+
+        }else if (mainName == player3){
+            onYourLeftName.setBackgroundColor(getResources().getColor(R.color.colorPrimaryLight));
+
+        }else if (mainName == player4){
+            onYourRightName.setBackgroundColor(getResources().getColor(R.color.colorPrimaryLight));
+
+        }
+
+    }
+
+
+    private void changeColorPreneur(String mainName) {
+
+        Toast.makeText(getContext(), mainName, Toast.LENGTH_SHORT).show();
+
+
+        if (mainName == player1) {
+            yourName.setBackgroundResource(R.drawable.radius_button_accent);
+            yourName.setBackgroundColor(getResources().getColor(R.color.color_accent2));
+
+        }else if (mainName == player2){
+            yourPartnerName.setBackgroundResource(R.drawable.radius_button_accent);
+            yourPartnerName.setBackgroundColor(getResources().getColor(R.color.color_accent2));
+
+        }else if (mainName == player3){
+            onYourLeftName.setBackgroundResource(R.drawable.radius_button_accent);
+            onYourLeftName.setBackgroundColor(getResources().getColor(R.color.color_accent2));
+
+        }else if (mainName == player4){
+            onYourRightName.setBackgroundResource(R.drawable.radius_button_accent);
+            onYourRightName.setBackgroundColor(getResources().getColor(R.color.color_accent2));
+
+        }
+
+    }
+
+
+    //Getter et Setter
     public String[] getPlayersName() {
 
         String[] listPlayers = {player1, player2, player3, player4};
@@ -250,18 +388,4 @@ public class PlayerScoreFragment extends Fragment {
     }
 
 
-    //todo a virer dès que les test sont terminés
-    private void joueursAutoComplete() {
-
-        player1 = "Alfred";
-        player2 = "Berangère";
-        player3 = "Charles";
-        player4 = "Dorothée";
-
-        yourName.setText(player1);
-        yourPartnerName.setText(player2);
-        onYourLeftName.setText(player3);
-        onYourRightName.setText(player4);
-
-    }
 }

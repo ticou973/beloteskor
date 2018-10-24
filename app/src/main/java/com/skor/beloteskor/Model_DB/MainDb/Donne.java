@@ -34,11 +34,11 @@ public class Donne  {
     @ColumnInfo(name="couleur")
     private Couleur couleur;
 
-    @ColumnInfo (name ="belote")
-    private boolean belote;
+    @Embedded(prefix = "belote_")
+    private Equipe belote;
 
-    @ColumnInfo (name ="capot")
-    private boolean capot;
+    @Embedded(prefix = "capot_")
+    private Equipe capot;
 
     @ColumnInfo (name = "score_equipeA")
     private int score1;
@@ -52,7 +52,7 @@ public class Donne  {
     }
 
 
-    public Donne(int partieId, int numDonne, Joueur preneur, Couleur couleur, boolean belote, boolean capot, int score1, int score2) {
+    public Donne(int partieId, int numDonne, Joueur preneur, Couleur couleur, Equipe belote, Equipe capot, int score1, int score2) {
         this.partieId = partieId;
         this.numDonne = numDonne;
         this.preneur = preneur;
@@ -128,19 +128,19 @@ public class Donne  {
         this.couleur = couleur;
     }
 
-    public boolean isBelote() {
+    public Equipe getBelote() {
         return belote;
     }
 
-    public void setBelote(boolean belote) {
+    public void setBelote(Equipe belote) {
         this.belote = belote;
     }
 
-    public boolean isCapot() {
+    public Equipe getCapot() {
         return capot;
     }
 
-    public void setCapot(boolean capot) {
+    public void setCapot(Equipe capot) {
         this.capot = capot;
     }
 

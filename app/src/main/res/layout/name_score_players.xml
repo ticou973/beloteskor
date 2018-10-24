@@ -2,6 +2,7 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -25,8 +26,8 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:fontFamily="@font/roboto"
-            android:paddingBottom="0dp"
             android:paddingTop="0dp"
+            android:paddingBottom="0dp"
             android:textAlignment="center"
             android:textColor="@android:color/white"
             android:textSize="40sp"
@@ -34,18 +35,21 @@
             app:layout_constraintEnd_toStartOf="@+id/guideline4"
             app:layout_constraintTop_toBottomOf="@+id/et_on_your_left" />
 
-        <AutoCompleteTextView
+        <EditText
             android:id="@+id/et_you"
             android:layout_width="145dp"
             android:layout_height="0dp"
             android:layout_marginStart="16dp"
             android:background="@android:color/transparent"
+            android:clickable="true"
             android:ems="10"
+            android:enabled="true"
             android:fontFamily="@font/roboto"
             android:hint="@string/you"
             android:inputType="textPersonName"
             android:maxLength="9"
             android:paddingBottom="0dp"
+            android:singleLine="true"
             android:textAlignment="center"
             android:textColor="#424242"
             android:textSize="24sp"
@@ -61,13 +65,15 @@
             android:layout_height="0dp"
             android:layout_marginEnd="16dp"
             android:background="@android:color/transparent"
+            android:clickable="true"
             android:ems="10"
+            android:enabled="true"
             android:fontFamily="@font/roboto"
             android:hint="@string/on_your_right"
             android:inputType="textPersonName"
             android:maxLength="9"
-            android:paddingBottom="0dp"
             android:paddingTop="0dp"
+            android:paddingBottom="0dp"
             android:textAlignment="center"
             android:textColor="#424242"
             android:textSize="24sp"
@@ -84,7 +90,9 @@
             android:layout_height="0dp"
             android:layout_marginEnd="16dp"
             android:background="@android:color/transparent"
+            android:clickable="true"
             android:ems="10"
+            android:enabled="true"
             android:fontFamily="@font/roboto"
             android:hint="@string/on_your_left"
             android:inputType="textPersonName"
@@ -104,13 +112,15 @@
             android:layout_height="0dp"
             android:layout_marginStart="16dp"
             android:background="@android:color/transparent"
+            android:clickable="true"
             android:ems="10"
+            android:enabled="true"
             android:fontFamily="@font/roboto"
             android:hint="@string/your_partner"
             android:inputType="textPersonName"
             android:maxLength="9"
-            android:paddingBottom="0dp"
             android:paddingTop="0dp"
+            android:paddingBottom="0dp"
             android:textAlignment="center"
             android:textColor="#424242"
             android:textSize="24sp"
@@ -126,8 +136,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:fontFamily="@font/roboto"
-            android:paddingBottom="0dp"
             android:paddingTop="0dp"
+            android:paddingBottom="0dp"
             android:textAlignment="center"
             android:textColor="@android:color/white"
             android:textSize="40sp"
@@ -135,7 +145,6 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintStart_toStartOf="@+id/guideline"
             app:layout_constraintTop_toBottomOf="@+id/et_you" />
-
 
 
         <android.support.constraint.Guideline
@@ -156,13 +165,27 @@
             android:id="@+id/triangleView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:contentDescription="@string/white_triangle"
             android:src="@drawable/ic_details_white_24dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/et_on_your_right"
             app:layout_constraintStart_toEndOf="@+id/et_your_partner" />
+
+        <Button
+            android:id="@+id/btn_distrib"
+            android:layout_width="47dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@color/color_accent2"
+            android:text="Distrib."
+            android:textAllCaps="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/score_total_equipeB"
+            app:layout_constraintStart_toEndOf="@+id/score_total_equipeA"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
 

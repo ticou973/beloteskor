@@ -15,6 +15,9 @@ import android.widget.ToggleButton;
 
 import com.shawnlin.numberpicker.NumberPicker;
 import com.skor.beloteskor.Model_DB.MainDb.Donne;
+import com.skor.beloteskor.Model_DB.MainDb.Equipe;
+import com.skor.beloteskor.Model_DB.MainDb.Joueur;
+import com.skor.beloteskor.Model_DB.UtilsDb.Couleur;
 import com.skor.beloteskor.R;
 import com.skor.beloteskor.Scores.ViewHolders.DonneViewHolder;
 
@@ -29,6 +32,9 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
     private int width;
     private int numberPickerposition = 0; //Center
     private int scoreA, scoreB;
+    private Joueur preneur;
+    private Couleur couleur;
+    private Equipe belote, capot;
 
 
 
@@ -398,5 +404,19 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
         return scoreB;
     }
 
+    public Joueur getPreneur() {
+        return preneur;
+    }
 
+    public Couleur getCouleur() {
+        return couleur;
+    }
+
+    public Equipe getBelote() {
+        return belote;
+    }
+
+    public Equipe getCapot() {
+        return capot;
+    }
 }

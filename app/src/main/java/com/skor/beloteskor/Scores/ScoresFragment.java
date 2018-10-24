@@ -17,6 +17,7 @@ import com.skor.beloteskor.Model_DB.MainDb.Donne;
 import com.skor.beloteskor.Model_DB.MainDb.Equipe;
 import com.skor.beloteskor.Model_DB.MainDb.Joueur;
 import com.skor.beloteskor.Model_DB.MainDb.Partie;
+import com.skor.beloteskor.Model_DB.UtilsDb.Couleur;
 import com.skor.beloteskor.Model_DB.UtilsDb.SensJeu;
 import com.skor.beloteskor.Model_DB.UtilsDb.Table;
 import com.skor.beloteskor.Model_DB.UtilsDb.TypeDePartie;
@@ -47,13 +48,14 @@ public class ScoresFragment extends Fragment {
     private Donne currentDonne, firstDonne, nextDonne;
     private TypeDePartie lastTypePartie;
     private Table lastTable;
-    private Joueur lastPremierDistrib;
+    private Joueur lastPremierDistrib, currentPreneur;
     private String lastNomPremierDistrib,lastTypeJeu,lastTypeAnnonce,lastModeEquipe,lastJoueur1EqA,lastJoueur2EqA,lastJoueur1EqB,lastJoueur2EqB;
     private SensJeu lastSensJeu;
     private int lastScoreEquipeA, lastScoreEquipeB,lastNbPoints,lastNbDonnes, scoreA, scoreB;
     private boolean lastPartieterm;
-    private Equipe lastEquipeA;
-    private Equipe lastEquipeB;
+    private Equipe lastEquipeA, lastEquipeB, belote, capot;
+    private Couleur currentCouleur;
+
 
                                         //Constructeur
     public ScoresFragment() {
@@ -147,7 +149,6 @@ public class ScoresFragment extends Fragment {
 
     private void addDonnesBtn() {
 
-
         upDateCurrentDonne();
 
         donnes = MainActivity.beloteSkorDb.donneDao().getAllDonnesPartiesCourantes(lastPartie.getPartieId());
@@ -174,8 +175,10 @@ public class ScoresFragment extends Fragment {
     }
 
     private void upDateCurrentDonne(){
+        //todo faire la gestion dans la db des tables
         scoreA = donneAdapter.getScoreA();
         scoreB = donneAdapter.getScoreB();
+        donneAdapter.getCouleur();
 
         currentDonne = MainActivity.beloteSkorDb.donneDao().getLastDonne();
 
