@@ -1,7 +1,6 @@
 package com.skor.beloteskor;
 
 import android.arch.persistence.room.Room;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -13,8 +12,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -23,6 +20,7 @@ import com.skor.beloteskor.Model_DB.MainDb.Donne;
 import com.skor.beloteskor.Model_DB.UtilsDb.ModeEquipe;
 import com.skor.beloteskor.Players.PlayersFragment;
 import com.skor.beloteskor.Scores.Adapters.DonneAdapter;
+import com.skor.beloteskor.Scores.DialogDonneNullFragment;
 import com.skor.beloteskor.Scores.DialogModeEquipeFragment;
 import com.skor.beloteskor.Scores.PlayerScoreFragment;
 import com.skor.beloteskor.Scores.ScoresFragment;
@@ -34,7 +32,7 @@ import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity implements SettingsGameFragment.OnSettingsGameFragmentListener, PlayersFragment.OnPlayersFragmentInteractionListener, StatisticsFragment.OnStatisticsFragmentInteractionListener,
-        DialogModeEquipeFragment.DialogModeEquipeFragmentListener, PlayerScoreFragment.OnPlayerScoreFragmentListener, TeamScoreFragment.OnTeamFragmentInteractionListener, DonneAdapter.OnDonneAdapterListener, ScoresFragment.OnScoresFragmentInteractionListener{
+        DialogModeEquipeFragment.DialogModeEquipeFragmentListener, PlayerScoreFragment.OnPlayerScoreFragmentListener, TeamScoreFragment.OnTeamFragmentInteractionListener, DonneAdapter.OnDonneAdapterListener, ScoresFragment.OnScoresFragmentInteractionListener, DialogDonneNullFragment.DialogDonneNullFragmentListener{
 
     private android.support.v7.widget.Toolbar toolbar;
     private BottomNavigationView navigation;
@@ -43,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
     private FragmentTransaction transaction;
     private SettingsGameFragment settingsGameFragment;
     private PlayerScoreFragment playerScoreFragment;
+    private ScoresFragment scoresFragment;
 
     public static final String EXTRA="com.skor.beloteskor.MESSAGE";
     public static final String EXTRA1="com.skor.beloteskor.MESSAGE1";
@@ -115,9 +114,6 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
                 }
             }
         });
-
-
-
                                     //FRAGMENTS
 
         flFragmentMain = findViewById(R.id.fl_fragment_main);
@@ -140,19 +136,10 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
         settingsGameFragment.setArguments(args);
         replaceFragment(settingsGameFragment);
 
-
-
     }
 
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-    }
-
-
-    //MENU OPTIONS
+                        //MENU OPTIONS
 
     //Méthode qui inflate le menu d'option
     @Override
@@ -216,7 +203,7 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
 
                             //METHODES FRAGMENTS IMPLEMENTES
 
-    //Fragments SettingsGame
+                             //Fragments SettingsGame
 
     @Override
     public void onSettingsStartGamePLayers() {
@@ -233,21 +220,13 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
         transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fl_fragment_name_score, playerScoreFragment).commit();
 
-        ScoresFragment scoresFragment = new ScoresFragment();
-
+        scoresFragment = new ScoresFragment();
         //todo voir si obligé ?
         Bundle argsscore = new Bundle();
         argsscore.putStringArray(EXTRA,listPlayersName);
         scoresFragment.setArguments(argsscore);
         replaceFragment(scoresFragment);
 
-    }
-
-    @Override
-    public void onSettingsModeEquipeChoice() {
-
-        DialogFragment dialog = new DialogModeEquipeFragment();
-        dialog.show(getSupportFragmentManager(),"TAG");
     }
 
     @Override
@@ -271,6 +250,14 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
 
         return true;
     }
+
+    @Override
+    public void onSettingsModeEquipeChoice() {
+
+        DialogFragment dialog = new DialogModeEquipeFragment();
+        dialog.show(getSupportFragmentManager(),"TAG");
+    }
+
 
     //Fragments Boite de dialogue de choix de mode equipe
 
@@ -297,6 +284,32 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
 
     }
 
+                         //Fragments Scores
+
+    @Override
+    public void onScoresDonneNullChoice() {
+
+        DialogFragment dialog1 = new DialogDonneNullFragment();
+        dialog1.show(getSupportFragmentManager(),"TAG");
+
+    }
+
+    @Override
+    public void onDialogDonnePositiveClick(DialogFragment dialog) {
+
+        scoresFragment.CreateDonne();
+
+    }
+
+    @Override
+    public void onDialogDonneNegativeClick(DialogFragment dialog) {
+
+
+        Toast.makeText(this, "Veuillez modifier les scores de la donne, SVP...", Toast.LENGTH_SHORT).show();
+
+    }
+
+
 
     //Fragments Player et scores
 
@@ -310,26 +323,6 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
     public void onTeamFragmentInteraction() {
 
     }
-
-    //Fragments scores des donnes
-
-
-    /*@Override
-    public void onPressedAddDonnesBtn() {
-
-
-        Donne donne = new Donne(l)
-
-
-        DonneScoreDetails donneScoreDetails = new DonneScoreDetails(player3, player1, player2, player3, player4, false, false, 60, 102) ;
-
-        donnesScore.add(new DonneScore(donnesScore.size(), donneScoreDetails.getScoreDonneEquipeA(), donneScoreDetails.getScoreDonneEquipeB()));
-
-        ScoresFragment scoresFragment = new ScoresFragment();
-        replaceFragment(scoresFragment);
-
-    }*/
-
 
     //Fragments listes des parties des joueurs
 
@@ -364,21 +357,5 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
         transaction.commit();
 
     }
-
-
-    public void showSoftKeyboard(View view) {
-        if (view.requestFocus()) {
-            InputMethodManager imm = (InputMethodManager)
-                    getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
-        }
-    }
-
-
-    @Override
-    public void onPressedAddDonnesBtn() {
-
-    }
-
 
 }

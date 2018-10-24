@@ -26,6 +26,9 @@ public interface DonneDao {
     @Query("SELECT * FROM donne WHERE donneId IN (:donneId)")
     Donne loadDonneById(int donneId);
 
+    @Query("SELECT * FROM donne ORDER BY donneId DESC LIMIT 1")
+    Donne getLastDonne();
+
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertDonne(Donne donne);
