@@ -29,7 +29,8 @@ public class DonneViewHolder extends RecyclerView.ViewHolder  {
     private NumberPicker numberPicker;
     private ToggleButton capot_team1, capot_team2, belote_team1, belote_team2;
     private ImageView preneur_trefle, preneur_carreau, preneur_pique, preneur_coeur;
-    private Equipe belote, capot, equipeA, equipeB;
+    private Equipe belote = new Equipe("NoBelote");
+    private Equipe capot = new Equipe("NoCapot");
 
 
     public DonneViewHolder(View itemView) {
@@ -160,33 +161,14 @@ public class DonneViewHolder extends RecyclerView.ViewHolder  {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
                 if (isChecked && secondTb.isChecked()) {
-
                     setColorBeloteCapot(mainTb,secondTb,1.0f,0.3f);
                     mainTb.setChecked(true);
                     secondTb.setChecked(false);
-
-                     if(mainTb.getId()==R.id.belote_team1_btn){ belote = equipeA;
-
-                    }else if(mainTb.getId()==R.id.belote_team2_btn){ belote = equipeB;
-
-                    }else if(mainTb.getId()==R.id.capot_team1_btn){ capot = equipeA;
-
-                    }else if(mainTb.getId()==R.id.capot_team2_btn){ capot = equipeB;
-                    }
 
                 } else if (isChecked && !secondTb.isChecked()) {
                     setColorBeloteCapot(mainTb,secondTb,1.0f,0.3f);
                     mainTb.setChecked(true);
                     secondTb.setChecked(false);
-
-                   if(mainTb.getId()==R.id.belote_team1_btn){ belote = equipeA;
-
-                    }else if(mainTb.getId()==R.id.belote_team2_btn){ belote = equipeB;
-
-                    }else if(mainTb.getId()==R.id.capot_team1_btn){ capot = equipeA;
-
-                    }else if(mainTb.getId()==R.id.capot_team2_btn){ capot = equipeB;
-                    }
 
                 } else if (!isChecked && !secondTb.isChecked()) {
                     mainTb.setChecked(false);
@@ -194,8 +176,29 @@ public class DonneViewHolder extends RecyclerView.ViewHolder  {
 
                     setColorBeloteCapot(mainTb,secondTb,1.0f,1.0f);
                 }
+
+
+                if(capot_team1.isChecked()){
+                    capot.setNomEquipe("EquipeA");
+
+                }else if(capot_team2.isChecked()){
+                    capot.setNomEquipe("EquipeB");
+
+                }else {
+                    capot.setNomEquipe("NoCapot");
+                }
+
+                if(belote_team1.isChecked()){
+                    belote.setNomEquipe("EquipeA");
+                }else if(belote_team2.isChecked()){
+                    belote.setNomEquipe("EquipeB");
+                }else{
+                    belote.setNomEquipe("NoBelote");                }
             }
+
+
         });
+
     }
 
     public void setColorBeloteCapot (ToggleButton mainTb, ToggleButton secondTb, Float mainAlpha, Float secondAlpha){
@@ -290,14 +293,6 @@ public class DonneViewHolder extends RecyclerView.ViewHolder  {
     public Equipe getCapot() { return capot; }
 
     public void setCapot(Equipe capot) { this.capot = capot; }
-
-    public Equipe getEquipeA() { return equipeA; }
-
-    public void setEquipeA(Equipe equipeA) { this.equipeA = equipeA; }
-
-    public Equipe getEquipeB() { return equipeB; }
-
-    public void setEquipeB(Equipe equipeB) { this.equipeB = equipeB; }
 
     public void setCheckedTb(boolean b) { }
 }

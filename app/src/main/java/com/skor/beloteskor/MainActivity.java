@@ -383,6 +383,11 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
         return listPlayersName ;
     }
 
+    @Override
+    public void onDonneAdapterUpdateDonne(int numDonne) {
+        scoresFragment.upDateCurrentDonne(numDonne);
+    }
+
 
     //Autres méthodes
 

@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.skor.beloteskor.MainActivity;
 import com.skor.beloteskor.Model_DB.MainDb.Donne;
@@ -20,6 +21,7 @@ import com.skor.beloteskor.Model_DB.MainDb.Partie;
 import com.skor.beloteskor.Model_DB.UtilsDb.Couleur;
 import com.skor.beloteskor.Model_DB.UtilsDb.SensJeu;
 import com.skor.beloteskor.Model_DB.UtilsDb.Table;
+import com.skor.beloteskor.Model_DB.UtilsDb.TypeAnnonce;
 import com.skor.beloteskor.Model_DB.UtilsDb.TypeDePartie;
 import com.skor.beloteskor.R;
 import com.skor.beloteskor.Scores.Adapters.DonneAdapter;
@@ -34,6 +36,7 @@ public class ScoresFragment extends Fragment {
     private DonneAdapter donneAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private ImageView addDonneBtn;
+    private int numCurrentDonne;
 
     public static final String EXTRA="com.skor.beloteskor.MESSAGE";
     private Context context;
@@ -106,7 +109,6 @@ public class ScoresFragment extends Fragment {
         addDonneBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 addDonnesBtn();
             }
         });
@@ -128,7 +130,6 @@ public class ScoresFragment extends Fragment {
     }
 
 
-
                                         //METHODES INTERNES
     private void initData() {
         //Appel de la dernière partie
@@ -144,29 +145,36 @@ public class ScoresFragment extends Fragment {
         donnes = MainActivity.beloteSkorDb.donneDao().getAllDonnesPartiesCourantes(lastPartie.getPartieId());
 
         displayLogTestTablePartie();
+
+        //todo déplacer ou supprimer cette partie si nécessaire
+        if(lastTypeAnnonce.equals(TypeAnnonce.SANS_ANNONCE.toString())){
+            Toast.makeText(context, "coucou", Toast.LENGTH_SHORT).show();
+
+        }else if(lastTypeAnnonce.equals(TypeAnnonce.AVEC_ANNONCES.toString())){
+            Toast.makeText(context, "hello", Toast.LENGTH_SHORT).show();
+
+        }else{
+            Toast.makeText(context, "rien", Toast.LENGTH_SHORT).show();
+        }
     }
 
-
     private void addDonnesBtn() {
-
-        upDateCurrentDonne();
+        numCurrentDonne = donnes.size();
+        upDateCurrentDonne(numCurrentDonne);
 
         donnes = MainActivity.beloteSkorDb.donneDao().getAllDonnesPartiesCourantes(lastPartie.getPartieId());
 
         if (scoreA == 0 && scoreB == 0) {
-
             showDialogModeEquipe();
 
         }else{
             CreateDonne();
         }
-
     }
 
     public void CreateDonne() {
         if (mListener != null) {
             mListener.onScoreChangePreneur();
-
         }
 
         //todo gérer le distributeur
@@ -174,19 +182,18 @@ public class ScoresFragment extends Fragment {
         MainActivity.beloteSkorDb.donneDao().insertDonne(nextDonne);
         donnes = MainActivity.beloteSkorDb.donneDao().getAllDonnesPartiesCourantes(lastPartie.getPartieId());
         donneAdapter.setNotifyDonneAdapter(donnes);
-
     }
 
-    private void upDateCurrentDonne(){
-        //todo faire la gestion dans la db des tables
+    //todo voir comment gérer le double update lors du adddonne ou de la fermeture du child
+    public void upDateCurrentDonne(int numDonne){
         scoreA = donneAdapter.getScoreA();
         scoreB = donneAdapter.getScoreB();
         currentCouleur= donneAdapter.getCouleur();
         currentPreneur=donneAdapter.getPreneur();
-        belote = donneAdapter.getBelote();
+        belote =donneAdapter.getBelote();
         capot = donneAdapter.getCapot();
 
-        currentDonne = MainActivity.beloteSkorDb.donneDao().getLastDonne();
+        currentDonne = MainActivity.beloteSkorDb.donneDao().getDonnebyNumDonne(numDonne,lastPartie.getPartieId());
 
         currentDonne.setScore1(scoreA);
         currentDonne.setScore2(scoreB);
@@ -196,15 +203,19 @@ public class ScoresFragment extends Fragment {
         currentDonne.setCapot(capot);
 
         MainActivity.beloteSkorDb.donneDao().updateDonne(currentDonne);
+
+        //todo retirer après validation de l'update (test)
+        firstDonne=MainActivity.beloteSkorDb.donneDao().getDonnebyNumDonne(numDonne,lastPartie.getPartieId());
+
+        Log.i(TAG, "upDateCurrentDonne: " + firstDonne.getScore1() + " " + firstDonne.getScore2() + " " + firstDonne.getPreneur().getNomJoueur()+ " " +
+        firstDonne.getCouleur() + " " + firstDonne.getBelote().getNomEquipe() + " "+ firstDonne.getCapot().getNomEquipe()+ " "+ firstDonne.getNumDonne());
     }
 
     private void showDialogModeEquipe() {
 
         if (mListener != null) {
             mListener.onScoresDonneNullChoice();
-
         }
-
     }
 
 
@@ -236,8 +247,6 @@ public class ScoresFragment extends Fragment {
         lastJoueur2EqA = lastEquipeA.getJoueur2().getNomJoueur();
         lastJoueur1EqB = lastEquipeB.getJoueur1().getNomJoueur();
         lastJoueur2EqB = lastEquipeB.getJoueur2().getNomJoueur();
-
-
     }
 
     private void displayLogTestTablePartie() {

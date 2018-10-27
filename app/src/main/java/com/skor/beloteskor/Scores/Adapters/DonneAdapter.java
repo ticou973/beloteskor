@@ -33,9 +33,8 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
     private int scoreA, scoreB;
     private Joueur preneur;
     private Couleur couleur;
-    private Equipe belote, capot, equipeA, equipeB;
-
-
+    private Equipe belote = new Equipe("NoBelote");
+    private Equipe capot = new Equipe("NoCapot");
 
     private Context mContext;
     private GestureDetector detector;
@@ -49,6 +48,7 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
 
     public interface OnDonneAdapterListener {
         String[] onDonneAdapterPlayers();
+        void onDonneAdapterUpdateDonne(int numDonne);
     }
 
                                     //LifeCycle
@@ -151,6 +151,7 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
                     holder.setListenerChecked(holder.getCapot_team1(),holder.getCapot_team2());
                     holder.setListenerChecked(holder.getCapot_team2(),holder.getCapot_team1());
 
+
                     //Gestion de la couleur prise
                     setListenerClickCouleur(holder, holder.getPreneur_carreau(),holder.getPreneur_coeur(),holder.getPreneur_pique(),holder.getPreneur_trefle());
                     setListenerClickCouleur(holder, holder.getPreneur_coeur(),holder.getPreneur_carreau(),holder.getPreneur_pique(),holder.getPreneur_trefle());
@@ -170,16 +171,23 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
                 } else {
                     isExpanded.set(position, false);
                     holder.collapse(position + 1);
-                    scoreA = holder.getScoreEquipeA();
-                    scoreB = holder.getScoreEquipeB();
+                    capot = holder.getCapot();
+                    belote = holder.getBelote();
+                    upDatecurrentDonne(position+1);
                 }
             }
         });
     }
 
+    private void upDatecurrentDonne(int numDonne) {
+
+        if (mListener != null) {
+            mListener.onDonneAdapterUpdateDonne(numDonne);
+        }
+
+    }
+
     //todo voir pour déplacer ses méthodes dans ViewHolder
-
-
     private void initNumberPicker(final DonneViewHolder holder) {
         //gestion du detector
         detector = new GestureDetector(mContext, new GestureDetector.OnGestureListener() {
@@ -242,10 +250,14 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
                 if (numberPickerposition == 1) {
                     holder.setScoreEquipeA(newVal);
                     holder.setScoreEquipeB(162 - newVal);
+                    scoreA = holder.getScoreEquipeA();
+                    scoreB = holder.getScoreEquipeB();
 
                 } else if (numberPickerposition == 2) {
                     holder.setScoreEquipeB(newVal);
                     holder.setScoreEquipeA(162 - newVal);
+                    scoreA = holder.getScoreEquipeA();
+                    scoreB = holder.getScoreEquipeB();
                 }
             }
         });
