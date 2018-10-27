@@ -7,11 +7,9 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import com.shawnlin.numberpicker.NumberPicker;
 import com.skor.beloteskor.Model_DB.MainDb.Donne;
@@ -26,7 +24,8 @@ import java.util.List;
 
 public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
 
-    List<Donne> donnes;
+    private List<Donne> donnes;
+    private Donne currentDonne;
     private ArrayList<Boolean> isExpanded = new ArrayList<>();
     private float beginX, beginY;
     private int width;
@@ -34,7 +33,7 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
     private int scoreA, scoreB;
     private Joueur preneur;
     private Couleur couleur;
-    private Equipe belote, capot;
+    private Equipe belote, capot, equipeA, equipeB;
 
 
 
@@ -52,7 +51,6 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
         String[] onDonneAdapterPlayers();
     }
 
-
                                     //LifeCycle
     @Override
     public DonneViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -60,24 +58,23 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
         return new DonneViewHolder(view);
     }
 
-
     @Override
     public void onBindViewHolder(final DonneViewHolder holder, final int position) {
 
         //todo voir comment le recycler view se place toujours à la fin (dernier item)
-
-        Donne donne= donnes.get(position);
-        scoreA = donne.getScore1();
-        scoreB = donne.getScore2();
+        currentDonne = donnes.get(position);
+        scoreA = currentDonne.getScore1();
+        scoreB = currentDonne.getScore2();
+        //get the players with an interface
+        //todo à voir avec la bdd pour les players
+        getPlayers();
 
         // Get the application context
         mContext = holder.itemView.getContext();
 
                                  //ViewHolder
-
         initCardViewParent(holder,position);
         initCarrdViewChild(holder,position);
-
     }
 
     @Override
@@ -133,22 +130,15 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
 
     private void initCarrdViewChild(final DonneViewHolder holder, final int position) {
 
-        //get the players with an interface
-        //todo à voir avec la bdd pour les players
-        getPlayers();
-
         holder.getCardViewDonne().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 //Gestion de l'item courant
-
                 if (!isExpanded.get(position)) {
 
                     //ouverture de l'item courant
                     holder.expand(position + 1);
                     isExpanded.set(position, true);
-
 
                     //Récupération des noms de joueurs
                     holder.setPlayer1Name(getPlayers()[0]);
@@ -156,30 +146,16 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
                     holder.setPlayer3Name(getPlayers()[2]);
                     holder.setPlayer4Name(getPlayers()[3]);
 
-                    //Gestion de la belote et capot
-                    holder.getBelote_team1().setChecked(false);
-                    holder.getBelote_team2().setChecked(false);
-                    holder.getCapot_team1().setChecked(false);
-                    holder.getCapot_team2().setChecked(false);
-                    holder.getBelote_team1().setBackgroundResource(R.drawable.radius_button_accent);
-                    holder.getBelote_team2().setBackgroundResource(R.drawable.radius_button_accent);
-                    holder.getCapot_team1().setBackgroundResource(R.drawable.radius_button_accent);
-                    holder.getCapot_team2().setBackgroundResource(R.drawable.radius_button_accent);
-
-                    setListenerChecked(holder.getBelote_team1(),holder.getBelote_team2());
-                    setListenerChecked(holder.getBelote_team2(),holder.getBelote_team1());
-                    setListenerChecked(holder.getCapot_team1(),holder.getCapot_team2());
-                    setListenerChecked(holder.getCapot_team2(),holder.getCapot_team1());
-
-
+                    holder.setListenerChecked(holder.getBelote_team1(),holder.getBelote_team2());
+                    holder.setListenerChecked(holder.getBelote_team2(),holder.getBelote_team1());
+                    holder.setListenerChecked(holder.getCapot_team1(),holder.getCapot_team2());
+                    holder.setListenerChecked(holder.getCapot_team2(),holder.getCapot_team1());
 
                     //Gestion de la couleur prise
                     setListenerClickCouleur(holder, holder.getPreneur_carreau(),holder.getPreneur_coeur(),holder.getPreneur_pique(),holder.getPreneur_trefle());
                     setListenerClickCouleur(holder, holder.getPreneur_coeur(),holder.getPreneur_carreau(),holder.getPreneur_pique(),holder.getPreneur_trefle());
                     setListenerClickCouleur(holder, holder.getPreneur_pique(),holder.getPreneur_coeur(),holder.getPreneur_carreau(),holder.getPreneur_trefle());
                     setListenerClickCouleur(holder, holder.getPreneur_trefle(),holder.getPreneur_coeur(),holder.getPreneur_pique(),holder.getPreneur_carreau());
-
-
 
                     //Gestion du preneur
 
@@ -188,133 +164,91 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
                     setListenerClickPreneur(holder, holder.getPlayer3Name(),holder.getPlayer2Name(),holder.getPlayer1Name(),holder.getPlayer4Name());
                     setListenerClickPreneur(holder, holder.getPlayer4Name(),holder.getPlayer2Name(),holder.getPlayer3Name(),holder.getPlayer1Name());
 
-
-
                     //NumberPickerScore
-
-                    //gestion du detector
-
-                    detector = new GestureDetector(mContext, new GestureDetector.OnGestureListener() {
-                        @Override
-                        public boolean onDown(MotionEvent e) {
-                            return true;
-                        }
-
-                        @Override
-                        public void onShowPress(MotionEvent e) {
-
-                        }
-
-                        @Override
-                        public boolean onSingleTapUp(MotionEvent e) {
-                            return true;
-                        }
-
-                        @Override
-                        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-                            return true;
-                        }
-
-                        @Override
-                        public void onLongPress(MotionEvent e) {
-
-                        }
-
-                        @Override
-                        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-
-
-                            //todo gérer le fling gauche et droite pour envoyer le numberpicker et le fling vertical pour selection numberpicker. peut être dupliquer dans le scroll
-
-                            if (e2.getX() < e1.getX() && Math.abs(e2.getY() - e1.getY()) < 100) {
-
-                                numberPickerposition = 1; //Left
-
-
-                                float endX = beginX - width / 2 - 40;
-                                Toast.makeText(mContext, String.valueOf(endX), Toast.LENGTH_SHORT).show();
-                                float endY = beginY;
-
-
-                                holder.animateNumberPicker(endX, endY);
-
-
-                            } else if (e2.getX() > e1.getX() && Math.abs(e2.getY() - e1.getY()) < 100) {
-
-                                numberPickerposition = 2; //Right
-
-                                float endX = beginX + width / 2 + 40;
-
-                                float endY = beginY;
-
-
-                                holder.animateNumberPicker(endX, endY);
-
-
-                            } else if (Math.abs(e2.getY() - e1.getY()) > 100) {
-
-                                holder.getNumberPicker().setOnTouchListener(null);
-
-                            }
-
-                            return true;
-                        }
-                    });
-
-                    //todo gerer le perform Click
-
-                    //Gestion du mouvement OnFling
-
-                    holder.getNumberPicker().setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-
-                        }
-                    });
-
-                    holder.getNumberPicker().setOnTouchListener(new View.OnTouchListener() {
-                        @Override
-                        public boolean onTouch(View v, MotionEvent event) {
-                            width = v.getWidth();
-                            beginX = v.getLeft();
-                            beginY = v.getTop();
-
-
-                            return detector.onTouchEvent(event);
-                        }
-                    });
-
-
-
-
-                    //todo voir si intéressant de gérer le capot à 0 plutot que touche
-                    holder.getNumberPicker().setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-                        @Override
-                        public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-
-                            if (numberPickerposition == 1) {
-
-                                holder.setScoreEquipeA(newVal);
-                                holder.setScoreEquipeB(162 - newVal);
-
-                            } else if (numberPickerposition == 2) {
-
-                                holder.setScoreEquipeB(newVal);
-                                holder.setScoreEquipeA(162 - newVal);
-                            }
-                        }
-                    });
+                    initNumberPicker(holder);
 
                 } else {
                     isExpanded.set(position, false);
                     holder.collapse(position + 1);
                     scoreA = holder.getScoreEquipeA();
                     scoreB = holder.getScoreEquipeB();
-
                 }
             }
         });
+    }
 
+    //todo voir pour déplacer ses méthodes dans ViewHolder
+
+
+    private void initNumberPicker(final DonneViewHolder holder) {
+        //gestion du detector
+        detector = new GestureDetector(mContext, new GestureDetector.OnGestureListener() {
+            @Override
+            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                //todo gérer le fling gauche et droite pour envoyer le numberpicker et le fling vertical pour selection numberpicker. peut être dupliquer dans le scroll
+
+                if (e2.getX() < e1.getX() && Math.abs(e2.getY() - e1.getY()) < 100) {
+                    numberPickerposition = 1; //Left
+                    float endX = beginX - width / 2 - 40;
+                    Toast.makeText(mContext, String.valueOf(endX), Toast.LENGTH_SHORT).show();
+                    float endY = beginY;
+                    holder.animateNumberPicker(endX, endY);
+
+                } else if (e2.getX() > e1.getX() && Math.abs(e2.getY() - e1.getY()) < 100) {
+                    numberPickerposition = 2; //Right
+                    float endX = beginX + width / 2 + 40;
+                    float endY = beginY;
+                    holder.animateNumberPicker(endX, endY);
+
+                } else if (Math.abs(e2.getY() - e1.getY()) > 100) {
+                    holder.getNumberPicker().setOnTouchListener(null);
+                }
+                return true;
+            }
+            @Override
+            public boolean onDown(MotionEvent e) {
+                return true;
+            }
+            @Override
+            public void onShowPress(MotionEvent e) { }
+            @Override
+            public boolean onSingleTapUp(MotionEvent e) {
+                return true;
+            }
+            @Override
+            public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) { return true; }
+            @Override
+            public void onLongPress(MotionEvent e) { }
+        });
+
+        //todo gerer le perform Click
+        //Gestion du mouvement OnFling
+
+        holder.getNumberPicker().setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                width = v.getWidth();
+                beginX = v.getLeft();
+                beginY = v.getTop();
+                return detector.onTouchEvent(event);
+            }
+        });
+
+        //todo voir si intéressant de gérer le capot à 0 plutot que touche
+        holder.getNumberPicker().setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+
+                if (numberPickerposition == 1) {
+                    holder.setScoreEquipeA(newVal);
+                    holder.setScoreEquipeB(162 - newVal);
+
+                } else if (numberPickerposition == 2) {
+                    holder.setScoreEquipeB(newVal);
+                    holder.setScoreEquipeA(162 - newVal);
+                }
+            }
+        });
     }
 
     private void setListenerClickPreneur(final DonneViewHolder holder, final TextView mainJoueur, final TextView secondJoueur, final TextView thirdJoueur, final TextView fourthJoueur) {
@@ -322,16 +256,14 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
         mainJoueur.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 holder.setColorPlayerPreneur(mainJoueur, true);
                 holder.setColorPlayerPreneur(secondJoueur, false);
                 holder.setColorPlayerPreneur(thirdJoueur, false);
                 holder.setColorPlayerPreneur(fourthJoueur, false);
 
+                preneur = new Joueur(mainJoueur.getText().toString());
             }
         });
-
-
     }
 
     private void setListenerClickCouleur(final DonneViewHolder holder, final ImageView mainCouleur, final ImageView secondCouleur, final ImageView thirdCouleur, final ImageView fourthCouleur) {
@@ -343,36 +275,18 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
                 holder.setColorPreneurCouleur(thirdCouleur, false);
                 holder.setColorPreneurCouleur(fourthCouleur, false);
 
-            }
-        });
-
-    }
-
-    private void setListenerChecked(ToggleButton mainTb, final ToggleButton secondTb) {
-
-        mainTb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                if (isChecked && secondTb.isChecked()) {
-
-                    secondTb.setChecked(false);
-                    secondTb.setAlpha(0.3f);
-                    buttonView.setAlpha(1.0f);
-
-
-                } else if (isChecked && !secondTb.isChecked()) {
-
-                    secondTb.setAlpha(0.3f);
-                    buttonView.setAlpha(1.0f);
-
-                } else if (!isChecked && !secondTb.isChecked()) {
-
-                    buttonView.setAlpha(1.0f);
-                    secondTb.setAlpha(1.0f);
+                if(mainCouleur.getId()==R.id.preneur_carreau){
+                    couleur = Couleur.CARREAU;
+                }else if (mainCouleur.getId()==R.id.preneur_coeur){
+                    couleur = Couleur.COEUR;
+                }else if (mainCouleur.getId()==R.id.preneur_pique){
+                    couleur = Couleur.PIQUE;
+                }else if (mainCouleur.getId()==R.id.preneur_trefle){
+                    couleur = Couleur.TREFLE;
                 }
             }
         });
+
     }
 
 
@@ -383,7 +297,6 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
         notifyDataSetChanged();
 
     }
-
 
     public String[] getPlayers() {
 
@@ -396,27 +309,15 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
         return null;
     }
 
-    public int getScoreA() {
-        return scoreA;
-    }
+    public int getScoreA() { return scoreA; }
 
-    public int getScoreB() {
-        return scoreB;
-    }
+    public int getScoreB() { return scoreB; }
 
-    public Joueur getPreneur() {
-        return preneur;
-    }
+    public Joueur getPreneur() { return preneur; }
 
-    public Couleur getCouleur() {
-        return couleur;
-    }
+    public Couleur getCouleur() { return couleur; }
 
-    public Equipe getBelote() {
-        return belote;
-    }
+    public Equipe getBelote() { return belote; }
 
-    public Equipe getCapot() {
-        return capot;
-    }
+    public Equipe getCapot() { return capot; }
 }

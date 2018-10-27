@@ -168,6 +168,10 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
 
                 return true;
 
+            case R.id.infos_donne:
+
+                return true;
+
             case R.id.app_bar_search:
 
                 return true;

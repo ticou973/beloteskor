@@ -4,12 +4,14 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.shawnlin.numberpicker.NumberPicker;
+import com.skor.beloteskor.Model_DB.MainDb.Equipe;
 import com.skor.beloteskor.R;
 
 import static android.graphics.Color.rgb;
@@ -27,6 +29,7 @@ public class DonneViewHolder extends RecyclerView.ViewHolder  {
     private NumberPicker numberPicker;
     private ToggleButton capot_team1, capot_team2, belote_team1, belote_team2;
     private ImageView preneur_trefle, preneur_carreau, preneur_pique, preneur_coeur;
+    private Equipe belote, capot, equipeA, equipeB;
 
 
     public DonneViewHolder(View itemView) {
@@ -114,13 +117,11 @@ public class DonneViewHolder extends RecyclerView.ViewHolder  {
 
     }
 
-
     public void setColorPreneurCouleur (ImageView couleur, boolean focus) {
 
         int red, green, blue;
 
         if(focus) {
-
             red = 255;
             green = 235;
             blue = 59;
@@ -132,9 +133,6 @@ public class DonneViewHolder extends RecyclerView.ViewHolder  {
         }
 
         couleur.setBackgroundColor(rgb(red,green,blue));
-
-
-
     }
 
     public void setColorPlayerPreneur (TextView preneur, boolean focus) {
@@ -142,7 +140,6 @@ public class DonneViewHolder extends RecyclerView.ViewHolder  {
         int red, green, blue;
 
         if(focus) {
-
             red = 255;
             green = 235;
             blue = 59;
@@ -154,8 +151,57 @@ public class DonneViewHolder extends RecyclerView.ViewHolder  {
         }
 
         preneur.setBackgroundColor(rgb(red,green,blue));
+    }
 
+    public void setListenerChecked(final ToggleButton mainTb, final ToggleButton secondTb) {
 
+        mainTb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                if (isChecked && secondTb.isChecked()) {
+
+                    setColorBeloteCapot(mainTb,secondTb,1.0f,0.3f);
+                    mainTb.setChecked(true);
+                    secondTb.setChecked(false);
+
+                     if(mainTb.getId()==R.id.belote_team1_btn){ belote = equipeA;
+
+                    }else if(mainTb.getId()==R.id.belote_team2_btn){ belote = equipeB;
+
+                    }else if(mainTb.getId()==R.id.capot_team1_btn){ capot = equipeA;
+
+                    }else if(mainTb.getId()==R.id.capot_team2_btn){ capot = equipeB;
+                    }
+
+                } else if (isChecked && !secondTb.isChecked()) {
+                    setColorBeloteCapot(mainTb,secondTb,1.0f,0.3f);
+                    mainTb.setChecked(true);
+                    secondTb.setChecked(false);
+
+                   if(mainTb.getId()==R.id.belote_team1_btn){ belote = equipeA;
+
+                    }else if(mainTb.getId()==R.id.belote_team2_btn){ belote = equipeB;
+
+                    }else if(mainTb.getId()==R.id.capot_team1_btn){ capot = equipeA;
+
+                    }else if(mainTb.getId()==R.id.capot_team2_btn){ capot = equipeB;
+                    }
+
+                } else if (!isChecked && !secondTb.isChecked()) {
+                    mainTb.setChecked(false);
+                    secondTb.setChecked(false);
+
+                    setColorBeloteCapot(mainTb,secondTb,1.0f,1.0f);
+                }
+            }
+        });
+    }
+
+    public void setColorBeloteCapot (ToggleButton mainTb, ToggleButton secondTb, Float mainAlpha, Float secondAlpha){
+
+        mainTb.setAlpha(mainAlpha);
+        secondTb.setAlpha(secondAlpha);
     }
 
     public void setScoreEquipeA(int scoreEquipeA) {
@@ -185,12 +231,10 @@ public class DonneViewHolder extends RecyclerView.ViewHolder  {
         return scoreB;
     }
 
-
     public void setNumDonne (int numeroDonne) {
 
         numDonne.setText(String.valueOf(numeroDonne));
     }
-
 
     public void setPlayer1Name (String name){
 
@@ -212,62 +256,48 @@ public class DonneViewHolder extends RecyclerView.ViewHolder  {
         player4Name.setText(name);
     }
 
-
-    public void setBGColor (int color){
-
-        cardViewDonne.setBackgroundColor(color);
-    }
+    public void setBGColor (int color){ cardViewDonne.setBackgroundColor(color); }
 
                         //GETTER ET SETTER
+    public TextView getPlayer1Name() { return player1Name; }
 
-    public TextView getPlayer1Name() {
-        return player1Name;
-    }
+    public TextView getPlayer2Name() { return player2Name; }
 
-    public TextView getPlayer2Name() {
-        return player2Name;
-    }
+    public TextView getPlayer3Name() { return player3Name; }
 
-    public TextView getPlayer3Name() {
-        return player3Name;
-    }
+    public TextView getPlayer4Name() { return player4Name; }
 
-    public TextView getPlayer4Name() {
-        return player4Name;
-    }
+    public ToggleButton getCapot_team1() { return capot_team1; }
 
-    public ToggleButton getCapot_team1() {
-        return capot_team1;
-    }
+    public ToggleButton getCapot_team2() { return capot_team2; }
 
-    public ToggleButton getCapot_team2() {
-        return capot_team2;
-    }
+    public ToggleButton getBelote_team1() { return belote_team1; }
 
-    public ToggleButton getBelote_team1() {
-        return belote_team1;
-    }
+    public ToggleButton getBelote_team2() { return belote_team2; }
 
-    public ToggleButton getBelote_team2() {
-        return belote_team2;
-    }
+    public ImageView getPreneur_trefle() { return preneur_trefle; }
 
-    public ImageView getPreneur_trefle() {
-        return preneur_trefle;
-    }
+    public ImageView getPreneur_carreau() { return preneur_carreau; }
 
-    public ImageView getPreneur_carreau() {
-        return preneur_carreau;
-    }
+    public ImageView getPreneur_pique() { return preneur_pique; }
 
-    public ImageView getPreneur_pique() {
-        return preneur_pique;
-    }
+    public ImageView getPreneur_coeur() { return preneur_coeur; }
 
-    public ImageView getPreneur_coeur() {
-        return preneur_coeur;
-    }
+    public Equipe getBelote() { return belote; }
 
+    public void setBelote(Equipe belote) { this.belote = belote; }
 
+    public Equipe getCapot() { return capot; }
 
+    public void setCapot(Equipe capot) { this.capot = capot; }
+
+    public Equipe getEquipeA() { return equipeA; }
+
+    public void setEquipeA(Equipe equipeA) { this.equipeA = equipeA; }
+
+    public Equipe getEquipeB() { return equipeB; }
+
+    public void setEquipeB(Equipe equipeB) { this.equipeB = equipeB; }
+
+    public void setCheckedTb(boolean b) { }
 }

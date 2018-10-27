@@ -137,7 +137,6 @@ public class ScoresFragment extends Fragment {
 
         testTablePartie();
 
-
         //Donnes
         currentDonne = new Donne(lastPartie.getPartieId(),1,lastPremierDistrib,0,0);
 
@@ -182,12 +181,19 @@ public class ScoresFragment extends Fragment {
         //todo faire la gestion dans la db des tables
         scoreA = donneAdapter.getScoreA();
         scoreB = donneAdapter.getScoreB();
-        donneAdapter.getCouleur();
+        currentCouleur= donneAdapter.getCouleur();
+        currentPreneur=donneAdapter.getPreneur();
+        belote = donneAdapter.getBelote();
+        capot = donneAdapter.getCapot();
 
         currentDonne = MainActivity.beloteSkorDb.donneDao().getLastDonne();
 
         currentDonne.setScore1(scoreA);
         currentDonne.setScore2(scoreB);
+        currentDonne.setCouleur(currentCouleur);
+        currentDonne.setPreneur(currentPreneur);
+        currentDonne.setBelote(belote);
+        currentDonne.setCapot(capot);
 
         MainActivity.beloteSkorDb.donneDao().updateDonne(currentDonne);
     }
