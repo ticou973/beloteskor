@@ -275,13 +275,112 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <TextView
+                android:id="@+id/nb_carre_team2"
+                android:layout_width="0dp"
+                android:layout_height="16dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="TextView"
+                app:layout_constraintBaseline_toBaselineOf="@+id/carre_team2_btn"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/carre_team2_btn" />
+
+            <TextView
+                android:id="@+id/nb_cent_team2"
+                android:layout_width="0dp"
+                android:layout_height="16dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="TextView"
+                app:layout_constraintBaseline_toBaselineOf="@+id/cent_team2_btn"
+                app:layout_constraintEnd_toStartOf="@+id/carre_team2_btn"
+                app:layout_constraintStart_toEndOf="@+id/cent_team2_btn" />
+
+            <TextView
+                android:id="@+id/nb_tierce_team2"
+                android:layout_width="0dp"
+                android:layout_height="16dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="TextView"
+                app:layout_constraintBaseline_toBaselineOf="@+id/tierce_team2_btn"
+                app:layout_constraintEnd_toStartOf="@+id/cinquante_team2_btn"
+                app:layout_constraintStart_toEndOf="@+id/tierce_team2_btn" />
+
+            <TextView
+                android:id="@+id/nb_carre_team1"
+                android:layout_width="0dp"
+                android:layout_height="16dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="TextView"
+                app:layout_constraintBaseline_toBaselineOf="@+id/carre_team1_btn"
+                app:layout_constraintEnd_toStartOf="@+id/delimiter2"
+                app:layout_constraintStart_toEndOf="@+id/carre_team1_btn" />
+
+            <TextView
+                android:id="@+id/nb_cinquante_team1"
+                android:layout_width="0dp"
+                android:layout_height="16dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="TextView"
+                app:layout_constraintBaseline_toBaselineOf="@+id/cinquante_team1_btn"
+                app:layout_constraintEnd_toStartOf="@+id/delimiter2"
+                app:layout_constraintStart_toEndOf="@+id/cinquante_team1_btn" />
+
+            <TextView
+                android:id="@+id/nb_cinquante_team2"
+                android:layout_width="0dp"
+                android:layout_height="16dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="TextView"
+                app:layout_constraintBaseline_toBaselineOf="@+id/cinquante_team2_btn"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/cinquante_team2_btn" />
+
+            <TextView
+                android:id="@+id/nbCent_team1"
+                android:layout_width="0dp"
+                android:layout_height="16dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="TextView"
+                app:layout_constraintBaseline_toBaselineOf="@+id/cent_team1_btn"
+                app:layout_constraintEnd_toStartOf="@+id/carre_team1_btn"
+                app:layout_constraintStart_toEndOf="@+id/cent_team1_btn" />
+
+            <TextView
+                android:id="@+id/nb_tierce_team1"
+                android:layout_width="0dp"
+                android:layout_height="16dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="TextView"
+                app:layout_constraintBaseline_toBaselineOf="@+id/tierce_team1_btn"
+                app:layout_constraintEnd_toStartOf="@+id/cinquante_team1_btn"
+                app:layout_constraintStart_toEndOf="@+id/tierce_team1_btn" />
+
+            <ImageView
+                android:id="@+id/delimiter2"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:contentDescription="@string/delimiter"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/delimiters" />
+
             <ToggleButton
                 android:id="@+id/carre_team2_btn"
-                android:layout_width="75dp"
+                android:layout_width="60dp"
                 android:layout_height="38dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:text="ToggleButton"
+                android:layout_marginEnd="32dp"
+                android:padding="8dp"
                 android:textAllCaps="false"
                 android:textOff="Carré"
                 android:textOn="Carré"
@@ -290,21 +389,22 @@
 
             <ToggleButton
                 android:id="@+id/cent_team2_btn"
-                android:layout_width="75dp"
+                android:layout_width="60dp"
                 android:layout_height="38dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
+                android:padding="8dp"
                 android:textAllCaps="false"
                 android:textOff="100"
                 android:textOn="100"
-                app:layout_constraintEnd_toStartOf="@+id/carre_team2_btn"
-                app:layout_constraintTop_toBottomOf="@+id/tierce_team2_btn" />
+                app:layout_constraintTop_toBottomOf="@+id/tierce_team2_btn"
+                tools:layout_editor_absoluteX="184dp" />
 
             <ToggleButton
                 android:id="@+id/cinquante_team2_btn"
-                android:layout_width="75dp"
+                android:layout_width="60dp"
                 android:layout_height="38dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="32dp"
+                android:padding="8dp"
                 android:textAllCaps="false"
                 android:textOff="50"
                 android:textOn="50"
@@ -313,35 +413,34 @@
 
             <ToggleButton
                 android:id="@+id/tierce_team2_btn"
-                android:layout_width="75dp"
+                android:layout_width="60dp"
                 android:layout_height="38dp"
-                android:layout_marginEnd="8dp"
-                android:text="ToggleButton"
+                android:padding="8dp"
                 android:textAllCaps="false"
                 android:textOff="Tierce"
                 android:textOn="Tierce"
-                app:layout_constraintEnd_toStartOf="@+id/cinquante_team2_btn"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout_editor_absoluteX="184dp" />
 
             <ToggleButton
                 android:id="@+id/carre_team1_btn"
-                android:layout_width="75dp"
+                android:layout_width="60dp"
                 android:layout_height="38dp"
-                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:text="ToggleButton"
+                android:layout_marginEnd="32dp"
+                android:padding="8dp"
                 android:textAllCaps="false"
                 android:textOff="Carré"
                 android:textOn="Carré"
-                app:layout_constraintStart_toEndOf="@+id/cent_team1_btn"
+                app:layout_constraintEnd_toStartOf="@+id/delimiter2"
                 app:layout_constraintTop_toBottomOf="@+id/cinquante_team1_btn" />
 
             <ToggleButton
                 android:id="@+id/cent_team1_btn"
-                android:layout_width="75dp"
+                android:layout_width="60dp"
                 android:layout_height="38dp"
-                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:padding="8dp"
                 android:textAllCaps="false"
                 android:textOff="100"
                 android:textOn="100"
@@ -350,22 +449,21 @@
 
             <ToggleButton
                 android:id="@+id/cinquante_team1_btn"
-                android:layout_width="75dp"
+                android:layout_width="60dp"
                 android:layout_height="38dp"
-                android:layout_marginStart="8dp"
-                android:text="ToggleButton"
+                android:layout_marginEnd="32dp"
+                android:padding="8dp"
                 android:textAllCaps="false"
                 android:textOff="50"
                 android:textOn="50"
-                app:layout_constraintStart_toEndOf="@+id/tierce_team1_btn"
+                app:layout_constraintEnd_toStartOf="@+id/delimiter2"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ToggleButton
                 android:id="@+id/tierce_team1_btn"
-                android:layout_width="75dp"
+                android:layout_width="60dp"
                 android:layout_height="38dp"
-                android:layout_marginStart="8dp"
-                android:text="ToggleButton"
+                android:padding="8dp"
                 android:textAllCaps="false"
                 android:textOff="Tierce"
                 android:textOn="Tierce"

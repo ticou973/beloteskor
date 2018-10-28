@@ -24,10 +24,10 @@ public class DonneViewHolder extends RecyclerView.ViewHolder  {
 
     //child
 
-    private TextView player1Name, player2Name, player3Name, player4Name;
+    private TextView player1Name, player2Name, player3Name, player4Name,nbTierce_team1,nbTierce_team2,nbCinquante_team1,nbCinquante_team2,nbCent_team1,nbCent_team2;
     private FrameLayout flLeft, flRight;
     private NumberPicker numberPicker;
-    private ToggleButton capot_team1, capot_team2, belote_team1, belote_team2;
+    private ToggleButton capot_team1, capot_team2, belote_team1, belote_team2,tierce_team1, tierce_team2,cinquante_team1,cinquante_team2,cent_team1,cent_team2, carre_team1,carre_team2;
     private ImageView preneur_trefle, preneur_carreau, preneur_pique, preneur_coeur;
     private Equipe belote = new Equipe("NoBelote");
     private Equipe capot = new Equipe("NoCapot");
@@ -61,8 +61,23 @@ public class DonneViewHolder extends RecyclerView.ViewHolder  {
         preneur_trefle = itemView.findViewById(R.id.preneur_trefle);
         preneur_coeur = itemView.findViewById(R.id.preneur_coeur);
 
-    }
+        //Childe Annonces
+        tierce_team1=itemView.findViewById(R.id.tierce_team1_btn);
+        tierce_team2= itemView.findViewById(R.id.tierce_team2_btn);
+        cinquante_team1=itemView.findViewById(R.id.cinquante_team1_btn);
+        cinquante_team2=itemView.findViewById(R.id.cinquante_team2_btn);
+        cent_team1=itemView.findViewById(R.id.cent_team1_btn);
+        cent_team2=itemView.findViewById(R.id.cent_team2_btn);
+        carre_team1=itemView.findViewById(R.id.carre_team1_btn);
+        carre_team2=itemView.findViewById(R.id.carre_team2_btn);
+        nbCent_team1=itemView.findViewById(R.id.nbCent_team1);
+        nbCent_team2=itemView.findViewById(R.id.nb_cent_team2);
+        nbTierce_team1=itemView.findViewById(R.id.nb_tierce_team1);
+        nbTierce_team2=itemView.findViewById(R.id.nb_tierce_team2);
+        nbCinquante_team1=itemView.findViewById(R.id.nb_cinquante_team1);
+        nbCinquante_team2=itemView.findViewById(R.id.nb_cinquante_team2);
 
+    }
 
                         //Méthodes du ViewHolder
 
