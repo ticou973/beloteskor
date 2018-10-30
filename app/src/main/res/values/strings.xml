@@ -48,6 +48,14 @@
     <string name="right">Right</string>
     <string name="left">Left</string>
     <string name="cent">Cent</string>
+    <string name="_0">0</string>
+    <string name="tierce">Tierce</string>
+    <string name="carre">Carré</string>
+    <string name="_100">100</string>
+    <string name="_50">50</string>
+    <string name="valet">Valet</string>
+    <string name="_9">9</string>
+    <string name="autre">Autre</string>
 
 
 </resources>
