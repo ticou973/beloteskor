@@ -2,6 +2,7 @@ package com.skor.beloteskor.Scores.Adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -9,13 +10,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.shawnlin.numberpicker.NumberPicker;
+import com.skor.beloteskor.MainActivity;
 import com.skor.beloteskor.Model_DB.MainDb.Donne;
 import com.skor.beloteskor.Model_DB.MainDb.Equipe;
 import com.skor.beloteskor.Model_DB.MainDb.Joueur;
+import com.skor.beloteskor.Model_DB.MainDb.Partie;
 import com.skor.beloteskor.Model_DB.UtilsDb.Couleur;
+import com.skor.beloteskor.Model_DB.UtilsDb.TypeAnnonce;
 import com.skor.beloteskor.R;
 import com.skor.beloteskor.Scores.ViewHolders.DonneViewHolder;
 
@@ -35,6 +38,9 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
     private Couleur couleur;
     private Equipe belote = new Equipe("NoBelote");
     private Equipe capot = new Equipe("NoCapot");
+    private Partie lastPartie;
+    private String lastTypeAnnonce;
+    private final static String TAG="coucou";
 
     private Context mContext;
     private GestureDetector detector;
@@ -55,6 +61,9 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
     @Override
     public DonneViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_donne_score, parent, false);
+
+        initData();
+
         return new DonneViewHolder(view);
     }
 
@@ -65,6 +74,13 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
         currentDonne = donnes.get(position);
         scoreA = currentDonne.getScore1();
         scoreB = currentDonne.getScore2();
+
+        //init donnes et types de parties
+        holder.setGestionScoreGone();
+        holder.setCardViewAnnoncesGone();
+        holder.setCardViewCarreGone();
+        holder.setCardViewAnnoncesBtnGone();
+
         //get the players with an interface
         //todo à voir avec la bdd pour les players
         getPlayers();
@@ -140,16 +156,19 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
                     holder.expand(position + 1);
                     isExpanded.set(position, true);
 
+                    //todo expand les autres cardview si déja renseigné
+
                     //Récupération des noms de joueurs
                     holder.setPlayer1Name(getPlayers()[0]);
                     holder.setPlayer2Name(getPlayers()[1]);
                     holder.setPlayer3Name(getPlayers()[2]);
                     holder.setPlayer4Name(getPlayers()[3]);
 
-                    holder.setListenerChecked(holder.getBelote_team1(),holder.getBelote_team2());
-                    holder.setListenerChecked(holder.getBelote_team2(),holder.getBelote_team1());
-                    holder.setListenerChecked(holder.getCapot_team1(),holder.getCapot_team2());
-                    holder.setListenerChecked(holder.getCapot_team2(),holder.getCapot_team1());
+                    //Gestion du preneur
+                    setListenerClickPreneur(holder, holder.getPlayer1Name(),holder.getPlayer2Name(),holder.getPlayer3Name(),holder.getPlayer4Name());
+                    setListenerClickPreneur(holder, holder.getPlayer2Name(),holder.getPlayer1Name(),holder.getPlayer3Name(),holder.getPlayer4Name());
+                    setListenerClickPreneur(holder, holder.getPlayer3Name(),holder.getPlayer2Name(),holder.getPlayer1Name(),holder.getPlayer4Name());
+                    setListenerClickPreneur(holder, holder.getPlayer4Name(),holder.getPlayer2Name(),holder.getPlayer3Name(),holder.getPlayer1Name());
 
 
                     //Gestion de la couleur prise
@@ -158,19 +177,25 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
                     setListenerClickCouleur(holder, holder.getPreneur_pique(),holder.getPreneur_coeur(),holder.getPreneur_carreau(),holder.getPreneur_trefle());
                     setListenerClickCouleur(holder, holder.getPreneur_trefle(),holder.getPreneur_coeur(),holder.getPreneur_pique(),holder.getPreneur_carreau());
 
-                    //Gestion du preneur
-
-                    setListenerClickPreneur(holder, holder.getPlayer1Name(),holder.getPlayer2Name(),holder.getPlayer3Name(),holder.getPlayer4Name());
-                    setListenerClickPreneur(holder, holder.getPlayer2Name(),holder.getPlayer1Name(),holder.getPlayer3Name(),holder.getPlayer4Name());
-                    setListenerClickPreneur(holder, holder.getPlayer3Name(),holder.getPlayer2Name(),holder.getPlayer1Name(),holder.getPlayer4Name());
-                    setListenerClickPreneur(holder, holder.getPlayer4Name(),holder.getPlayer2Name(),holder.getPlayer3Name(),holder.getPlayer1Name());
-
                     //NumberPickerScore
                     initNumberPicker(holder);
+
+                    //gestion de la belote et du capot
+                    holder.setListenerChecked(holder.getBelote_team1(),holder.getBelote_team2());
+                    holder.setListenerChecked(holder.getBelote_team2(),holder.getBelote_team1());
+                    holder.setListenerChecked(holder.getCapot_team1(),holder.getCapot_team2());
+                    holder.setListenerChecked(holder.getCapot_team2(),holder.getCapot_team1());
+
+                    //gestion des annonces
+                    holder.setListenerAnnoncesChecked(holder.getAnnonces_team1(),holder.getAnnonces_team2());
+                    holder.setListenerAnnoncesChecked(holder.getAnnonces_team2(),holder.getAnnonces_team1());
 
                 } else {
                     isExpanded.set(position, false);
                     holder.collapse(position + 1);
+                    holder.setCardViewAnnoncesBtnGone();
+                    holder.setCardViewAnnoncesGone();
+                    holder.setCardViewCarreGone();
                     capot = holder.getCapot();
                     belote = holder.getBelote();
                     upDatecurrentDonne(position+1);
@@ -178,6 +203,7 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
             }
         });
     }
+
 
     private void upDatecurrentDonne(int numDonne) {
 
@@ -198,7 +224,6 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
                 if (e2.getX() < e1.getX() && Math.abs(e2.getY() - e1.getY()) < 100) {
                     numberPickerposition = 1; //Left
                     float endX = beginX - width / 2 - 40;
-                    Toast.makeText(mContext, String.valueOf(endX), Toast.LENGTH_SHORT).show();
                     float endY = beginY;
                     holder.animateNumberPicker(endX, endY);
 
@@ -274,6 +299,21 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
                 holder.setColorPlayerPreneur(fourthJoueur, false);
 
                 preneur = new Joueur(mainJoueur.getText().toString());
+                holder.setGestionScoreVisible();
+
+                if(lastTypeAnnonce.equals(TypeAnnonce.SANS_ANNONCE.toString())){
+                    //todo voir ce if utile ainsi que le else
+                    Log.i(TAG, "onBindViewHolder: coucou adapter");
+
+                }else if(lastTypeAnnonce.equals(TypeAnnonce.AVEC_ANNONCES.toString())){
+                    Log.i(TAG, "onBindViewHolder: hello adapter");
+                    holder.setGestionScoreVisible();
+                    holder.setCardViewAnnoncesBtnVisible();
+
+                }else{
+                    Log.i(TAG, "onBindViewHolder: hello rien");
+                }
+
             }
         });
     }
@@ -301,6 +341,15 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
 
     }
 
+
+    private void initData() {
+        //Appel de la dernière partie
+
+        lastPartie = MainActivity.beloteSkorDb.partieDao().getLastPartie();
+
+        lastTypeAnnonce=lastPartie.getType().getTypeAnnonce();
+
+    }
 
     //todo voir si simplifiable le notify avec le ViewModel
     public void setNotifyDonneAdapter(List<Donne> donnes){

@@ -291,13 +291,9 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
         transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fl_fragment_name_score, teamScoreFragment).commit();
 
-
         ScoresFragment scoresFragment = new ScoresFragment();
-
         modeEquipe = ModeEquipe.MODE_EQUIPE_STATIQUE_ANONYME;
-
         replaceFragment(scoresFragment);
-
     }
 
                          //Fragments Scores

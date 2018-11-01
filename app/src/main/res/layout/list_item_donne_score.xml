@@ -1,8 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardview_annonces_btn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        app:cardBackgroundColor="@color/colorPrimaryLight"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView_donne_details">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/delimiter4"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:contentDescription="@string/delimiter"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/delimiters" />
+
+            <ToggleButton
+                android:id="@+id/annonce_team2_btn"
+                android:layout_width="75dp"
+                android:layout_height="38dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="4dp"
+                android:background="@drawable/radius_button_accent"
+                android:checked="false"
+                android:fontFamily="@font/roboto"
+                android:textAllCaps="false"
+                android:textOff="@string/annonces"
+                android:textOn="@string/annonces"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ToggleButton
+                android:id="@+id/annonce_team1_btn"
+                android:layout_width="75dp"
+                android:layout_height="38dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="4dp"
+                android:background="@drawable/radius_button_accent"
+                android:checked="false"
+                android:fontFamily="@font/roboto"
+                android:textAllCaps="false"
+                android:textOff="@string/annonces"
+                android:textOn="@string/annonces"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
         android:id="@+id/cardView_carre"
@@ -12,12 +73,24 @@
         android:layout_marginEnd="8dp"
         app:cardBackgroundColor="@color/colorPrimaryLight"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView_annonces">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/delimiter5"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:contentDescription="@string/delimiter"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/delimiters" />
 
             <ImageView
                 android:id="@+id/delimiter3"
@@ -144,22 +217,6 @@
                 app:layout_constraintEnd_toEndOf="parent" />
 
             <ToggleButton
-                android:id="@+id/annonce_team2_btn"
-                android:layout_width="75dp"
-                android:layout_height="38dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/radius_button_accent"
-                android:checked="false"
-                android:fontFamily="@font/roboto"
-                android:textAllCaps="false"
-                android:textOff="@string/annonces"
-                android:textOn="@string/annonces"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/capot_team2_btn" />
-
-            <ToggleButton
                 android:id="@+id/belote_team2_btn"
                 android:layout_width="75dp"
                 android:layout_height="38dp"
@@ -196,35 +253,20 @@
                 android:layout_width="75dp"
                 android:layout_height="38dp"
                 android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
                 android:layout_marginEnd="8dp"
+                android:layout_marginBottom="4dp"
                 android:background="@drawable/radius_button_accent"
                 android:checked="false"
                 android:fontFamily="@font/roboto"
                 android:textAllCaps="false"
                 android:textOff="@string/capot"
                 android:textOn="@string/capot"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/numberPicker"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/belote_team1_btn" />
-
-            <ToggleButton
-                android:id="@+id/annonce_team1_btn"
-                android:layout_width="75dp"
-                android:layout_height="38dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/radius_button_accent"
-                android:checked="false"
-                android:fontFamily="@font/roboto"
-                android:textAllCaps="false"
-                android:textOff="@string/annonces"
-                android:textOn="@string/annonces"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/numberPicker"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent" />
 
             <ImageView
                 android:id="@+id/preneur_trefle"
@@ -310,7 +352,7 @@
                 android:layout_width="66dp"
                 android:layout_height="77dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="70dp"
+                android:layout_marginTop="67dp"
                 android:layout_marginEnd="8dp"
                 android:background="@drawable/radius_button"
                 android:backgroundTint="@color/color_accent2"
@@ -409,9 +451,11 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:backgroundTint="@color/colorPrimaryLight"
+        app:cardBackgroundColor="@color/colorPrimaryLight"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView_donne_details">
+        app:layout_constraintTop_toBottomOf="@+id/cardview_annonces_btn">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -511,16 +555,15 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/delimiters"/>
+                app:srcCompat="@drawable/delimiters" />
 
             <ToggleButton
                 android:id="@+id/carre_team2_btn"
-                android:layout_width="60dp"
+                android:layout_width="68dp"
                 android:layout_height="38dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="32dp"
+                android:layout_marginEnd="17dp"
                 android:fontFamily="@font/roboto"
-                android:padding="8dp"
                 android:textAllCaps="false"
                 android:textOff="@string/carre"
                 android:textOn="@string/carre"
@@ -529,11 +572,10 @@
 
             <ToggleButton
                 android:id="@+id/cent_team2_btn"
-                android:layout_width="60dp"
+                android:layout_width="68dp"
                 android:layout_height="38dp"
                 android:layout_marginTop="8dp"
                 android:fontFamily="@font/roboto"
-                android:padding="8dp"
                 android:textAllCaps="false"
                 android:textOff="@string/_100"
                 android:textOn="@string/_100"
@@ -542,11 +584,10 @@
 
             <ToggleButton
                 android:id="@+id/cinquante_team2_btn"
-                android:layout_width="60dp"
+                android:layout_width="68dp"
                 android:layout_height="38dp"
-                android:layout_marginEnd="32dp"
+                android:layout_marginEnd="17dp"
                 android:fontFamily="@font/roboto"
-                android:padding="8dp"
                 android:textAllCaps="false"
                 android:textOff="@string/_50"
                 android:textOn="@string/_50"
@@ -555,10 +596,9 @@
 
             <ToggleButton
                 android:id="@+id/tierce_team2_btn"
-                android:layout_width="60dp"
+                android:layout_width="68dp"
                 android:layout_height="38dp"
                 android:fontFamily="@font/roboto"
-                android:padding="8dp"
                 android:textAllCaps="false"
                 android:textOff="@string/tierce"
                 android:textOn="@string/tierce"
@@ -567,12 +607,11 @@
 
             <ToggleButton
                 android:id="@+id/carre_team1_btn"
-                android:layout_width="60dp"
+                android:layout_width="68dp"
                 android:layout_height="38dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="32dp"
+                android:layout_marginEnd="17dp"
                 android:fontFamily="@font/roboto"
-                android:padding="8dp"
                 android:textAllCaps="false"
                 android:textOff="@string/carre"
                 android:textOn="@string/carre"
@@ -581,11 +620,10 @@
 
             <ToggleButton
                 android:id="@+id/cent_team1_btn"
-                android:layout_width="60dp"
+                android:layout_width="68dp"
                 android:layout_height="38dp"
                 android:layout_marginTop="8dp"
                 android:fontFamily="@font/roboto"
-                android:padding="8dp"
                 android:textAllCaps="false"
                 android:textOff="@string/_100"
                 android:textOn="@string/_100"
@@ -594,11 +632,10 @@
 
             <ToggleButton
                 android:id="@+id/cinquante_team1_btn"
-                android:layout_width="60dp"
+                android:layout_width="68dp"
                 android:layout_height="38dp"
-                android:layout_marginEnd="32dp"
+                android:layout_marginEnd="17dp"
                 android:fontFamily="@font/roboto"
-                android:padding="8dp"
                 android:textAllCaps="false"
                 android:textOff="@string/_50"
                 android:textOn="@string/_50"
@@ -607,10 +644,9 @@
 
             <ToggleButton
                 android:id="@+id/tierce_team1_btn"
-                android:layout_width="60dp"
+                android:layout_width="68dp"
                 android:layout_height="38dp"
                 android:fontFamily="@font/roboto"
-                android:padding="8dp"
                 android:textAllCaps="false"
                 android:textOff="@string/tierce"
                 android:textOn="@string/tierce"

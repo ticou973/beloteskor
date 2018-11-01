@@ -146,7 +146,7 @@ public class ScoresFragment extends Fragment {
 
         displayLogTestTablePartie();
 
-        //todo déplacer ou supprimer cette partie si nécessaire
+//todo déplacer cette partie si nécessaire
         if(lastTypeAnnonce.equals(TypeAnnonce.SANS_ANNONCE.toString())){
             Toast.makeText(context, "coucou", Toast.LENGTH_SHORT).show();
 

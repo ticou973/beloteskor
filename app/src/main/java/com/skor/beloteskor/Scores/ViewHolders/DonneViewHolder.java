@@ -12,6 +12,7 @@ import android.widget.ToggleButton;
 
 import com.shawnlin.numberpicker.NumberPicker;
 import com.skor.beloteskor.Model_DB.MainDb.Equipe;
+import com.skor.beloteskor.Model_DB.UtilsDb.Annonces;
 import com.skor.beloteskor.R;
 
 import static android.graphics.Color.rgb;
@@ -19,7 +20,7 @@ import static android.graphics.Color.rgb;
 public class DonneViewHolder extends RecyclerView.ViewHolder  {
 
     private TextView scoreDonneEquipeA, scoreDonneEquipeB, numDonne;
-    private CardView cardViewDonne, cardViewDonneDetails, cardViewAnnonces, cardViewCarre;
+    private CardView cardViewDonne, cardViewDonneDetails, cardViewAnnonces, cardViewCarre,cardviewAnnoncesBtn;
     private Button validationBtn;
 
     //child
@@ -27,11 +28,15 @@ public class DonneViewHolder extends RecyclerView.ViewHolder  {
     private TextView player1Name, player2Name, player3Name, player4Name,nbTierce_team1,nbTierce_team2,nbCinquante_team1,nbCinquante_team2,nbCent_team1,nbCent_team2;
     private FrameLayout flLeft, flRight;
     private NumberPicker numberPicker;
-    private ToggleButton capot_team1, capot_team2, belote_team1, belote_team2,tierce_team1, tierce_team2,cinquante_team1,cinquante_team2,cent_team1,cent_team2, carre_valet_team1,carre_valet_team2,carre_9_team1,carre_9_team2,carre_autre_team1,carre_autre_team2, annonces_team1, annonces_team2;
+    private ToggleButton capot_team1, capot_team2, belote_team1, belote_team2,tierce_team1, tierce_team2,cinquante_team1,cinquante_team2,cent_team1,cent_team2, carre_team1,carre_team2,carre_valet_team1,carre_valet_team2,carre_9_team1,carre_9_team2,carre_autre_team1,carre_autre_team2, annonces_team1, annonces_team2;
     private ImageView preneur_trefle, preneur_carreau, preneur_pique, preneur_coeur;
     private Equipe belote = new Equipe("NoBelote");
     private Equipe capot = new Equipe("NoCapot");
+    private Annonces annonces;
 
+    private static final String TAG="coucou";
+
+    //todo penser à mettre des élévation sur btn et cardview
 
     public DonneViewHolder(View itemView) {
         super(itemView);
@@ -74,6 +79,8 @@ public class DonneViewHolder extends RecyclerView.ViewHolder  {
         nbTierce_team2=itemView.findViewById(R.id.nb_tierce_team2);
         nbCinquante_team1=itemView.findViewById(R.id.nb_cinquante_team1);
         nbCinquante_team2=itemView.findViewById(R.id.nb_cinquante_team2);
+        carre_team1=itemView.findViewById(R.id.carre_team1_btn);
+        carre_team2=itemView.findViewById(R.id.carre_team2_btn);
         carre_valet_team1=itemView.findViewById(R.id.carre_valet_team1);
         carre_valet_team2=itemView.findViewById(R.id.carre_valet_team2);
         carre_9_team1=itemView.findViewById(R.id.carre_9_team1);
@@ -84,8 +91,7 @@ public class DonneViewHolder extends RecyclerView.ViewHolder  {
         annonces_team2=itemView.findViewById(R.id.annonce_team2_btn);
         cardViewAnnonces= itemView.findViewById(R.id.cardView_annonces);
         cardViewCarre=itemView.findViewById(R.id.cardView_carre);
-
-
+        cardviewAnnoncesBtn=itemView.findViewById(R.id.cardview_annonces_btn);
     }
 
                         //Méthodes du ViewHolder
@@ -197,27 +203,65 @@ public class DonneViewHolder extends RecyclerView.ViewHolder  {
                 } else if (!isChecked && !secondTb.isChecked()) {
                     mainTb.setChecked(false);
                     secondTb.setChecked(false);
-
                     setColorBeloteCapot(mainTb,secondTb,1.0f,1.0f);
                 }
 
 
-                if(capot_team1.isChecked()){
-                    capot.setNomEquipe("EquipeA");
-
-                }else if(capot_team2.isChecked()){
-                    capot.setNomEquipe("EquipeB");
-
-                }else {
-                    capot.setNomEquipe("NoCapot");
+                if(capot_team1.isChecked()){ capot.setNomEquipe("EquipeA");
+                }else if(capot_team2.isChecked()){ capot.setNomEquipe("EquipeB");
+                }else { capot.setNomEquipe("NoCapot");
                 }
 
-                if(belote_team1.isChecked()){
-                    belote.setNomEquipe("EquipeA");
-                }else if(belote_team2.isChecked()){
-                    belote.setNomEquipe("EquipeB");
-                }else{
-                    belote.setNomEquipe("NoBelote");                }
+                if(belote_team1.isChecked()){ belote.setNomEquipe("EquipeA");
+                }else if(belote_team2.isChecked()){ belote.setNomEquipe("EquipeB");
+                }else{ belote.setNomEquipe("NoBelote");
+                }
+            }
+
+
+        });
+
+    }
+
+    public void setListenerAnnoncesChecked(final ToggleButton mainTb, final ToggleButton secondTb) {
+
+        mainTb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                if (isChecked && secondTb.isChecked()) {
+                    setColorBeloteCapot(mainTb,secondTb,1.0f,0.3f);
+                    mainTb.setChecked(true);
+                    secondTb.setChecked(false);
+                    setCardViewAnnoncesVisible();
+
+
+                } else if (isChecked && !secondTb.isChecked()) {
+                    setColorBeloteCapot(mainTb,secondTb,1.0f,0.3f);
+                    mainTb.setChecked(true);
+                    secondTb.setChecked(false);
+                    setCardViewAnnoncesVisible();
+
+                } else if (!isChecked && !secondTb.isChecked()) {
+                    mainTb.setChecked(false);
+                    secondTb.setChecked(false);
+                    setColorBeloteCapot(mainTb,secondTb,1.0f,1.0f);
+                    setCardViewAnnoncesGone();
+                }
+
+                if(annonces_team1.isChecked()){
+                    setToggleGone(tierce_team2,cinquante_team2,cent_team2,carre_team2);
+                    setTextViewGone(nbTierce_team2,nbCinquante_team2,nbCent_team2);
+                    setToggleVisible(tierce_team1,cinquante_team1,cent_team1,carre_team1);
+                    setTextViewVisible(nbTierce_team1,nbCinquante_team1,nbCent_team1);
+
+                }else if(annonces_team2.isChecked()){
+                    setToggleGone(tierce_team1,cinquante_team1,cent_team1,carre_team1);
+                    setTextViewGone(nbTierce_team1,nbCinquante_team1,nbCent_team1);
+                    setToggleVisible(tierce_team2,cinquante_team2,cent_team2,carre_team2);
+                    setTextViewVisible(nbTierce_team2,nbCinquante_team2,nbCent_team2);
+                }
+
             }
 
 
@@ -283,6 +327,116 @@ public class DonneViewHolder extends RecyclerView.ViewHolder  {
         player4Name.setText(name);
     }
 
+    public void setGestionScoreVisible() {
+
+        setToggleVisible(belote_team2,belote_team1,capot_team2,capot_team1);
+        numberPicker.setVisibility(View.VISIBLE);
+
+    }
+
+    public void setGestionScoreGone(){
+
+        setToggleGone(belote_team1,belote_team2,capot_team1,capot_team2);
+        numberPicker.setVisibility(View.GONE);
+    }
+
+    private void setToggleVisible(ToggleButton ... toggles) {
+
+        for (ToggleButton toggli: toggles
+             ) {
+            toggli.setVisibility(View.VISIBLE);
+        }
+    }
+
+
+    private void setToggleGone(ToggleButton ... toggles) {
+
+        for (ToggleButton toggli: toggles
+                ) {
+            toggli.setVisibility(View.GONE);
+        }
+    }
+
+    private void setTextViewGone(TextView ... textviews) {
+
+        for (TextView toggli: textviews
+                ) {
+            toggli.setVisibility(View.GONE);
+        }
+    }
+
+    private void setTextViewVisible(TextView ... textviews) {
+
+        for (TextView toggli: textviews
+                ) {
+            toggli.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void setAnnoncesBtnGone(){
+
+        annonces_team1.setVisibility(View.GONE);
+        annonces_team2.setVisibility(View.GONE);
+    }
+
+    public void setAnnoncesBtnVisible(){
+
+        annonces_team1.setVisibility(View.VISIBLE);
+        annonces_team2.setVisibility(View.VISIBLE);
+    }
+
+
+    public void setCardViewAnnoncesGone(){
+        cardViewAnnonces.setVisibility(View.GONE);
+    }
+
+    public void setCardViewCarreGone(){
+        cardViewCarre.setVisibility(View.GONE);
+    }
+
+    public void setCardViewAnnoncesBtnVisible(){
+        cardviewAnnoncesBtn.setVisibility(View.VISIBLE);
+    }
+
+    public void setCardViewAnnoncesBtnGone(){
+        cardviewAnnoncesBtn.setVisibility(View.GONE);
+    }
+
+
+    public void setCardViewAnnoncesVisible(){
+        cardViewAnnonces.setVisibility(View.VISIBLE);
+    }
+
+    public void setCardViewCarreVisible(){
+        cardViewCarre.setVisibility(View.VISIBLE);
+    }
+
+    public void SetCarreTeam1Gone(){
+      carre_valet_team1.setVisibility(View.GONE);
+      carre_autre_team1.setVisibility(View.GONE);
+      carre_9_team1.setVisibility(View.GONE);
+    }
+
+    public void SetCarreTeam2Gone(){
+        carre_valet_team2.setVisibility(View.GONE);
+        carre_autre_team2.setVisibility(View.GONE);
+        carre_9_team2.setVisibility(View.GONE);
+    }
+
+    public void SetCarreTeam1Visible(){
+        carre_valet_team1.setVisibility(View.VISIBLE);
+        carre_autre_team1.setVisibility(View.VISIBLE);
+        carre_9_team1.setVisibility(View.VISIBLE);
+    }
+
+    public void SetCarreTeam2Visible(){
+        carre_valet_team2.setVisibility(View.VISIBLE);
+        carre_autre_team2.setVisibility(View.VISIBLE);
+        carre_9_team2.setVisibility(View.VISIBLE);
+    }
+
+
+
     public void setBGColor (int color){ cardViewDonne.setBackgroundColor(color); }
 
                         //GETTER ET SETTER
@@ -318,5 +472,15 @@ public class DonneViewHolder extends RecyclerView.ViewHolder  {
 
     public void setCapot(Equipe capot) { this.capot = capot; }
 
+    public ToggleButton getAnnonces_team1() {
+        return annonces_team1;
+    }
+
+    public ToggleButton getAnnonces_team2() {
+        return annonces_team2;
+    }
+
     public void setCheckedTb(boolean b) { }
+
+
 }

@@ -12,7 +12,8 @@ import com.skor.beloteskor.Model_DB.UtilsDb.TypeDePartie;
 /**
  * Created by thierrycouilleault on 13/11/2017.
  */
-
+//todo voir pour utilisation de l'hértitage et du polymorphisme pour améliorer mon code (voir partie annonces, et sans annonces
+    //todo rendre abstract cette class si héritage pour ne pas pouvoir l'implémenter et obliger les classes héritées à impléméneter les méthodes
 
 @Entity
 public class Partie {
