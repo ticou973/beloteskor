@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -43,6 +44,7 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
     private Partie lastPartie;
     private String lastTypeAnnonce;
     private final static String TAG="coucou";
+    private int i;
 
     private Context mContext;
     private GestureDetector detector;
@@ -158,7 +160,18 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
                     holder.expand(position + 1);
                     isExpanded.set(position, true);
 
-                    //todo expand les autres cardview si déja renseigné
+                    if(holder.getAnnonces_team1().isChecked()||holder.getAnnonces_team2().isChecked()){
+                        holder.getCardviewAnnoncesBtn().setVisibility(View.VISIBLE);
+                        holder.getCardViewAnnonces().setVisibility(View.VISIBLE);
+
+                        if(holder.getCarre_team2().isChecked()||holder.getCarre_team1().isChecked()){
+
+                            holder.getCardViewCarre().setVisibility(View.VISIBLE);
+                        }else if(!holder.getAnnonces_team1().isChecked()&&!holder.getAnnonces_team2().isChecked()&&preneur!=null){
+                            holder.getCardViewAnnonces().setVisibility(View.VISIBLE);
+
+                        }
+                    }
 
                     //Récupération des noms de joueurs
                     holder.setPlayer1Name(getPlayers()[0]);
@@ -192,8 +205,23 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
                     holder.setListenerAnnoncesChecked(holder.getAnnonces_team1(),holder.getAnnonces_team2());
                     holder.setListenerAnnoncesChecked(holder.getAnnonces_team2(),holder.getAnnonces_team1());
 
+                    setListenerClickButton(holder,holder.getTierce_team1(),holder.getNbTierce_team1());
+                    setListenerClickButton(holder,holder.getTierce_team2(),holder.getNbTierce_team2());
+                    setListenerClickButton(holder,holder.getCinquante_team1(),holder.getNbCinquante_team1());
+                    setListenerClickButton(holder,holder.getCent_team1(),holder.getNbCent_team1());
+                    setListenerClickButton(holder,holder.getCinquante_team2(),holder.getNbCinquante_team2());
+                    setListenerClickButton(holder,holder.getCent_team2(),holder.getNbCent_team2());
+
                     setListenerClickCarre(holder, holder.getCarre_team1());
                     setListenerClickCarre(holder, holder.getCarre_team2());
+
+                    //gestion des carrés
+                    setListenerClickButton(holder,holder.getCarre_autre_team1(),holder.getNbCarre_autre_team1());
+                    setListenerClickButton(holder,holder.getCarre_autre_team2(),holder.getNbCarre_autre_team2());
+                    setListenerToggleV9(holder,holder.getCarre_valet_team1());
+                    setListenerToggleV9(holder,holder.getCarre_valet_team2());
+                    setListenerToggleV9(holder,holder.getCarre_9_team1());
+                    setListenerToggleV9(holder,holder.getCarre_9_team2());
 
                 } else {
                     isExpanded.set(position, false);
@@ -208,43 +236,6 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
             }
         });
     }
-
-    private void setListenerClickCarre(final DonneViewHolder holder, final ToggleButton mainTb) {
-
-        mainTb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-
-                mainTb.setBackgroundResource(R.drawable.radius_button_accent);
-
-                if(mainTb.isChecked()){
-
-                    holder.setCardViewCarreVisible();
-
-                    if(mainTb==holder.getCarre_team1()){
-
-                        holder.setToggleGone(holder.getCarre_9_team2(),holder.getCarre_valet_team2());
-                        holder.setButtonGone(holder.getCarre_autre_team2());
-                        holder.setTextViewGone(holder.getNbCarre_autre_team2());
-
-
-                    }else if(mainTb==holder.getCarre_team2()){
-
-                        holder.setToggleGone(holder.getCarre_9_team1(),holder.getCarre_valet_team1());
-                        holder.setButtonGone(holder.getCarre_autre_team1());
-                        holder.setTextViewGone(holder.getNbCarre_autre_team1());
-                    }
-
-
-                }else{
-
-                    holder.setCardViewCarreGone();
-                }
-            }
-        });
-
-    }
-
 
     private void upDatecurrentDonne(int numDonne) {
 
@@ -376,6 +367,78 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
                     couleur = Couleur.PIQUE;
                 }else if (mainCouleur.getId()==R.id.preneur_trefle){
                     couleur = Couleur.TREFLE;
+                }
+            }
+        });
+
+    }
+
+    private void setListenerToggleV9(DonneViewHolder holder, final ToggleButton mainTb) {
+
+        mainTb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                mainTb.setBackgroundResource(R.drawable.radius_button_accent);
+            }
+        });
+    }
+
+    private void setListenerClickButton(final DonneViewHolder holder, final Button mainBtn, final TextView mainTv) {
+        mainBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                i=holder.getNbAnnonces(mainTv);
+                i++;
+                if(i>4) {
+                    i=0;
+                    holder.setColorAnnonce(mainBtn,false);
+                    mainTv.setText(String.valueOf(i));
+
+                }else{
+                    mainTv.setText(String.valueOf(i));
+                    holder.setColorAnnonce(mainBtn,true);
+                }
+            }
+        });
+
+    }
+
+    private void setListenerClickCarre(final DonneViewHolder holder, final ToggleButton mainTb) {
+
+        mainTb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+                //todo voir pour éviter un gros bouton sur Carré
+                mainTb.setBackgroundResource(R.drawable.radius_button_accent);
+
+                if(mainTb.isChecked()){
+
+                    holder.setCardViewCarreVisible();
+
+                    if(mainTb==holder.getCarre_team1()){
+
+                        holder.setToggleGone(holder.getCarre_9_team2(),holder.getCarre_valet_team2());
+                        holder.setButtonGone(holder.getCarre_autre_team2());
+                        holder.setTextViewGone(holder.getNbCarre_autre_team2());
+                        holder.setToggleVisible(holder.getCarre_9_team1(),holder.getCarre_valet_team1());
+                        holder.setButtonVisible(holder.getCarre_autre_team1());
+                        holder.setTextViewVisible(holder.getNbCarre_autre_team1());
+
+
+                    }else if(mainTb==holder.getCarre_team2()){
+
+                        holder.setToggleGone(holder.getCarre_9_team1(),holder.getCarre_valet_team1());
+                        holder.setButtonGone(holder.getCarre_autre_team1());
+                        holder.setTextViewGone(holder.getNbCarre_autre_team1());
+                        holder.setToggleVisible(holder.getCarre_9_team2(),holder.getCarre_valet_team2());
+                        holder.setButtonVisible(holder.getCarre_autre_team2());
+                        holder.setTextViewVisible(holder.getNbCarre_autre_team2());
+                    }
+
+                }else{
+
+                    holder.setCardViewCarreGone();
                 }
             }
         });

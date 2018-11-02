@@ -169,6 +169,24 @@ public class DonneViewHolder extends RecyclerView.ViewHolder  {
         couleur.setBackgroundColor(rgb(red,green,blue));
     }
 
+    public void setColorAnnonce (Button mainBtn, boolean focus) {
+
+        int red, green, blue;
+
+        if(focus) {
+            red = 255;
+            green = 235;
+            blue = 59;
+
+        }else{
+            red = 219;
+            green = 219;
+            blue = 219;
+        }
+
+        mainBtn.setBackgroundColor(rgb(red,green,blue));
+    }
+
     public void setColorPlayerPreneur (TextView preneur, boolean focus) {
 
         int red, green, blue;
@@ -278,8 +296,6 @@ public class DonneViewHolder extends RecyclerView.ViewHolder  {
         });
 
     }
-
-
 
     public void setColorBeloteCapot (ToggleButton mainTb, ToggleButton secondTb, Float mainAlpha, Float secondAlpha){
 
@@ -464,10 +480,7 @@ public class DonneViewHolder extends RecyclerView.ViewHolder  {
     }
 
 
-
-    public void setBGColor (int color){ cardViewDonne.setBackgroundColor(color); }
-
-                        //GETTER ET SETTER
+    //GETTER ET SETTER
     public TextView getPlayer1Name() { return player1Name; }
 
     public TextView getPlayer2Name() { return player2Name; }
@@ -500,59 +513,64 @@ public class DonneViewHolder extends RecyclerView.ViewHolder  {
 
     public void setCapot(Equipe capot) { this.capot = capot; }
 
-    public ToggleButton getAnnonces_team1() {
-        return annonces_team1;
+    public ToggleButton getAnnonces_team1() { return annonces_team1; }
+
+    public ToggleButton getAnnonces_team2() { return annonces_team2; }
+
+    public TextView getScoreDonneEquipeA() { return scoreDonneEquipeA; }
+
+    public ToggleButton getCarre_team1() { return carre_team1; }
+
+    public ToggleButton getCarre_team2() { return carre_team2; }
+
+    public TextView getNbCarre_autre_team1() { return nbCarre_autre_team1; }
+
+    public TextView getNbCarre_autre_team2() { return nbCarre_autre_team2; }
+
+    public ToggleButton getCarre_valet_team1() { return carre_valet_team1; }
+
+    public ToggleButton getCarre_valet_team2() { return carre_valet_team2; }
+
+    public ToggleButton getCarre_9_team1() { return carre_9_team1; }
+
+    public ToggleButton getCarre_9_team2() {return carre_9_team2; }
+
+    public Button getCarre_autre_team1() { return carre_autre_team1; }
+
+    public Button getCarre_autre_team2() { return carre_autre_team2; }
+
+    public TextView getNbTierce_team1() { return nbTierce_team1; }
+
+    public TextView getNbTierce_team2() { return nbTierce_team2; }
+
+    public TextView getNbCinquante_team1() { return nbCinquante_team1; }
+
+    public TextView getNbCinquante_team2() { return nbCinquante_team2; }
+
+    public TextView getNbCent_team1() { return nbCent_team1; }
+
+    public TextView getNbCent_team2() { return nbCent_team2; }
+
+    public Button getTierce_team1() { return tierce_team1; }
+
+    public Button getTierce_team2() { return tierce_team2; }
+
+    public Button getCinquante_team1() { return cinquante_team1; }
+
+    public Button getCinquante_team2() { return cinquante_team2; }
+
+    public Button getCent_team1() { return cent_team1; }
+
+    public Button getCent_team2() { return cent_team2; }
+
+    public CardView getCardViewAnnonces() { return cardViewAnnonces; }
+
+    public CardView getCardViewCarre() { return cardViewCarre; }
+
+    public CardView getCardviewAnnoncesBtn() { return cardviewAnnoncesBtn; }
+
+    public int getNbAnnonces(TextView mainTv) { return Integer.parseInt(mainTv.getText().toString());
+
+
     }
-
-    public ToggleButton getAnnonces_team2() {
-        return annonces_team2;
-    }
-
-    public TextView getScoreDonneEquipeA() {
-        return scoreDonneEquipeA;
-    }
-
-    public ToggleButton getCarre_team1() {
-        return carre_team1;
-    }
-
-    public ToggleButton getCarre_team2() {
-        return carre_team2;
-    }
-
-    public TextView getNbCarre_autre_team1() {
-        return nbCarre_autre_team1;
-    }
-
-    public TextView getNbCarre_autre_team2() {
-        return nbCarre_autre_team2;
-    }
-
-    public ToggleButton getCarre_valet_team1() {
-        return carre_valet_team1;
-    }
-
-    public ToggleButton getCarre_valet_team2() {
-        return carre_valet_team2;
-    }
-
-    public ToggleButton getCarre_9_team1() {
-        return carre_9_team1;
-    }
-
-    public ToggleButton getCarre_9_team2() {
-        return carre_9_team2;
-    }
-
-    public Button getCarre_autre_team1() {
-        return carre_autre_team1;
-    }
-
-    public Button getCarre_autre_team2() {
-        return carre_autre_team2;
-    }
-
-    public void setCheckedTb(boolean b) { }
-
-
 }

@@ -120,14 +120,14 @@
                 android:layout_height="38dp"
                 android:fontFamily="@font/roboto"
                 android:padding="4dp"
+                android:text="@string/autre"
                 android:textAlignment="center"
                 android:textAllCaps="false"
                 android:textOff="@string/autre"
                 android:textOn="@string/autre"
                 android:textSize="14sp"
                 app:layout_constraintBaseline_toBaselineOf="@+id/carre_9_team2"
-                app:layout_constraintStart_toEndOf="@+id/carre_9_team2"
-                tools:text="@string/autre" />
+                app:layout_constraintStart_toEndOf="@+id/carre_9_team2" />
 
             <ToggleButton
                 android:id="@+id/carre_9_team2"
