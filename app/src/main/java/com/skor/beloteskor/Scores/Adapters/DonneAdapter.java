@@ -8,8 +8,10 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.shawnlin.numberpicker.NumberPicker;
 import com.skor.beloteskor.MainActivity;
@@ -190,6 +192,9 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
                     holder.setListenerAnnoncesChecked(holder.getAnnonces_team1(),holder.getAnnonces_team2());
                     holder.setListenerAnnoncesChecked(holder.getAnnonces_team2(),holder.getAnnonces_team1());
 
+                    setListenerClickCarre(holder, holder.getCarre_team1());
+                    setListenerClickCarre(holder, holder.getCarre_team2());
+
                 } else {
                     isExpanded.set(position, false);
                     holder.collapse(position + 1);
@@ -202,6 +207,42 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
                 }
             }
         });
+    }
+
+    private void setListenerClickCarre(final DonneViewHolder holder, final ToggleButton mainTb) {
+
+        mainTb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+                mainTb.setBackgroundResource(R.drawable.radius_button_accent);
+
+                if(mainTb.isChecked()){
+
+                    holder.setCardViewCarreVisible();
+
+                    if(mainTb==holder.getCarre_team1()){
+
+                        holder.setToggleGone(holder.getCarre_9_team2(),holder.getCarre_valet_team2());
+                        holder.setButtonGone(holder.getCarre_autre_team2());
+                        holder.setTextViewGone(holder.getNbCarre_autre_team2());
+
+
+                    }else if(mainTb==holder.getCarre_team2()){
+
+                        holder.setToggleGone(holder.getCarre_9_team1(),holder.getCarre_valet_team1());
+                        holder.setButtonGone(holder.getCarre_autre_team1());
+                        holder.setTextViewGone(holder.getNbCarre_autre_team1());
+                    }
+
+
+                }else{
+
+                    holder.setCardViewCarreGone();
+                }
+            }
+        });
+
     }
 
 

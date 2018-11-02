@@ -25,10 +25,11 @@ public class DonneViewHolder extends RecyclerView.ViewHolder  {
 
     //child
 
-    private TextView player1Name, player2Name, player3Name, player4Name,nbTierce_team1,nbTierce_team2,nbCinquante_team1,nbCinquante_team2,nbCent_team1,nbCent_team2;
+    private TextView player1Name, player2Name, player3Name, player4Name,nbTierce_team1,nbTierce_team2,nbCinquante_team1,nbCinquante_team2,nbCent_team1,nbCent_team2,nbCarre_autre_team1,nbCarre_autre_team2;
     private FrameLayout flLeft, flRight;
     private NumberPicker numberPicker;
-    private ToggleButton capot_team1, capot_team2, belote_team1, belote_team2,tierce_team1, tierce_team2,cinquante_team1,cinquante_team2,cent_team1,cent_team2, carre_team1,carre_team2,carre_valet_team1,carre_valet_team2,carre_9_team1,carre_9_team2,carre_autre_team1,carre_autre_team2, annonces_team1, annonces_team2;
+    private ToggleButton capot_team1, capot_team2, belote_team1, belote_team2, carre_team1,carre_team2,carre_valet_team1,carre_valet_team2,carre_9_team1,carre_9_team2, annonces_team1, annonces_team2;
+    private Button tierce_team1, tierce_team2,cinquante_team1,cinquante_team2,cent_team1,cent_team2,carre_autre_team1,carre_autre_team2;
     private ImageView preneur_trefle, preneur_carreau, preneur_pique, preneur_coeur;
     private Equipe belote = new Equipe("NoBelote");
     private Equipe capot = new Equipe("NoCapot");
@@ -92,6 +93,8 @@ public class DonneViewHolder extends RecyclerView.ViewHolder  {
         cardViewAnnonces= itemView.findViewById(R.id.cardView_annonces);
         cardViewCarre=itemView.findViewById(R.id.cardView_carre);
         cardviewAnnoncesBtn=itemView.findViewById(R.id.cardview_annonces_btn);
+        nbCarre_autre_team1=itemView.findViewById(R.id.nb_carre_autre_team1);
+        nbCarre_autre_team2=itemView.findViewById(R.id.nb_carre_autre_team2);
     }
 
                         //Méthodes du ViewHolder
@@ -234,6 +237,7 @@ public class DonneViewHolder extends RecyclerView.ViewHolder  {
                     mainTb.setChecked(true);
                     secondTb.setChecked(false);
                     setCardViewAnnoncesVisible();
+                    setCardViewCarreGone();
 
 
                 } else if (isChecked && !secondTb.isChecked()) {
@@ -241,25 +245,31 @@ public class DonneViewHolder extends RecyclerView.ViewHolder  {
                     mainTb.setChecked(true);
                     secondTb.setChecked(false);
                     setCardViewAnnoncesVisible();
+                    setCardViewCarreGone();
 
                 } else if (!isChecked && !secondTb.isChecked()) {
                     mainTb.setChecked(false);
                     secondTb.setChecked(false);
                     setColorBeloteCapot(mainTb,secondTb,1.0f,1.0f);
                     setCardViewAnnoncesGone();
+                    setCardViewCarreGone();
                 }
 
                 if(annonces_team1.isChecked()){
-                    setToggleGone(tierce_team2,cinquante_team2,cent_team2,carre_team2);
+                    setToggleGone(carre_team2);
                     setTextViewGone(nbTierce_team2,nbCinquante_team2,nbCent_team2);
-                    setToggleVisible(tierce_team1,cinquante_team1,cent_team1,carre_team1);
+                    setToggleVisible(carre_team1);
                     setTextViewVisible(nbTierce_team1,nbCinquante_team1,nbCent_team1);
+                    setButtonGone(tierce_team2,cinquante_team2,cent_team2);
+                    setButtonVisible(tierce_team1,cinquante_team1,cent_team1);
 
                 }else if(annonces_team2.isChecked()){
-                    setToggleGone(tierce_team1,cinquante_team1,cent_team1,carre_team1);
+                    setToggleGone(carre_team1);
                     setTextViewGone(nbTierce_team1,nbCinquante_team1,nbCent_team1);
-                    setToggleVisible(tierce_team2,cinquante_team2,cent_team2,carre_team2);
+                    setToggleVisible(carre_team2);
                     setTextViewVisible(nbTierce_team2,nbCinquante_team2,nbCent_team2);
+                    setButtonGone(tierce_team1,cinquante_team1,cent_team1);
+                    setButtonVisible(tierce_team2,cinquante_team2,cent_team2);
                 }
 
             }
@@ -268,6 +278,8 @@ public class DonneViewHolder extends RecyclerView.ViewHolder  {
         });
 
     }
+
+
 
     public void setColorBeloteCapot (ToggleButton mainTb, ToggleButton secondTb, Float mainAlpha, Float secondAlpha){
 
@@ -340,7 +352,7 @@ public class DonneViewHolder extends RecyclerView.ViewHolder  {
         numberPicker.setVisibility(View.GONE);
     }
 
-    private void setToggleVisible(ToggleButton ... toggles) {
+    public void setToggleVisible(ToggleButton ... toggles) {
 
         for (ToggleButton toggli: toggles
              ) {
@@ -349,7 +361,7 @@ public class DonneViewHolder extends RecyclerView.ViewHolder  {
     }
 
 
-    private void setToggleGone(ToggleButton ... toggles) {
+    public void setToggleGone(ToggleButton ... toggles) {
 
         for (ToggleButton toggli: toggles
                 ) {
@@ -357,7 +369,23 @@ public class DonneViewHolder extends RecyclerView.ViewHolder  {
         }
     }
 
-    private void setTextViewGone(TextView ... textviews) {
+    public void setButtonVisible(Button ... buttons) {
+        for (Button button: buttons
+                ) {
+            button.setVisibility(View.VISIBLE);
+        }
+
+    }
+
+    public void setButtonGone(Button ... buttons) {
+        for (Button button: buttons
+                ) {
+            button.setVisibility(View.GONE);
+        }
+
+    }
+
+    public void setTextViewGone(TextView ... textviews) {
 
         for (TextView toggli: textviews
                 ) {
@@ -365,7 +393,7 @@ public class DonneViewHolder extends RecyclerView.ViewHolder  {
         }
     }
 
-    private void setTextViewVisible(TextView ... textviews) {
+    public void setTextViewVisible(TextView ... textviews) {
 
         for (TextView toggli: textviews
                 ) {
@@ -478,6 +506,50 @@ public class DonneViewHolder extends RecyclerView.ViewHolder  {
 
     public ToggleButton getAnnonces_team2() {
         return annonces_team2;
+    }
+
+    public TextView getScoreDonneEquipeA() {
+        return scoreDonneEquipeA;
+    }
+
+    public ToggleButton getCarre_team1() {
+        return carre_team1;
+    }
+
+    public ToggleButton getCarre_team2() {
+        return carre_team2;
+    }
+
+    public TextView getNbCarre_autre_team1() {
+        return nbCarre_autre_team1;
+    }
+
+    public TextView getNbCarre_autre_team2() {
+        return nbCarre_autre_team2;
+    }
+
+    public ToggleButton getCarre_valet_team1() {
+        return carre_valet_team1;
+    }
+
+    public ToggleButton getCarre_valet_team2() {
+        return carre_valet_team2;
+    }
+
+    public ToggleButton getCarre_9_team1() {
+        return carre_9_team1;
+    }
+
+    public ToggleButton getCarre_9_team2() {
+        return carre_9_team2;
+    }
+
+    public Button getCarre_autre_team1() {
+        return carre_autre_team1;
+    }
+
+    public Button getCarre_autre_team2() {
+        return carre_autre_team2;
     }
 
     public void setCheckedTb(boolean b) { }
