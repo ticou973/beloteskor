@@ -7,6 +7,7 @@ import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
+import com.skor.beloteskor.Model_DB.UtilsDb.AnnoncesDonne;
 import com.skor.beloteskor.Model_DB.UtilsDb.Couleur;
 
 /**
@@ -39,6 +40,9 @@ public class Donne  {
 
     @Embedded(prefix = "capot_")
     private Equipe capot;
+
+    @Embedded(prefix ="annonces_")
+    private AnnoncesDonne annoncesDonne;
 
     @ColumnInfo (name = "score_equipeA")
     private int score1;

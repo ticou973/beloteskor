@@ -12,7 +12,6 @@ import android.widget.ToggleButton;
 
 import com.shawnlin.numberpicker.NumberPicker;
 import com.skor.beloteskor.Model_DB.MainDb.Equipe;
-import com.skor.beloteskor.Model_DB.UtilsDb.Annonces;
 import com.skor.beloteskor.R;
 
 import static android.graphics.Color.rgb;
@@ -33,7 +32,6 @@ public class DonneViewHolder extends RecyclerView.ViewHolder  {
     private ImageView preneur_trefle, preneur_carreau, preneur_pique, preneur_coeur;
     private Equipe belote = new Equipe("NoBelote");
     private Equipe capot = new Equipe("NoCapot");
-    private Annonces annonces;
 
     private static final String TAG="coucou";
 

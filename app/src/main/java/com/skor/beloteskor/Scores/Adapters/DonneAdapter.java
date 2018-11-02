@@ -20,6 +20,7 @@ import com.skor.beloteskor.Model_DB.MainDb.Donne;
 import com.skor.beloteskor.Model_DB.MainDb.Equipe;
 import com.skor.beloteskor.Model_DB.MainDb.Joueur;
 import com.skor.beloteskor.Model_DB.MainDb.Partie;
+import com.skor.beloteskor.Model_DB.UtilsDb.AnnoncesDonne;
 import com.skor.beloteskor.Model_DB.UtilsDb.Couleur;
 import com.skor.beloteskor.Model_DB.UtilsDb.TypeAnnonce;
 import com.skor.beloteskor.R;
@@ -39,8 +40,10 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
     private int scoreA, scoreB;
     private Joueur preneur;
     private Couleur couleur;
-    private Equipe belote = new Equipe("NoBelote");
-    private Equipe capot = new Equipe("NoCapot");
+    private Equipe belote;
+    private Equipe capot;
+    private AnnoncesDonne annoncesDonne;
+    private Equipe equipeA,equipeB,equipeNull;
     private Partie lastPartie;
     private String lastTypeAnnonce;
     private final static String TAG="coucou";
@@ -452,6 +455,16 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
         lastPartie = MainActivity.beloteSkorDb.partieDao().getLastPartie();
 
         lastTypeAnnonce=lastPartie.getType().getTypeAnnonce();
+
+        belote = new Equipe("NoBelote");
+        capot = new Equipe("NoCapot");
+
+
+        equipeA = new Equipe("EquipeA");
+        equipeB = new Equipe("EquipeB");
+        equipeNull = new Equipe("NoAnnonces");
+
+        annoncesDonne=new AnnoncesDonne(equipeNull,0,0,0,0,false,false);
 
     }
 
