@@ -40,8 +40,8 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
     private int scoreA, scoreB;
     private Joueur preneur;
     private Couleur couleur;
-    private Equipe belote;
-    private Equipe capot;
+    private Equipe belote= new Equipe("NoBelote");
+    private Equipe capot= new Equipe("NoCapot");
     private AnnoncesDonne annoncesDonne;
     private Equipe equipeA,equipeB,equipeNull;
     private Partie lastPartie;
@@ -234,9 +234,10 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
                     holder.setCardViewCarreGone();
                     capot = holder.getCapot();
                     belote = holder.getBelote();
+                    annoncesDonne=holder.getAnnoncesDonne();
 
 
-                   /* if(annoncesDonne.getEquipeAnnonces()==equipeA){
+                   if(annoncesDonne.getEquipeAnnonces().getNomEquipe()=="EquipeA"){
                         annoncesDonne.setEquipeAnnonces(equipeA);
                         annoncesDonne.setNbTierce(Integer.parseInt(holder.getNbTierce_team1().getText().toString()));
                         annoncesDonne.setNbCinquante(Integer.parseInt(holder.getNbCinquante_team1().getText().toString()));
@@ -246,8 +247,9 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
                         if(holder.getCarre_9_team1().isChecked()){ annoncesDonne.setCarre9(true); }
 
 
-                    }else if(annoncesDonne.getEquipeAnnonces()==equipeB){
-                        annoncesDonne.setEquipeAnnonces(equipeB);
+                    }else if(annoncesDonne.getEquipeAnnonces().getNomEquipe()=="EquipeB"){
+
+                       annoncesDonne.setEquipeAnnonces(equipeB);
                         annoncesDonne.setNbTierce(Integer.parseInt(holder.getNbTierce_team2().getText().toString()));
                         annoncesDonne.setNbCinquante(Integer.parseInt(holder.getNbCinquante_team2().getText().toString()));
                         annoncesDonne.setNbCent(Integer.parseInt(holder.getNbCent_team2().getText().toString()));
@@ -255,7 +257,7 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
                         if(holder.getCarre_valet_team1().isChecked()){ annoncesDonne.setCarreValet(true); }
                         if(holder.getCarre_9_team1().isChecked()){ annoncesDonne.setCarre9(true); }
 
-                    }*/
+                    }
 
                     upDatecurrentDonne(position+1);
                 }
@@ -408,7 +410,7 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 mainTb.setBackgroundResource(R.drawable.radius_button_accent);
 
-                /*if(holder.getCarre_valet_team1().isChecked()){
+                if(holder.getCarre_valet_team1().isChecked()){
 
                     annoncesDonne.setCarreValet(true);
 
@@ -420,7 +422,7 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
 
                 }else if(holder.getCarre_team2().isChecked()){
 
-                }*/
+                }
             }
         });
     }
@@ -494,9 +496,6 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
         lastPartie = MainActivity.beloteSkorDb.partieDao().getLastPartie();
 
         lastTypeAnnonce=lastPartie.getType().getTypeAnnonce();
-
-        belote = new Equipe("NoBelote");
-        capot = new Equipe("NoCapot");
 
 
         equipeA = new Equipe("EquipeA");

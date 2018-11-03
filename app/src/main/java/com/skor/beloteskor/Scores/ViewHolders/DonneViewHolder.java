@@ -298,7 +298,7 @@ public class DonneViewHolder extends RecyclerView.ViewHolder  {
                 }
 
 
-                /*if (annonces_team1.isChecked()) {
+                if (annonces_team1.isChecked()) {
                     annoncesDonne.setEquipeAnnonces(equipeA);
 
                 }else if (annonces_team2.isChecked()){
@@ -306,6 +306,28 @@ public class DonneViewHolder extends RecyclerView.ViewHolder  {
 
                 }else{
                     annoncesDonne.setEquipeAnnonces(equipeNull);
+                }
+
+                //todo voir lorsuq eon bougera les listener de ce côté viewholder
+                /*if(annoncesDonne.getEquipeAnnonces()==equipeA){
+                    annoncesDonne.setEquipeAnnonces(equipeA);
+                    annoncesDonne.setNbTierce(Integer.parseInt(nbTierce_team1.getText().toString()));
+                    annoncesDonne.setNbCinquante(Integer.parseInt(nbCinquante_team1.getText().toString()));
+                    annoncesDonne.setNbCent(Integer.parseInt(nbCent_team1.getText().toString()));
+                    annoncesDonne.setNbCarreAutre(Integer.parseInt(nbCarre_autre_team1.getText().toString()));
+                    if(carre_valet_team1.isChecked()){ annoncesDonne.setCarreValet(true); }
+                    if(carre_9_team1.isChecked()){ annoncesDonne.setCarre9(true); }
+
+
+                }else if(annoncesDonne.getEquipeAnnonces()==equipeB){
+                    annoncesDonne.setEquipeAnnonces(equipeB);
+                    annoncesDonne.setNbTierce(Integer.parseInt(nbTierce_team2.getText().toString()));
+                    annoncesDonne.setNbCinquante(Integer.parseInt(nbCinquante_team2.getText().toString()));
+                    annoncesDonne.setNbCent(Integer.parseInt(nbCent_team2.getText().toString()));
+                    annoncesDonne.setNbCarreAutre(Integer.parseInt(nbCarre_autre_team2.getText().toString()));
+                    if(carre_valet_team2.isChecked()){ annoncesDonne.setCarreValet(true); }
+                    if(carre_9_team2.isChecked()){ annoncesDonne.setCarre9(true); }
+
                 }*/
 
             }
@@ -604,7 +626,6 @@ public class DonneViewHolder extends RecyclerView.ViewHolder  {
     public void setEquipeNull(Equipe equipeNull) { this.equipeNull = equipeNull; }
 
     public int getNbAnnonces(TextView mainTv) { return Integer.parseInt(mainTv.getText().toString());
-
 
 
     }

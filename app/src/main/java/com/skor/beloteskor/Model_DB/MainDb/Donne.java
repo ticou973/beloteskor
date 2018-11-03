@@ -41,7 +41,7 @@ public class Donne  {
     @Embedded(prefix = "capot_")
     private Equipe capot;
 
-    @Embedded(prefix ="annonces_")
+    @Embedded
     private AnnoncesDonne annoncesDonne;
 
     @ColumnInfo (name = "score_equipeA")

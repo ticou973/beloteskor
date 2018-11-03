@@ -1,12 +1,16 @@
 package com.skor.beloteskor.Model_DB.UtilsDb;
 
+import android.arch.persistence.room.Embedded;
+
 import com.skor.beloteskor.Model_DB.MainDb.Equipe;
 
 public class AnnoncesDonne {
 
     // Variables d'instance
 
+    @Embedded(prefix="annonces_")
     private Equipe equipeAnnonces;
+
     private int nbTierce;
     private int nbCinquante;
     private int nbCent;

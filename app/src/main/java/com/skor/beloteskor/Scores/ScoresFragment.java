@@ -196,6 +196,10 @@ public class ScoresFragment extends Fragment {
         capot = donneAdapter.getCapot();
         annoncesDonne = donneAdapter.getAnnoncesDonne();
 
+        Toast.makeText(context, annoncesDonne.getEquipeAnnonces().getNomEquipe().toString(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, String.valueOf(annoncesDonne.getNbTierce()), Toast.LENGTH_SHORT).show();
+
+
         currentDonne = MainActivity.beloteSkorDb.donneDao().getDonnebyNumDonne(numDonne,lastPartie.getPartieId());
 
         currentDonne.setScore1(scoreA);
