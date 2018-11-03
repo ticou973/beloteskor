@@ -243,8 +243,21 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
                         annoncesDonne.setNbCinquante(Integer.parseInt(holder.getNbCinquante_team1().getText().toString()));
                         annoncesDonne.setNbCent(Integer.parseInt(holder.getNbCent_team1().getText().toString()));
                         annoncesDonne.setNbCarreAutre(Integer.parseInt(holder.getNbCarre_autre_team1().getText().toString()));
-                        if(holder.getCarre_valet_team1().isChecked()){ annoncesDonne.setCarreValet(true); }
-                        if(holder.getCarre_9_team1().isChecked()){ annoncesDonne.setCarre9(true); }
+
+                        if(holder.getCarre_valet_team1().isChecked()){
+                            annoncesDonne.setCarreValet(true);
+                        }else{
+                            annoncesDonne.setCarreValet(false);
+                        }
+
+                        if(holder.getCarre_9_team1().isChecked()){
+
+                            annoncesDonne.setCarre9(true);
+                        }else{
+                            annoncesDonne.setCarre9(false);
+                        }
+
+
 
 
                     }else if(annoncesDonne.getEquipeAnnonces().getNomEquipe()=="EquipeB"){
@@ -254,8 +267,19 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
                         annoncesDonne.setNbCinquante(Integer.parseInt(holder.getNbCinquante_team2().getText().toString()));
                         annoncesDonne.setNbCent(Integer.parseInt(holder.getNbCent_team2().getText().toString()));
                         annoncesDonne.setNbCarreAutre(Integer.parseInt(holder.getNbCarre_autre_team2().getText().toString()));
-                        if(holder.getCarre_valet_team1().isChecked()){ annoncesDonne.setCarreValet(true); }
-                        if(holder.getCarre_9_team1().isChecked()){ annoncesDonne.setCarre9(true); }
+
+                       if(holder.getCarre_valet_team2().isChecked()){
+                           annoncesDonne.setCarreValet(true);
+                       }else{
+                           annoncesDonne.setCarreValet(false);
+                       }
+
+                       if(holder.getCarre_9_team2().isChecked()){
+
+                           annoncesDonne.setCarre9(true);
+                       }else {
+                           annoncesDonne.setCarre9(false);
+                       }
 
                     }
 
