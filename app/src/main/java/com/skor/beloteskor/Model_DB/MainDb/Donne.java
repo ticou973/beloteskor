@@ -163,4 +163,8 @@ public class Donne  {
     public void setScore2(int score2) {
         this.score2 = score2;
     }
+
+    public AnnoncesDonne getAnnoncesDonne() { return annoncesDonne; }
+
+    public void setAnnoncesDonne(AnnoncesDonne annoncesDonne) { this.annoncesDonne = annoncesDonne; }
 }

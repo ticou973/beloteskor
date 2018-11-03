@@ -143,7 +143,6 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
 
     }
 
-
                         //MENU OPTIONS
 
     //Méthode qui inflate le menu d'option
@@ -155,12 +154,11 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
         return true;
     }
 
-
     //todo menu options
   //Méthode qui gère la sélection de le menu de la Toolbar
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-//todo prévoir un onglet nouvelle partie (à la place de search ?
+    //todo prévoir un onglet nouvelle partie (à la place de search ?
 
         switch (item.getItemId()) {
 
@@ -180,7 +178,7 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
 
                 return true;
 
-                //todo penser à retirer ces 2 menus plus tard et dands le menu.xml
+                //todo penser à retirer ces 2 menus plus tard et dans le menu.xml
 
             case R.id.reset_db:
 

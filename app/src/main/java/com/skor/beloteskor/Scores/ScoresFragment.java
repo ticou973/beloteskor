@@ -18,6 +18,7 @@ import com.skor.beloteskor.Model_DB.MainDb.Donne;
 import com.skor.beloteskor.Model_DB.MainDb.Equipe;
 import com.skor.beloteskor.Model_DB.MainDb.Joueur;
 import com.skor.beloteskor.Model_DB.MainDb.Partie;
+import com.skor.beloteskor.Model_DB.UtilsDb.AnnoncesDonne;
 import com.skor.beloteskor.Model_DB.UtilsDb.Couleur;
 import com.skor.beloteskor.Model_DB.UtilsDb.SensJeu;
 import com.skor.beloteskor.Model_DB.UtilsDb.Table;
@@ -58,6 +59,7 @@ public class ScoresFragment extends Fragment {
     private boolean lastPartieterm;
     private Equipe lastEquipeA, lastEquipeB, belote, capot;
     private Couleur currentCouleur;
+    private AnnoncesDonne annoncesDonne;
 
 
                                         //Constructeur
@@ -192,6 +194,7 @@ public class ScoresFragment extends Fragment {
         currentPreneur=donneAdapter.getPreneur();
         belote =donneAdapter.getBelote();
         capot = donneAdapter.getCapot();
+        annoncesDonne = donneAdapter.getAnnoncesDonne();
 
         currentDonne = MainActivity.beloteSkorDb.donneDao().getDonnebyNumDonne(numDonne,lastPartie.getPartieId());
 
@@ -201,6 +204,7 @@ public class ScoresFragment extends Fragment {
         currentDonne.setPreneur(currentPreneur);
         currentDonne.setBelote(belote);
         currentDonne.setCapot(capot);
+        currentDonne.setAnnoncesDonne(annoncesDonne);
 
         MainActivity.beloteSkorDb.donneDao().updateDonne(currentDonne);
 
@@ -208,7 +212,10 @@ public class ScoresFragment extends Fragment {
         firstDonne=MainActivity.beloteSkorDb.donneDao().getDonnebyNumDonne(numDonne,lastPartie.getPartieId());
 
         Log.i(TAG, "upDateCurrentDonne: " + firstDonne.getScore1() + " " + firstDonne.getScore2() + " " + firstDonne.getPreneur().getNomJoueur()+ " " +
-        firstDonne.getCouleur() + " " + firstDonne.getBelote().getNomEquipe() + " "+ firstDonne.getCapot().getNomEquipe()+ " "+ firstDonne.getNumDonne());
+        firstDonne.getCouleur() + " " + firstDonne.getBelote().getNomEquipe() + " "+ firstDonne.getCapot().getNomEquipe()+ " "+ firstDonne.getNumDonne()+ " "+firstDonne.getAnnoncesDonne().getEquipeAnnonces().getNomEquipe()
+        + " "+ firstDonne.getAnnoncesDonne().getNbTierce() + " " + firstDonne.getAnnoncesDonne().getNbCinquante()+" "+
+        firstDonne.getAnnoncesDonne().getNbCent()+" "+ firstDonne.getAnnoncesDonne().getNbCarreAutre()+" "+
+        firstDonne.getAnnoncesDonne().isCarreValet()+" "+firstDonne.getAnnoncesDonne().isCarre9());
     }
 
     private void showDialogModeEquipe() {

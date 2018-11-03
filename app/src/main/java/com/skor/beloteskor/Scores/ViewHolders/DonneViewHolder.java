@@ -12,6 +12,7 @@ import android.widget.ToggleButton;
 
 import com.shawnlin.numberpicker.NumberPicker;
 import com.skor.beloteskor.Model_DB.MainDb.Equipe;
+import com.skor.beloteskor.Model_DB.UtilsDb.AnnoncesDonne;
 import com.skor.beloteskor.R;
 
 import static android.graphics.Color.rgb;
@@ -32,6 +33,8 @@ public class DonneViewHolder extends RecyclerView.ViewHolder  {
     private ImageView preneur_trefle, preneur_carreau, preneur_pique, preneur_coeur;
     private Equipe belote = new Equipe("NoBelote");
     private Equipe capot = new Equipe("NoCapot");
+    private AnnoncesDonne annoncesDonne;
+    private Equipe equipeA,equipeB,equipeNull;
 
     private static final String TAG="coucou";
 
@@ -93,6 +96,12 @@ public class DonneViewHolder extends RecyclerView.ViewHolder  {
         cardviewAnnoncesBtn=itemView.findViewById(R.id.cardview_annonces_btn);
         nbCarre_autre_team1=itemView.findViewById(R.id.nb_carre_autre_team1);
         nbCarre_autre_team2=itemView.findViewById(R.id.nb_carre_autre_team2);
+
+        //Données
+        equipeA= new Equipe("EquipeA");
+        equipeB=new Equipe("EquipeB");
+        equipeNull=new Equipe("Noannnonces");
+        annoncesDonne = new AnnoncesDonne(equipeNull,0,0,0,0,false,false);
     }
 
                         //Méthodes du ViewHolder
@@ -287,6 +296,17 @@ public class DonneViewHolder extends RecyclerView.ViewHolder  {
                     setButtonGone(tierce_team1,cinquante_team1,cent_team1);
                     setButtonVisible(tierce_team2,cinquante_team2,cent_team2);
                 }
+
+
+                /*if (annonces_team1.isChecked()) {
+                    annoncesDonne.setEquipeAnnonces(equipeA);
+
+                }else if (annonces_team2.isChecked()){
+                    annoncesDonne.setEquipeAnnonces(equipeB);
+
+                }else{
+                    annoncesDonne.setEquipeAnnonces(equipeNull);
+                }*/
 
             }
 
@@ -567,7 +587,24 @@ public class DonneViewHolder extends RecyclerView.ViewHolder  {
 
     public CardView getCardviewAnnoncesBtn() { return cardviewAnnoncesBtn; }
 
+    public AnnoncesDonne getAnnoncesDonne() { return annoncesDonne; }
+
+    public void setAnnoncesDonne(AnnoncesDonne annoncesDonne) { this.annoncesDonne = annoncesDonne; }
+
+    public Equipe getEquipeA() { return equipeA; }
+
+    public void setEquipeA(Equipe equipeA) { this.equipeA = equipeA; }
+
+    public Equipe getEquipeB() { return equipeB; }
+
+    public void setEquipeB(Equipe equipeB) { this.equipeB = equipeB; }
+
+    public Equipe getEquipeNull() { return equipeNull; }
+
+    public void setEquipeNull(Equipe equipeNull) { this.equipeNull = equipeNull; }
+
     public int getNbAnnonces(TextView mainTv) { return Integer.parseInt(mainTv.getText().toString());
+
 
 
     }

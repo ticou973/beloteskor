@@ -234,6 +234,29 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
                     holder.setCardViewCarreGone();
                     capot = holder.getCapot();
                     belote = holder.getBelote();
+
+
+                   /* if(annoncesDonne.getEquipeAnnonces()==equipeA){
+                        annoncesDonne.setEquipeAnnonces(equipeA);
+                        annoncesDonne.setNbTierce(Integer.parseInt(holder.getNbTierce_team1().getText().toString()));
+                        annoncesDonne.setNbCinquante(Integer.parseInt(holder.getNbCinquante_team1().getText().toString()));
+                        annoncesDonne.setNbCent(Integer.parseInt(holder.getNbCent_team1().getText().toString()));
+                        annoncesDonne.setNbCarreAutre(Integer.parseInt(holder.getNbCarre_autre_team1().getText().toString()));
+                        if(holder.getCarre_valet_team1().isChecked()){ annoncesDonne.setCarreValet(true); }
+                        if(holder.getCarre_9_team1().isChecked()){ annoncesDonne.setCarre9(true); }
+
+
+                    }else if(annoncesDonne.getEquipeAnnonces()==equipeB){
+                        annoncesDonne.setEquipeAnnonces(equipeB);
+                        annoncesDonne.setNbTierce(Integer.parseInt(holder.getNbTierce_team2().getText().toString()));
+                        annoncesDonne.setNbCinquante(Integer.parseInt(holder.getNbCinquante_team2().getText().toString()));
+                        annoncesDonne.setNbCent(Integer.parseInt(holder.getNbCent_team2().getText().toString()));
+                        annoncesDonne.setNbCarreAutre(Integer.parseInt(holder.getNbCarre_autre_team2().getText().toString()));
+                        if(holder.getCarre_valet_team1().isChecked()){ annoncesDonne.setCarreValet(true); }
+                        if(holder.getCarre_9_team1().isChecked()){ annoncesDonne.setCarre9(true); }
+
+                    }*/
+
                     upDatecurrentDonne(position+1);
                 }
             }
@@ -323,7 +346,8 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
         });
     }
 
-    private void setListenerClickPreneur(final DonneViewHolder holder, final TextView mainJoueur, final TextView secondJoueur, final TextView thirdJoueur, final TextView fourthJoueur) {
+    private void setListenerClickPreneur(final DonneViewHolder holder, final TextView mainJoueur,
+                                         final TextView secondJoueur, final TextView thirdJoueur, final TextView fourthJoueur) {
 
         mainJoueur.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -353,7 +377,8 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
         });
     }
 
-    private void setListenerClickCouleur(final DonneViewHolder holder, final ImageView mainCouleur, final ImageView secondCouleur, final ImageView thirdCouleur, final ImageView fourthCouleur) {
+    private void setListenerClickCouleur(final DonneViewHolder holder, final ImageView mainCouleur,
+                                         final ImageView secondCouleur, final ImageView thirdCouleur, final ImageView fourthCouleur) {
         mainCouleur.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -376,12 +401,26 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
 
     }
 
-    private void setListenerToggleV9(DonneViewHolder holder, final ToggleButton mainTb) {
+    private void setListenerToggleV9(final DonneViewHolder holder, final ToggleButton mainTb) {
 
         mainTb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 mainTb.setBackgroundResource(R.drawable.radius_button_accent);
+
+                /*if(holder.getCarre_valet_team1().isChecked()){
+
+                    annoncesDonne.setCarreValet(true);
+
+                }else if(holder.getCarre_team2().isChecked()){
+
+                }
+
+                if(holder.getCarre_9_team1().isChecked()){
+
+                }else if(holder.getCarre_team2().isChecked()){
+
+                }*/
             }
         });
     }
@@ -498,4 +537,6 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
     public Equipe getBelote() { return belote; }
 
     public Equipe getCapot() { return capot; }
+
+    public AnnoncesDonne getAnnoncesDonne() { return annoncesDonne; }
 }
