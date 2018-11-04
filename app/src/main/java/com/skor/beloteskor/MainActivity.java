@@ -284,6 +284,7 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
 
     @Override
     public void onDialogNegativeClick(DialogFragment dialog) {
+        settingsGameFragment.saveSettingsPartieAnonyme();
 
         TeamScoreFragment teamScoreFragment = new TeamScoreFragment();
         transaction = getSupportFragmentManager().beginTransaction();

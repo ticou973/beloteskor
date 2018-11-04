@@ -22,7 +22,6 @@ import com.skor.beloteskor.Model_DB.UtilsDb.AnnoncesDonne;
 import com.skor.beloteskor.Model_DB.UtilsDb.Couleur;
 import com.skor.beloteskor.Model_DB.UtilsDb.SensJeu;
 import com.skor.beloteskor.Model_DB.UtilsDb.Table;
-import com.skor.beloteskor.Model_DB.UtilsDb.TypeAnnonce;
 import com.skor.beloteskor.Model_DB.UtilsDb.TypeDePartie;
 import com.skor.beloteskor.R;
 import com.skor.beloteskor.Scores.Adapters.DonneAdapter;
@@ -148,16 +147,6 @@ public class ScoresFragment extends Fragment {
 
         displayLogTestTablePartie();
 
-//todo déplacer cette partie si nécessaire
-        if(lastTypeAnnonce.equals(TypeAnnonce.SANS_ANNONCE.toString())){
-            Toast.makeText(context, "coucou", Toast.LENGTH_SHORT).show();
-
-        }else if(lastTypeAnnonce.equals(TypeAnnonce.AVEC_ANNONCES.toString())){
-            Toast.makeText(context, "hello", Toast.LENGTH_SHORT).show();
-
-        }else{
-            Toast.makeText(context, "rien", Toast.LENGTH_SHORT).show();
-        }
     }
 
     private void addDonnesBtn() {
@@ -179,14 +168,12 @@ public class ScoresFragment extends Fragment {
             mListener.onScoreChangePreneur();
         }
 
-        //todo gérer le distributeur
         nextDonne = new Donne(lastPartie.getPartieId(), donnes.size() + 1, lastPremierDistrib, 0, 0);
         MainActivity.beloteSkorDb.donneDao().insertDonne(nextDonne);
         donnes = MainActivity.beloteSkorDb.donneDao().getAllDonnesPartiesCourantes(lastPartie.getPartieId());
         donneAdapter.setNotifyDonneAdapter(donnes);
     }
 
-    //todo voir comment gérer le double update lors du adddonne ou de la fermeture du child
     public void upDateCurrentDonne(int numDonne){
         scoreA = donneAdapter.getScoreA();
         scoreB = donneAdapter.getScoreB();
@@ -234,7 +221,6 @@ public class ScoresFragment extends Fragment {
     private void testTablePartie(){
 
         //todo inutile à virer quand bd sera opérationnelle
-
 
         lastTypePartie = lastPartie.getType();
         lastTable = lastPartie.getTable();

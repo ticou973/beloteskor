@@ -8,5 +8,5 @@ public enum Annonces {
     TIERCE,
     CINQUANTE,
     CENT,
-    CARRE
+    CARRE;
 }

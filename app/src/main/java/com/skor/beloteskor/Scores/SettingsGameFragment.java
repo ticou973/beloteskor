@@ -106,7 +106,6 @@ public class SettingsGameFragment extends Fragment {
 
 
                                     //LANCEMENT D'UNE PARTIE
-
         //Bouton Start et DB
         startGameBtn = getActivity().findViewById(R.id.start_game_btn2);
         startGameBtn.setOnClickListener(new View.OnClickListener() {
@@ -141,11 +140,9 @@ public class SettingsGameFragment extends Fragment {
                     distribRightBtn.setText(player4);
 
                 } else if (verif && cvDistribution.isEnabled()){
-
                     startGamePlayers();
 
                 } else if (!verif) {
-
                     ShowDialogModeEquipe();
                 }
             }
@@ -410,6 +407,88 @@ public class SettingsGameFragment extends Fragment {
 
     }
 
+    public void saveSettingsPartieAnonyme(){
+
+
+        String nomJoueurEquipe1 = getResources().getString(R.string.us);
+        String nomJoueurEquipe2 = getResources().getString(R.string.you);
+
+        Joueur joueur1 = new Joueur(nomJoueurEquipe1+"1");
+        Joueur joueur2 = new Joueur(nomJoueurEquipe1+"2");
+        Joueur joueur3 = new Joueur(nomJoueurEquipe2+"1");
+        Joueur joueur4 = new Joueur(nomJoueurEquipe2+"2");
+
+        MainActivity.beloteSkorDb.joueurDao().insertPlayers(joueur1,joueur2,joueur3,joueur4);
+
+        //type de partie
+        TypeDePartie typeDePartie = new TypeDePartie();
+
+        typeDePartie.setModeEquipe(ModeEquipe.MODE_EQUIPE_STATIQUE_ANONYME.toString());
+
+        savePointsDonnesAnnonce(typeDePartie);
+
+        //Equipes et Table
+        Equipe equipeA = new Equipe("EquipeA",joueur1,joueur2);
+        Equipe equipeB = new Equipe("EquipeB",joueur3,joueur4);
+
+        MainActivity.beloteSkorDb.equipeDao().insertAll(equipeA,equipeB);
+
+        Table table = new Table(equipeA,equipeB);
+
+        sensJeu = SensJeu.NO_SENS_JEU;
+
+
+
+        Joueur premierDistrib = new Joueur();
+
+        premierDistrib.setNomJoueur("jojo");
+
+        //Partie
+
+        Partie partie = new Partie(typeDePartie,table,premierDistrib,sensJeu,0,0,false);
+
+        MainActivity.beloteSkorDb.partieDao().insertPartie(partie);
+
+        //TEST
+
+        //todo virer le test dès que implémenter ailleurs
+
+        Partie lastPartie = MainActivity.beloteSkorDb.partieDao().getLastPartie();
+
+        TypeDePartie lastTypePartie = lastPartie.getType();
+        Table lastTable = lastPartie.getTable();
+        Joueur lastPremierDistrib = lastPartie.getPremierDistributeur();
+        String lastNomPremierDistrib = lastPremierDistrib.getNomJoueur();
+        SensJeu lastSensJeu = lastPartie.getSensJeu();
+        int lastScoreEquipeA = lastPartie.getScoreEquipeA();
+        int lastScoreEquipeB = lastPartie.getScoreEquipeB();
+        boolean lastPartieterm = lastPartie.isPartieterminee();
+
+        String lastTypeJeu = lastTypePartie.getTypeJeu();
+        String lastTypeAnnonce = lastTypePartie.getTypeAnnonce();
+        String lastModeEquipe = lastTypePartie.getModeEquipe();
+        int lastNbPoints = lastTypePartie.getNbPoints();
+        int lastNbDonnes = lastTypePartie.getNbDonnes();
+
+        Equipe lastEquipeA = lastTable.getEquipeA();
+        Equipe lastEquipeB = lastTable.getEquipeB();
+
+        String lastJoueur1EqA = lastEquipeA.getJoueur1().getNomJoueur();
+        String lastJoueur2EqA = lastEquipeA.getJoueur2().getNomJoueur();
+        String lastJoueur1EqB = lastEquipeB.getJoueur1().getNomJoueur();
+        String lastJoueur2EqB = lastEquipeB.getJoueur2().getNomJoueur();
+
+        String newligne=System.getProperty("line.separator");
+
+        Log.i(TAG, newligne + lastPartie.getPartieId() + newligne + "type jeu : " + lastTypeJeu + newligne + "type Annonce : " + lastTypeAnnonce + newligne + "Mode Equipe : " + lastModeEquipe + newligne +  "Nb Points : " + lastNbPoints + newligne + "Nb Donnes : " + lastNbDonnes
+                + newligne + "joueurs : " + lastJoueur1EqA + ", "  + lastJoueur2EqA + ", " + lastJoueur1EqB + ", " + lastJoueur2EqB + newligne + "premier distributeur : " + lastNomPremierDistrib + newligne + "Sens Jeu : "
+                + lastSensJeu + newligne + "lastScoreEqA : " + lastScoreEquipeA + newligne + "lastScoreEquipeB : " + lastScoreEquipeB + newligne + "statut partie : " + lastPartieterm);
+
+
+
+    }
+
+
     private void saveSettings(){
         //todo voir les simplifications pour joueur et player, cela semble redondant
         //Joueurs
@@ -429,37 +508,7 @@ public class SettingsGameFragment extends Fragment {
 
         //nbpoints ou nbDonnes
 
-        if (tilPoints.getAlpha()==1.0f){
-            nbDonnes =0;
-
-            if (!TextUtils.isEmpty(tietPoints.getEditableText())) {
-                nbPoints = Integer.parseInt(tietPoints.getEditableText().toString());
-            }
-
-        }else{
-            nbPoints =0;
-            if (!TextUtils.isEmpty(tietDonnes.getEditableText())) {
-                nbDonnes = Integer.parseInt(tietDonnes.getEditableText().toString());            }
-        }
-
-
-        if (sansAnnonceBtn.isChecked()){
-            typeDePartie.setTypeAnnonce(TypeAnnonce.SANS_ANNONCE.toString());
-        }else{
-            typeDePartie.setTypeAnnonce(TypeAnnonce.AVEC_ANNONCES.toString());
-        }
-
-        if (tilDonnes.getAlpha()==1.0f) {
-
-            typeDePartie.setTypeJeu(TypeJeu.DONNES.toString());
-            typeDePartie.setNbPoints(0);
-            typeDePartie.setNbDonnes(nbDonnes);
-
-        }else{
-            typeDePartie.setTypeJeu(TypeJeu.POINTS.toString());
-            typeDePartie.setNbPoints(nbPoints);
-            typeDePartie.setNbDonnes(0);
-        }
+        savePointsDonnesAnnonce(typeDePartie);
 
         //Equipes et Table
         Equipe equipeA = new Equipe("EquipeA",joueur1,joueur2);
@@ -542,6 +591,43 @@ public class SettingsGameFragment extends Fragment {
 
 
     }
+
+    private void savePointsDonnesAnnonce(TypeDePartie typeDePartie) {
+        if (tilPoints.getAlpha()==1.0f){
+            nbDonnes =0;
+
+            if (!TextUtils.isEmpty(tietPoints.getEditableText())) {
+                nbPoints = Integer.parseInt(tietPoints.getEditableText().toString());
+            }
+
+        }else{
+            nbPoints =0;
+            if (!TextUtils.isEmpty(tietDonnes.getEditableText())) {
+                nbDonnes = Integer.parseInt(tietDonnes.getEditableText().toString());            }
+        }
+
+
+        if (sansAnnonceBtn.isChecked()){
+            typeDePartie.setTypeAnnonce(TypeAnnonce.SANS_ANNONCE.toString());
+        }else{
+            typeDePartie.setTypeAnnonce(TypeAnnonce.AVEC_ANNONCES.toString());
+        }
+
+        if (tilDonnes.getAlpha()==1.0f) {
+
+            typeDePartie.setTypeJeu(TypeJeu.DONNES.toString());
+            typeDePartie.setNbPoints(0);
+            typeDePartie.setNbDonnes(nbDonnes);
+
+        }else{
+            typeDePartie.setTypeJeu(TypeJeu.POINTS.toString());
+            typeDePartie.setNbPoints(nbPoints);
+            typeDePartie.setNbDonnes(0);
+        }
+
+    }
+
+
 
     public static void hideKeyboardFrom(Context context, View view) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);

@@ -139,6 +139,8 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
 
 
         //todo revoir gestion de l'ouverture initiale
+        //todo le parent reste vert lorsque on add une nelle donne et la précédente non fermée
+
         /*if (position == donnes.size()-1) {
             holder.getCardViewDonne().performClick();
             Toast.makeText(mContext, "hello", Toast.LENGTH_SHORT).show();

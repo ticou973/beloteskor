@@ -119,7 +119,7 @@ public class PlayerScoreFragment extends Fragment {
 
 
         //todo mettre un autocomplete à partir de la base des joueurs - A retirer dès que test fini
-        joueursAutoComplete();
+       // joueursAutoComplete();
         setListenerTextName();
 
         if (isInScoreFragment) {
