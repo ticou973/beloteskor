@@ -80,10 +80,9 @@ public class Donne  {
         this.numDonne = numDonne;
     }
 
-    public Donne(int partieId, int numDonne, Joueur preneur, int score1, int score2) {
+    public Donne(int partieId, int numDonne, int score1, int score2) {
         this.partieId = partieId;
         this.numDonne = numDonne;
-        this.preneur = preneur;
         this.score1 = score1;
         this.score2 = score2;
     }

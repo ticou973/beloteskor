@@ -22,6 +22,7 @@ import com.skor.beloteskor.Model_DB.MainDb.Joueur;
 import com.skor.beloteskor.Model_DB.MainDb.Partie;
 import com.skor.beloteskor.Model_DB.UtilsDb.AnnoncesDonne;
 import com.skor.beloteskor.Model_DB.UtilsDb.Couleur;
+import com.skor.beloteskor.Model_DB.UtilsDb.ModeEquipe;
 import com.skor.beloteskor.Model_DB.UtilsDb.TypeAnnonce;
 import com.skor.beloteskor.R;
 import com.skor.beloteskor.Scores.ViewHolders.DonneViewHolder;
@@ -45,7 +46,7 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
     private AnnoncesDonne annoncesDonne;
     private Equipe equipeA,equipeB,equipeNull;
     private Partie lastPartie;
-    private String lastTypeAnnonce;
+    private String lastTypeAnnonce,lastModeEquipe;
     private final static String TAG="coucou";
     private int i;
 
@@ -90,6 +91,7 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
 
         //get the players with an interface
         //todo à voir avec la bdd pour les players
+
         getPlayers();
 
         // Get the application context
@@ -258,8 +260,6 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
                         }else{
                             annoncesDonne.setCarre9(false);
                         }
-
-
 
 
                     }else if(annoncesDonne.getEquipeAnnonces().getNomEquipe()=="EquipeB"){
@@ -521,8 +521,9 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
 
         lastPartie = MainActivity.beloteSkorDb.partieDao().getLastPartie();
 
-        lastTypeAnnonce=lastPartie.getType().getTypeAnnonce();
+        lastModeEquipe=lastPartie.getType().getModeEquipe();
 
+        lastTypeAnnonce=lastPartie.getType().getTypeAnnonce();
 
         equipeA = new Equipe("EquipeA");
         equipeB = new Equipe("EquipeB");
@@ -542,10 +543,22 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
 
     public String[] getPlayers() {
 
-        if (mListener != null) {
+        if(lastModeEquipe.equals(ModeEquipe.MODE_EQUIPE_STATIQUE_NOMINATIF.toString())){
+        Log.i(TAG, "getPlayers: "+lastModeEquipe);
+            Log.i(TAG, "getPlayers: " + ModeEquipe.MODE_EQUIPE_STATIQUE_NOMINATIF.toString());
+
+            if (mListener != null) {
             mListener.onDonneAdapterPlayers();
 
             return mListener.onDonneAdapterPlayers();
+            }
+
+         }else if(lastModeEquipe.equals(ModeEquipe.MODE_EQUIPE_STATIQUE_ANONYME.toString())){
+
+//todo voir comment repasser par les strings pour les noms
+            String[] listPlayers = {"Us1","Us2","You1","You2"};
+
+            return listPlayers;
         }
 
         return null;

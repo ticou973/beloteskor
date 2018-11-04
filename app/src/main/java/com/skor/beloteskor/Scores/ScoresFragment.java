@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.skor.beloteskor.MainActivity;
 import com.skor.beloteskor.Model_DB.MainDb.Donne;
@@ -140,7 +139,7 @@ public class ScoresFragment extends Fragment {
         testTablePartie();
 
         //Donnes
-        currentDonne = new Donne(lastPartie.getPartieId(),1,lastPremierDistrib,0,0);
+        currentDonne = new Donne(lastPartie.getPartieId(),1,0,0);
 
         MainActivity.beloteSkorDb.donneDao().insertDonne(currentDonne);
         donnes = MainActivity.beloteSkorDb.donneDao().getAllDonnesPartiesCourantes(lastPartie.getPartieId());
@@ -168,7 +167,7 @@ public class ScoresFragment extends Fragment {
             mListener.onScoreChangePreneur();
         }
 
-        nextDonne = new Donne(lastPartie.getPartieId(), donnes.size() + 1, lastPremierDistrib, 0, 0);
+        nextDonne = new Donne(lastPartie.getPartieId(), donnes.size() + 1, 0, 0);
         MainActivity.beloteSkorDb.donneDao().insertDonne(nextDonne);
         donnes = MainActivity.beloteSkorDb.donneDao().getAllDonnesPartiesCourantes(lastPartie.getPartieId());
         donneAdapter.setNotifyDonneAdapter(donnes);
@@ -182,10 +181,6 @@ public class ScoresFragment extends Fragment {
         belote =donneAdapter.getBelote();
         capot = donneAdapter.getCapot();
         annoncesDonne = donneAdapter.getAnnoncesDonne();
-
-        Toast.makeText(context, annoncesDonne.getEquipeAnnonces().getNomEquipe().toString(), Toast.LENGTH_SHORT).show();
-        Toast.makeText(context, String.valueOf(annoncesDonne.getNbTierce()), Toast.LENGTH_SHORT).show();
-
 
         currentDonne = MainActivity.beloteSkorDb.donneDao().getDonnebyNumDonne(numDonne,lastPartie.getPartieId());
 

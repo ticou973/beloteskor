@@ -409,7 +409,6 @@ public class SettingsGameFragment extends Fragment {
 
     public void saveSettingsPartieAnonyme(){
 
-
         String nomJoueurEquipe1 = getResources().getString(R.string.us);
         String nomJoueurEquipe2 = getResources().getString(R.string.you);
 
@@ -441,7 +440,7 @@ public class SettingsGameFragment extends Fragment {
 
         Joueur premierDistrib = new Joueur();
 
-        premierDistrib.setNomJoueur("jojo");
+        premierDistrib.setNomJoueur("Nodistrib");
 
         //Partie
 
@@ -487,7 +486,6 @@ public class SettingsGameFragment extends Fragment {
 
 
     }
-
 
     private void saveSettings(){
         //todo voir les simplifications pour joueur et player, cela semble redondant
