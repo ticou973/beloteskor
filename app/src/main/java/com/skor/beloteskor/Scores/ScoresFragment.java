@@ -19,6 +19,7 @@ import com.skor.beloteskor.Model_DB.MainDb.Joueur;
 import com.skor.beloteskor.Model_DB.MainDb.Partie;
 import com.skor.beloteskor.Model_DB.UtilsDb.AnnoncesDonne;
 import com.skor.beloteskor.Model_DB.UtilsDb.Couleur;
+import com.skor.beloteskor.Model_DB.UtilsDb.ModeEquipe;
 import com.skor.beloteskor.Model_DB.UtilsDb.SensJeu;
 import com.skor.beloteskor.Model_DB.UtilsDb.Table;
 import com.skor.beloteskor.Model_DB.UtilsDb.TypeDePartie;
@@ -144,17 +145,19 @@ public class ScoresFragment extends Fragment {
         MainActivity.beloteSkorDb.donneDao().insertDonne(currentDonne);
         donnes = MainActivity.beloteSkorDb.donneDao().getAllDonnesPartiesCourantes(lastPartie.getPartieId());
 
-        displayLogTestTablePartie();
+        //displayLogTestTablePartie();
 
     }
 
     private void addDonnesBtn() {
         numCurrentDonne = donnes.size();
+
         upDateCurrentDonne(numCurrentDonne);
 
         donnes = MainActivity.beloteSkorDb.donneDao().getAllDonnesPartiesCourantes(lastPartie.getPartieId());
 
         if (scoreA == 0 && scoreB == 0) {
+
             showDialogModeEquipe();
 
         }else{
@@ -163,8 +166,11 @@ public class ScoresFragment extends Fragment {
     }
 
     public void CreateDonne() {
-        if (mListener != null) {
-            mListener.onScoreChangePreneur();
+        if(lastModeEquipe.equals(ModeEquipe.MODE_EQUIPE_STATIQUE_NOMINATIF.toString())) {
+
+            if (mListener != null) {
+                mListener.onScoreChangePreneur();
+            }
         }
 
         nextDonne = new Donne(lastPartie.getPartieId(), donnes.size() + 1, 0, 0);
@@ -174,6 +180,8 @@ public class ScoresFragment extends Fragment {
     }
 
     public void upDateCurrentDonne(int numDonne){
+
+
         scoreA = donneAdapter.getScoreA();
         scoreB = donneAdapter.getScoreB();
         currentCouleur= donneAdapter.getCouleur();
@@ -181,6 +189,12 @@ public class ScoresFragment extends Fragment {
         belote =donneAdapter.getBelote();
         capot = donneAdapter.getCapot();
         annoncesDonne = donneAdapter.getAnnoncesDonne();
+
+       Log.i(TAG, "upDateCurrentDonneA: " + scoreA + " " + scoreB + " " + currentPreneur+ " " +
+                currentCouleur + " " + belote.getNomEquipe() + " "+ capot.getNomEquipe() + " "+ numDonne+ " "+annoncesDonne.getEquipeAnnonces().getNomEquipe()
+                + " "+ annoncesDonne.getNbTierce() + " " + annoncesDonne.getNbCinquante()+" "+
+                annoncesDonne.getNbCent()+" "+ annoncesDonne.getNbCarreAutre()+" "+
+                annoncesDonne.isCarreValet()+" "+annoncesDonne.isCarre9());
 
         currentDonne = MainActivity.beloteSkorDb.donneDao().getDonnebyNumDonne(numDonne,lastPartie.getPartieId());
 
@@ -197,7 +211,7 @@ public class ScoresFragment extends Fragment {
         //todo retirer après validation de l'update (test)
         firstDonne=MainActivity.beloteSkorDb.donneDao().getDonnebyNumDonne(numDonne,lastPartie.getPartieId());
 
-        Log.i(TAG, "upDateCurrentDonne: " + firstDonne.getScore1() + " " + firstDonne.getScore2() + " " + firstDonne.getPreneur().getNomJoueur()+ " " +
+       Log.i(TAG, "upDateCurrentDonneB: " + firstDonne.getScore1() + " " + firstDonne.getScore2() + " " + firstDonne.getPreneur()+ " " +
         firstDonne.getCouleur() + " " + firstDonne.getBelote().getNomEquipe() + " "+ firstDonne.getCapot().getNomEquipe()+ " "+ firstDonne.getNumDonne()+ " "+firstDonne.getAnnoncesDonne().getEquipeAnnonces().getNomEquipe()
         + " "+ firstDonne.getAnnoncesDonne().getNbTierce() + " " + firstDonne.getAnnoncesDonne().getNbCinquante()+" "+
         firstDonne.getAnnoncesDonne().getNbCent()+" "+ firstDonne.getAnnoncesDonne().getNbCarreAutre()+" "+

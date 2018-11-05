@@ -74,20 +74,22 @@ public class Converters {
     }
 
     @TypeConverter
-    public static SensJeu CodeSensJeutoSensJeu (Boolean codeSensJeu) {
-        if (codeSensJeu) return SensJeu.SENS_AIGUILLE;
-        if(codeSensJeu==false) return SensJeu.SENS_INVERSE_AIGUILLE;
+    public static SensJeu CodeSensJeutoSensJeu (int codeSensJeu) {
+        if (codeSensJeu==1) return SensJeu.SENS_AIGUILLE;
+        if(codeSensJeu==2) return SensJeu.SENS_INVERSE_AIGUILLE;
+        if(codeSensJeu==3) return SensJeu.NO_SENS_JEU;
 
-        return null;
+        return SensJeu.NO_SENS_JEU;
     }
 
     @TypeConverter
-    public static  Boolean SensJeutoCodeSensJeu (SensJeu sensJeu) {
+    public static  int SensJeutoCodeSensJeu (SensJeu sensJeu) {
 
-        if(sensJeu==SensJeu.SENS_AIGUILLE) return true;
-        if(sensJeu==SensJeu.SENS_INVERSE_AIGUILLE) return false;
+        if(sensJeu==SensJeu.SENS_AIGUILLE) return 1;
+        if(sensJeu==SensJeu.SENS_INVERSE_AIGUILLE) return 2;
+        if(sensJeu==SensJeu.NO_SENS_JEU) return 3;
 
-        return true;
+        return 3;
     }
 
 }

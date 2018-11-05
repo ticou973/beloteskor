@@ -48,8 +48,7 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
     public static final String EXTRA2="com.skor.beloteskor.MESSAGE2";
     public static final String EXTRA3="com.skor.beloteskor.MESSAGE3";
 
-
-
+    private static String TAG = "coucou";
     private String player1, player2, player3, player4;
     private String[] listPlayersName={"","","",""};
     private List<Donne> donnes = null;
@@ -285,13 +284,13 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
     @Override
     public void onDialogNegativeClick(DialogFragment dialog) {
         settingsGameFragment.saveSettingsPartieAnonyme();
+        modeEquipe = ModeEquipe.MODE_EQUIPE_STATIQUE_ANONYME;
 
         TeamScoreFragment teamScoreFragment = new TeamScoreFragment();
         transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fl_fragment_name_score, teamScoreFragment).commit();
 
-        ScoresFragment scoresFragment = new ScoresFragment();
-        modeEquipe = ModeEquipe.MODE_EQUIPE_STATIQUE_ANONYME;
+        scoresFragment = new ScoresFragment();
         replaceFragment(scoresFragment);
     }
 
@@ -380,6 +379,7 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
 
     @Override
     public void onDonneAdapterUpdateDonne(int numDonne) {
+
         scoresFragment.upDateCurrentDonne(numDonne);
     }
 

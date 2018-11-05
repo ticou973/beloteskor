@@ -91,7 +91,6 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
 
         //get the players with an interface
         //todo à voir avec la bdd pour les players
-
         getPlayers();
 
         // Get the application context
@@ -284,6 +283,15 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
                        }
 
                     }
+
+                    Log.i(TAG, "upDateCurrentDonneC: " + scoreA + " " + scoreB + " " + preneur+ " " +
+                            couleur + " " + belote.getNomEquipe() + " "+ capot.getNomEquipe() + " "+ (position+1)+ " "+annoncesDonne.getEquipeAnnonces().getNomEquipe()
+                            + " "+ annoncesDonne.getNbTierce() + " " + annoncesDonne.getNbCinquante()+" "+
+                            annoncesDonne.getNbCent()+" "+ annoncesDonne.getNbCarreAutre()+" "+
+                            annoncesDonne.isCarreValet()+" "+annoncesDonne.isCarre9());
+
+
+                    Log.i(TAG, "onClick: "+(position+1));
 
                     upDatecurrentDonne(position+1);
                 }
@@ -544,8 +552,6 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
     public String[] getPlayers() {
 
         if(lastModeEquipe.equals(ModeEquipe.MODE_EQUIPE_STATIQUE_NOMINATIF.toString())){
-        Log.i(TAG, "getPlayers: "+lastModeEquipe);
-            Log.i(TAG, "getPlayers: " + ModeEquipe.MODE_EQUIPE_STATIQUE_NOMINATIF.toString());
 
             if (mListener != null) {
             mListener.onDonneAdapterPlayers();

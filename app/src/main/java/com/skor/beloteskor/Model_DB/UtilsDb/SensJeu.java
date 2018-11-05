@@ -5,10 +5,7 @@ package com.skor.beloteskor.Model_DB.UtilsDb;
  */
 
 public enum SensJeu {
+    NO_SENS_JEU,
     SENS_AIGUILLE,
-    SENS_INVERSE_AIGUILLE,
-    NO_SENS_JEU;
-
-    SensJeu() {
-    }
+    SENS_INVERSE_AIGUILLE
 }

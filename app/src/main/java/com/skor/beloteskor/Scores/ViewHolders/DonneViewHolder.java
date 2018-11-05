@@ -416,7 +416,6 @@ public class DonneViewHolder extends RecyclerView.ViewHolder  {
         }
     }
 
-
     public void setToggleGone(ToggleButton ... toggles) {
 
         for (ToggleButton toggli: toggles

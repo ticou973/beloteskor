@@ -123,8 +123,12 @@ public class SettingsGameFragment extends Fragment {
 
                 if (verif && !cvDistribution.isEnabled()){
 
+
                     cvDistribution.setVisibility(View.VISIBLE);
                     cvDistribution.setEnabled(true);
+
+                    sensAiguillesBtn.setChecked(true);
+                    sensInverseBtn.setChecked(false);
 
                     distribYouBtn.setTextOff(player1);
                     distribYouBtn.setTextOn(player1);
@@ -238,8 +242,6 @@ public class SettingsGameFragment extends Fragment {
 
         sensAiguillesBtn = getActivity().findViewById(R.id.sens_aiguilles_btn);
         sensInverseBtn = getActivity().findViewById(R.id.sens_inverse_btn);
-        sensAiguillesBtn.setChecked(true);
-        sensInverseBtn.setChecked(false);
         sensAiguillesBtn.setBackgroundResource(R.drawable.radius_button_accent);
         sensInverseBtn.setBackgroundResource(R.drawable.radius_button_accent);
         sensInverseBtn.setAlpha(0.3f);
@@ -436,13 +438,20 @@ public class SettingsGameFragment extends Fragment {
 
         sensJeu = SensJeu.NO_SENS_JEU;
 
+        if (sensAiguillesBtn.isChecked()){
 
+            sensJeu = SensJeu.SENS_INVERSE_AIGUILLE;
+
+        }else if(sensInverseBtn.isChecked()){
+            sensJeu = SensJeu.SENS_AIGUILLE;
+        }
 
         Joueur premierDistrib = new Joueur();
 
         premierDistrib.setNomJoueur("Nodistrib");
 
         //Partie
+
 
         Partie partie = new Partie(typeDePartie,table,premierDistrib,sensJeu,0,0,false);
 
