@@ -166,6 +166,21 @@ public class ScoresFragment extends Fragment {
 
     public void upDateTotalScore() {
 
+        lastPartie.setScoreEquipeA(scoreTotalEquipe1);
+        lastPartie.setScoreEquipeB(scoreTotalEquipe2);
+
+        MainActivity.beloteSkorDb.partieDao().updatePartie(lastPartie);
+
+
+        //test
+
+        Partie partie = MainActivity.beloteSkorDb.partieDao().getLastPartie();
+
+        int scoreH = partie.getScoreEquipeA();
+        int scoreI = partie.getScoreEquipeB();
+
+        Log.i(TAG, "upDateTotalScore: "+scoreH+" "+ scoreI);
+
     }
 
     public void setTotalScore() {
