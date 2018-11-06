@@ -212,44 +212,6 @@ public class DonneViewHolder extends RecyclerView.ViewHolder  {
         preneur.setBackgroundColor(rgb(red,green,blue));
     }
 
-    public void setListenerChecked(final ToggleButton mainTb, final ToggleButton secondTb) {
-
-        mainTb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                if (isChecked && secondTb.isChecked()) {
-                    setColorBeloteCapot(mainTb,secondTb,1.0f,0.3f);
-                    mainTb.setChecked(true);
-                    secondTb.setChecked(false);
-
-                } else if (isChecked && !secondTb.isChecked()) {
-                    setColorBeloteCapot(mainTb,secondTb,1.0f,0.3f);
-                    mainTb.setChecked(true);
-                    secondTb.setChecked(false);
-
-                } else if (!isChecked && !secondTb.isChecked()) {
-                    mainTb.setChecked(false);
-                    secondTb.setChecked(false);
-                    setColorBeloteCapot(mainTb,secondTb,1.0f,1.0f);
-                }
-
-
-                if(capot_team1.isChecked()){ capot.setNomEquipe("EquipeA");
-                }else if(capot_team2.isChecked()){ capot.setNomEquipe("EquipeB");
-                }else { capot.setNomEquipe("NoCapot");
-                }
-
-                if(belote_team1.isChecked()){ belote.setNomEquipe("EquipeA");
-                }else if(belote_team2.isChecked()){ belote.setNomEquipe("EquipeB");
-                }else{ belote.setNomEquipe("NoBelote");
-                }
-            }
-
-
-        });
-
-    }
 
     public void setListenerAnnoncesChecked(final ToggleButton mainTb, final ToggleButton secondTb) {
 

@@ -38,7 +38,7 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
     private float beginX, beginY;
     private int width;
     private int numberPickerposition = 0; //Center
-    private int scoreA, scoreB;
+    private int scoreA, scoreB, scoreExtraA, scoreExtraB, primeCarreValet,primeCarre9,scoreNumberPicker, scoreBelote1,scoreBelote2, scoreAnnonces1, scoreAnnonces2;
     private Joueur preneur;
     private Couleur couleur;
     private Equipe belote= new Equipe("NoBelote");
@@ -132,7 +132,6 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
 
     }
 
-
                             // Méthodes Adapter
 
     private void initCardViewParent(DonneViewHolder holder, int position) {
@@ -205,10 +204,10 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
                     initNumberPicker(holder);
 
                     //gestion de la belote et du capot
-                    holder.setListenerChecked(holder.getBelote_team1(),holder.getBelote_team2());
-                    holder.setListenerChecked(holder.getBelote_team2(),holder.getBelote_team1());
-                    holder.setListenerChecked(holder.getCapot_team1(),holder.getCapot_team2());
-                    holder.setListenerChecked(holder.getCapot_team2(),holder.getCapot_team1());
+                    setListenerChecked(holder,holder.getBelote_team1(),holder.getBelote_team2());
+                    setListenerChecked(holder, holder.getBelote_team2(),holder.getBelote_team1());
+                    setListenerChecked(holder, holder.getCapot_team1(),holder.getCapot_team2());
+                    setListenerChecked(holder, holder.getCapot_team2(),holder.getCapot_team1());
 
                     //gestion des annonces
                     holder.setListenerAnnoncesChecked(holder.getAnnonces_team1(),holder.getAnnonces_team2());
@@ -348,6 +347,48 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
 
     }
 
+    public void setListenerChecked(final DonneViewHolder holder, final ToggleButton mainTb, final ToggleButton secondTb) {
+
+        mainTb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                if (isChecked && secondTb.isChecked()) {
+                    holder.setColorBeloteCapot(mainTb,secondTb,1.0f,0.3f);
+                    mainTb.setChecked(true);
+                    secondTb.setChecked(false);
+
+                } else if (isChecked && !secondTb.isChecked()) {
+                    holder.setColorBeloteCapot(mainTb,secondTb,1.0f,0.3f);
+                    mainTb.setChecked(true);
+                    secondTb.setChecked(false);
+
+                } else if (!isChecked && !secondTb.isChecked()) {
+                    mainTb.setChecked(false);
+                    secondTb.setChecked(false);
+                    holder.setColorBeloteCapot(mainTb,secondTb,1.0f,1.0f);
+                }
+
+                calculScoreDonne(holder);
+                displayDonneScore(holder);
+
+
+                if(holder.getCapot_team1().isChecked()){ capot.setNomEquipe("EquipeA");
+                }else if(holder.getCapot_team2().isChecked()){ capot.setNomEquipe("EquipeB");
+                }else { capot.setNomEquipe("NoCapot");
+                }
+
+                if(holder.getBelote_team1().isChecked()){ belote.setNomEquipe("EquipeA");
+                }else if(holder.getBelote_team2().isChecked()){ belote.setNomEquipe("EquipeB");
+                }else{ belote.setNomEquipe("NoBelote");
+                }
+            }
+
+
+        });
+
+    }
+
     //todo voir pour déplacer ses méthodes dans ViewHolder
     private void initNumberPicker(final DonneViewHolder holder) {
         //gestion du detector
@@ -371,6 +412,7 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
                 } else if (Math.abs(e2.getY() - e1.getY()) > 100) {
                     holder.getNumberPicker().setOnTouchListener(null);
                 }
+                //todo voir pour numberpicker au centre
                 return true;
             }
             @Override
@@ -407,25 +449,32 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
 
-                if (numberPickerposition == 1) {
+                /*if (numberPickerposition == 1) {
                     holder.setScoreEquipeA(newVal);
                     holder.setScoreEquipeB(162 - newVal);
-                    scoreA = holder.getScoreEquipeA();
-                    scoreB = holder.getScoreEquipeB();
 
                 } else if (numberPickerposition == 2) {
                     holder.setScoreEquipeB(newVal);
                     holder.setScoreEquipeA(162 - newVal);
-                    scoreA = holder.getScoreEquipeA();
-                    scoreB = holder.getScoreEquipeB();
                 }
+
+                scoreA = holder.getScoreEquipeA();
+                scoreB = holder.getScoreEquipeB();*/
+                scoreNumberPicker = newVal;
+                calculScoreDonne(holder);
+                displayDonneScore(holder);
+
             }
         });
     }
 
+    private void displayDonneScore(DonneViewHolder holder) {
+        holder.setScoreEquipeA(scoreA);
+        holder.setScoreEquipeB(scoreB);
+    }
+
     private void setListenerClickPreneur(final DonneViewHolder holder, final TextView mainJoueur,
                                          final TextView secondJoueur, final TextView thirdJoueur, final TextView fourthJoueur) {
-
         mainJoueur.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -449,7 +498,6 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
                 }else{
                     Log.i(TAG, "onBindViewHolder: hello rien");
                 }
-
             }
         });
     }
@@ -498,6 +546,9 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
                 }else if(holder.getCarre_team2().isChecked()){
 
                 }
+
+                calculScoreDonne(holder);
+                displayDonneScore(holder);
             }
         });
     }
@@ -517,6 +568,9 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
                     mainTv.setText(String.valueOf(i));
                     holder.setColorAnnonce(mainBtn,true);
                 }
+
+                calculScoreDonne(holder);
+                displayDonneScore(holder);
             }
         });
 
@@ -579,6 +633,102 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
         equipeNull = new Equipe("NoAnnonces");
 
         annoncesDonne=new AnnoncesDonne(equipeNull,0,0,0,0,false,false);
+
+        scoreA=0;
+        scoreB=0;
+
+    }
+
+    private void calculScoreDonne(DonneViewHolder holder){
+        scoreExtraA =0;
+        scoreExtraB = 0;
+        primeCarreValet = 0;
+        primeCarre9 =0;
+        scoreBelote1 =0;
+        scoreAnnonces1=0;
+        scoreBelote2=0;
+        scoreAnnonces2 =0;
+
+
+        //prise en charge de la belote
+
+        if(holder.getBelote_team1().isChecked()){
+
+            scoreBelote1 = 20;
+            scoreExtraA+=scoreBelote1;
+        }else if(holder.getBelote_team2().isChecked()){
+            scoreBelote2=20;
+            scoreExtraB+=scoreBelote2;
+        }
+
+        //prise en charge du capot
+
+        if(holder.getCapot_team1().isChecked()){
+            scoreExtraA+=252;
+            scoreA=scoreExtraA;
+            scoreB=scoreExtraB;
+            return;
+
+        } else if (holder.getCapot_team2().isChecked()){
+            scoreExtraB+=252;
+            scoreB=scoreExtraB;
+            scoreA=scoreExtraA;
+            return;
+        }
+
+
+        //gestion des annonces
+
+        //gestion des carréd de valet et de 9
+        if(holder.getCarre_valet_team1().isChecked()||holder.getCarre_valet_team2().isChecked()){
+            primeCarreValet = 200;
+        }
+
+        if(holder.getCarre_9_team1().isChecked()||holder.getCarre_9_team2().isChecked()){
+            primeCarre9 = 150;
+        }
+
+
+        if(holder.getAnnonces_team1().isChecked()){
+
+
+            scoreAnnonces1=(20*Integer.parseInt(holder.getNbTierce_team1().getText().toString()))+(50*Integer.parseInt(holder.getNbCinquante_team1().getText().toString()))+
+                    (100*Integer.parseInt(holder.getNbCent_team1().getText().toString()))+(100*Integer.parseInt(holder.getNbCarre_autre_team1().getText().toString()))+primeCarreValet+primeCarre9;
+
+            scoreExtraA+=scoreAnnonces1;
+
+        }else if(holder.getAnnonces_team2().isChecked()){
+
+            scoreAnnonces2=(20*Integer.parseInt(holder.getNbTierce_team2().getText().toString()))+(50*Integer.parseInt(holder.getNbCinquante_team2().getText().toString()))+
+                    (100*Integer.parseInt(holder.getNbCent_team2().getText().toString()))+(100*Integer.parseInt(holder.getNbCarre_autre_team2().getText().toString()))+primeCarreValet+primeCarre9;
+
+            scoreExtraB+=scoreAnnonces2;
+        }
+
+        //cas hors capot
+
+        if(numberPickerposition==1){
+            scoreA = scoreExtraA + scoreNumberPicker;
+            scoreB = scoreExtraB + (162-scoreNumberPicker);
+        } else if(numberPickerposition==2){
+            scoreB = scoreExtraB + scoreNumberPicker;
+            scoreA = scoreExtraA + (162-scoreNumberPicker);
+        }else{
+            scoreA = scoreExtraA;
+            scoreB = scoreExtraB;
+        }
+
+        //todo faire gestion du litige si nécessaire
+        if(scoreA<scoreB && (preneur.getNomJoueur().equals(holder.getPlayer1Name().toString())||preneur.getNomJoueur().equals(holder.getPlayer2Name().toString()))){
+
+            scoreA=scoreBelote1;
+            scoreB=162+scoreExtraB;
+
+        }else if(scoreA>scoreB && (preneur.getNomJoueur().equals(holder.getPlayer1Name().toString())||preneur.getNomJoueur().equals(holder.getPlayer2Name().toString()))){
+
+            scoreB=scoreBelote2;
+            scoreA=162+scoreExtraA;
+        }
 
     }
 
