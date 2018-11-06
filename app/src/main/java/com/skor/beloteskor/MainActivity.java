@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
     private FragmentTransaction transaction;
     private SettingsGameFragment settingsGameFragment;
     private PlayerScoreFragment playerScoreFragment;
+    private TeamScoreFragment teamScoreFragment;
     private ScoresFragment scoresFragment;
 
     public static final String EXTRA="com.skor.beloteskor.MESSAGE";
@@ -51,11 +53,12 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
     public static final String EXTRA4="com.skor.beloteskor.MESSAGE4";
 
     private static String TAG = "coucou";
-    private String player1, player2, player3, player4;
+    private String player1, player2, player3, player4,currentDistrib;
     private String[] listPlayersName={"","","",""};
     private List<Donne> donnes = null;
     private ModeEquipe modeEquipe = null;
-    private Boolean isFromMainActivity;
+    private Boolean isFromMainActivity, isInScoresFragment;
+    private ArrayList<Integer> scores;
 
     public static AppDatabase beloteSkorDb;
 
@@ -127,9 +130,10 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
         //Lancement du fragment de settings
 
         playerScoreFragment = new PlayerScoreFragment();
-        Boolean isInScoresFragment = false;
-        Boolean isFromMainActivity = false;
-        ArrayList<Integer> scores = new ArrayList<>();
+        isInScoresFragment = false;
+        isFromMainActivity = false;
+        currentDistrib=" ";
+        scores = new ArrayList<>();
         scores.add(0);
         scores.add(0);
 
@@ -137,6 +141,7 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
         argsinit.putStringArray(EXTRA,listPlayersName);
         argsinit.putBoolean(EXTRA1,isInScoresFragment);
         argsinit.putBoolean(EXTRA2,isFromMainActivity);
+        argsinit.putString(EXTRA3,currentDistrib);
         argsinit.putIntegerArrayList(EXTRA4,scores);
         playerScoreFragment.setArguments(argsinit);
         transaction = getSupportFragmentManager().beginTransaction();
@@ -224,12 +229,15 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
 
     @Override
     public void onSettingsStartGamePLayers() {
-
         //todo vérifier si modeEquipe intéressant ici ou à supprimer
         modeEquipe = ModeEquipe.MODE_EQUIPE_STATIQUE_NOMINATIF;
-        Boolean isInScoresFragment = true;
-        Boolean isFromMainActivity = false;
-        ArrayList<Integer> scores = new ArrayList<>();
+        isInScoresFragment = true;
+        isFromMainActivity = false;
+        currentDistrib=beloteSkorDb.partieDao().getLastPartie().getPremierDistributeur().getNomJoueur();
+
+        Log.i(TAG, "onSettingsStartGamePLayers: "+currentDistrib);
+
+        scores = new ArrayList<>();
         scores.add(0);
         scores.add(0);
 
@@ -238,6 +246,7 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
         args.putStringArray(EXTRA,listPlayersName);
         args.putBoolean(EXTRA1,isInScoresFragment);
         args.putBoolean(EXTRA2,isFromMainActivity);
+        args.putString(EXTRA3,currentDistrib);
         args.putIntegerArrayList(EXTRA4,scores);
 
         playerScoreFragment.setArguments(args);
@@ -296,8 +305,15 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
     public void onDialogNegativeClick(DialogFragment dialog) {
         settingsGameFragment.saveSettingsPartieAnonyme();
         modeEquipe = ModeEquipe.MODE_EQUIPE_STATIQUE_ANONYME;
+        ArrayList<Integer> scores = new ArrayList<>();
+        scores.add(0);
+        scores.add(0);
 
-        TeamScoreFragment teamScoreFragment = new TeamScoreFragment();
+        teamScoreFragment = new TeamScoreFragment();
+        Bundle args = new Bundle();
+        args.putIntegerArrayList(EXTRA4,scores);
+
+        teamScoreFragment.setArguments(args);
         transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fl_fragment_name_score, teamScoreFragment).commit();
 
@@ -318,9 +334,9 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
     @Override
     public void onScoreChangePreneur(int score1,int score2) {
         //todo voir pour les autres valeurs à déclarer dès le début
-        Boolean isInScoresFragment = true;
+        isInScoresFragment = true;
         isFromMainActivity = true;
-        String currentDistrib = playerScoreFragment.currentDistrib.getNomJoueur();
+        currentDistrib = playerScoreFragment.currentDistrib.getNomJoueur();
         ArrayList<Integer> scores = new ArrayList<>();
         scores.add(score1);
         scores.add(score2);
@@ -341,27 +357,44 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
 
     @Override
     public void onScoreDisplayScoreTotal(int score1, int score2) {
-        Boolean isInScoresFragment = true;
-        Boolean isFromMainActivity = false;
-
-        ArrayList<Integer> scores = new ArrayList<>();
+        isInScoresFragment = true;
+        isFromMainActivity = false;
+        currentDistrib = playerScoreFragment.currentDistrib.getNomJoueur();
+        scores = new ArrayList<>();
         scores.add(score1);
         scores.add(score2);
-
 
         playerScoreFragment = new PlayerScoreFragment();
         Bundle args = new Bundle();
         args.putStringArray(EXTRA,listPlayersName);
         args.putBoolean(EXTRA1,isInScoresFragment);
         args.putBoolean(EXTRA2,isFromMainActivity);
+        args.putString(EXTRA3,currentDistrib);
         args.putIntegerArrayList(EXTRA4,scores);
 
         playerScoreFragment.setArguments(args);
         transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fl_fragment_name_score, playerScoreFragment).commit();
 
+    }
+
+    @Override
+    public void onScoreChangeScoreTotal(int score1, int score2) {
+
+        ArrayList<Integer> scores = new ArrayList<>();
+        scores.add(score1);
+        scores.add(score2);
+
+        teamScoreFragment = new TeamScoreFragment();
+        Bundle args = new Bundle();
+        args.putIntegerArrayList(EXTRA4,scores);
+
+        teamScoreFragment.setArguments(args);
+        transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fl_fragment_name_score, teamScoreFragment).commit();
 
     }
+
 
     @Override
     public void onDialogDonnePositiveClick(DialogFragment dialog) {
@@ -369,7 +402,6 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
         scoresFragment.setTotalScore();
         scoresFragment.upDateTotalScore();
         scoresFragment.createDonne();
-
     }
 
     @Override
@@ -441,6 +473,17 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
 
         scoresFragment.upDateTotalScore();
 
+    }
+
+    @Override
+    public void onDonneAdapterDisplayTotalScoreAnonyme() {
+
+        int score1 = scoresFragment.getScoreTotalEquipe1();
+        int score2 = scoresFragment.getScoreTotalEquipe2();
+
+        Log.i(TAG, "onDonneAdapterDisplayTotalScoreAnonyme: "+score1+score2);
+
+        scoresFragment.displayChangeScoreTotal(score1,score2);
     }
 
 

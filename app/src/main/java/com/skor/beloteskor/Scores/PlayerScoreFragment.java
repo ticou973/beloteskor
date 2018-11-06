@@ -84,9 +84,11 @@ public class PlayerScoreFragment extends Fragment {
         isInScoreFragment = getArguments().getBoolean(EXTRA1);
         isFromMainActivity = getArguments().getBoolean(EXTRA2);
 
-        if(isFromMainActivity){
+        /*if(isFromMainActivity){
             currentDistribName= getArguments().getString(EXTRA3);
-        }
+        }*/
+
+        currentDistribName= getArguments().getString(EXTRA3);
 
         scores=getArguments().getIntegerArrayList(EXTRA4);
         scoreTotalEquipe1 = scores.get(0);
@@ -128,9 +130,11 @@ public class PlayerScoreFragment extends Fragment {
         if (isInScoreFragment) {
             initTableScore();
 
-            if(isFromMainActivity) {
+            /*if(isFromMainActivity) {
                 currentDistrib.setNomJoueur(currentDistribName);
-            }
+            }*/
+
+            currentDistrib.setNomJoueur(currentDistribName);
 
             //gestion du sens de jeu
             getListPreneurs();
@@ -237,7 +241,10 @@ public class PlayerScoreFragment extends Fragment {
 
         //DataBase
         lastPartie = MainActivity.beloteSkorDb.partieDao().getLastPartie();
-        currentDistrib = lastPartie.getPremierDistributeur();
+        //currentDistrib = lastPartie.getPremierDistributeur();
+
+        currentDistrib=MainActivity.beloteSkorDb.joueurDao().loadJoueurByName(currentDistribName);
+
         sensJeu = lastPartie.getSensJeu();
 
         setColorDistrib(currentDistrib);

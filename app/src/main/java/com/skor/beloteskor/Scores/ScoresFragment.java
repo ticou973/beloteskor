@@ -129,8 +129,8 @@ public class ScoresFragment extends Fragment {
         void onScoresDonneNullChoice();
         void onScoreChangePreneur(int score1, int score2);
         void onScoreDisplayScoreTotal(int score1, int score2);
+        void onScoreChangeScoreTotal(int score1,int score2);
     }
-
 
                                         //METHODES INTERNES
     private void initData() {
@@ -153,7 +153,6 @@ public class ScoresFragment extends Fragment {
     private void addDonnesBtn() {
         numCurrentDonne = donnes.size();
         upDateCurrentDonne(numCurrentDonne);
-
 
         if (scoreA == 0 && scoreB == 0) {
             showDialogModeEquipe();
@@ -179,11 +178,7 @@ public class ScoresFragment extends Fragment {
             scoreTotalEquipe1 += donne.getScore1();
             scoreTotalEquipe2 += donne.getScore2();
         }
-
-        Log.i(TAG, "setTotalScore: "+ scoreTotalEquipe1);
-
-        //displayScoreTotal(scoreTotalEquipe1,scoreTotalEquipe2);
-    }
+        }
 
     public void displayScoreTotal(int scoreTotalEquipe1, int scoreTotalEquipe2) {
 
@@ -192,12 +187,27 @@ public class ScoresFragment extends Fragment {
         }
     }
 
+    public void displayChangeScoreTotal(int scoreTotalEquipe1, int scoreTotalEquipe2){
+
+        if (mListener != null) {
+            mListener.onScoreChangeScoreTotal(scoreTotalEquipe1, scoreTotalEquipe2);
+        }
+
+    }
+
+
     public void createDonne() {
         if(lastModeEquipe.equals(ModeEquipe.MODE_EQUIPE_STATIQUE_NOMINATIF.toString())) {
 
             if (mListener != null) {
                mListener.onScoreChangePreneur(scoreTotalEquipe1, scoreTotalEquipe2);
             }
+        }else if(lastModeEquipe.equals(ModeEquipe.MODE_EQUIPE_STATIQUE_ANONYME.toString())){
+
+            if (mListener != null) {
+                mListener.onScoreChangeScoreTotal(scoreTotalEquipe1, scoreTotalEquipe2);
+            }
+
         }
 
         nextDonne = new Donne(lastPartie.getPartieId(), donnes.size() + 1, 0, 0);
@@ -207,7 +217,6 @@ public class ScoresFragment extends Fragment {
     }
 
     public void upDateCurrentDonne(int numDonne){
-
 
         scoreA = donneAdapter.getScoreA();
         scoreB = donneAdapter.getScoreB();

@@ -66,6 +66,7 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
         void onDonneAdapterSetTotalScore();
         void onDonneAdapterDisplayScoreTotal();
         void onDonneAdapterUpDateTotalScore();
+        void onDonneAdapterDisplayTotalScoreAnonyme();
     }
 
                                     //LifeCycle
@@ -292,18 +293,28 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
                             annoncesDonne.getNbCent()+" "+ annoncesDonne.getNbCarreAutre()+" "+
                             annoncesDonne.isCarreValet()+" "+annoncesDonne.isCarre9());
 
-
-                    Log.i(TAG, "onClick: "+(position+1));
-
-                    Log.i(TAG, "onClick: "+scoreA+scoreB);
-
                     upDatecurrentDonne(position+1);
                     setTotalScore();
-                    displayTotalScore();
                     upDateTotalScore();
+
+                    if(lastModeEquipe.equals(ModeEquipe.MODE_EQUIPE_STATIQUE_NOMINATIF.toString())) {
+
+                        displayTotalScore();
+
+                    }else if(lastModeEquipe.equals(ModeEquipe.MODE_EQUIPE_STATIQUE_ANONYME.toString())){
+
+                        displayTotalScoreAnonyme();
+                    }
                 }
             }
         });
+    }
+
+    private void displayTotalScoreAnonyme() {
+
+        if (mListener != null) {
+            mListener.onDonneAdapterDisplayTotalScoreAnonyme();
+        }
     }
 
     private void displayTotalScore() {

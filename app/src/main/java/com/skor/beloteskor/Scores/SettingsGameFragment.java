@@ -162,11 +162,8 @@ public class SettingsGameFragment extends Fragment {
 
                 //METHODES lIEES A L INTERFACE
 
-
     public void startGamePlayers() {
-
         saveSettings();
-
 
         if (mListener != null) {
             mListener.onSettingsStartGamePLayers();
@@ -178,7 +175,6 @@ public class SettingsGameFragment extends Fragment {
         if (mListener != null) {
             mListener.onSettingsModeEquipeChoice();
         }
-
     }
 
     private boolean verifNoms() {
@@ -191,7 +187,6 @@ public class SettingsGameFragment extends Fragment {
 
         return false;
     }
-
 
 
                   //METHODES FRAGMENT
@@ -495,6 +490,7 @@ public class SettingsGameFragment extends Fragment {
 
 
     }
+    //todo voir pour faire des asynctasks pour les settings pour éviter le thread main (trop long au départ)
 
     private void saveSettings(){
         //todo voir les simplifications pour joueur et player, cela semble redondant

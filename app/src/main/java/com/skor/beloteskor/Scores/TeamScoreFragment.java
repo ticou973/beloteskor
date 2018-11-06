@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import com.skor.beloteskor.R;
 
+import java.util.ArrayList;
+
 
 public class TeamScoreFragment extends Fragment {
 
@@ -21,11 +23,26 @@ public class TeamScoreFragment extends Fragment {
     private ImageView triangleView;
 
     private String player1="", player2="", player3="", player4="";
+    public static final String EXTRA4="com.skor.beloteskor.MESSAGE4";
+    private int scoreTotalEquipe1,scoreTotalEquipe2;
+    public ArrayList<Integer> scores = new ArrayList<>();
+
+
+
 
     public TeamScoreFragment() {
         // Required empty public constructor
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        scores=getArguments().getIntegerArrayList(EXTRA4);
+        scoreTotalEquipe1 = scores.get(0);
+        scoreTotalEquipe2 = scores.get(1);
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,25 +50,23 @@ public class TeamScoreFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.name_score_team, container, false);
 
-        return view;
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
         //JOUEURS
 
         //Noms des joueurs et Scores
 
-        etUs = getActivity().findViewById(R.id.et_you);
-        etYou = getActivity().findViewById(R.id.et_your_partner);
-        totalScoreA = getActivity().findViewById(R.id.score_total_equipeA);
-        totalScoreB = getActivity().findViewById(R.id.score_total_equipeB);
-        triangleView = getActivity().findViewById(R.id.triangleView);
+        etUs = view.findViewById(R.id.et_you);
+        etYou = view.findViewById(R.id.et_your_partner);
+        totalScoreA = view.findViewById(R.id.score_total_equipeA);
+        totalScoreB = view.findViewById(R.id.score_total_equipeB);
+        triangleView = view.findViewById(R.id.triangleView);
         triangleView.setVisibility(View.INVISIBLE);
 
+        totalScoreA.setText(String.valueOf(scoreTotalEquipe1));
+        totalScoreB.setText(String.valueOf(scoreTotalEquipe2));
+
+        return view;
     }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed() {
