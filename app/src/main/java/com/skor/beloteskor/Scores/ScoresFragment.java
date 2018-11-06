@@ -54,7 +54,7 @@ public class ScoresFragment extends Fragment {
     private Joueur lastPremierDistrib, currentPreneur;
     private String lastNomPremierDistrib,lastTypeJeu,lastTypeAnnonce,lastModeEquipe,lastJoueur1EqA,lastJoueur2EqA,lastJoueur1EqB,lastJoueur2EqB;
     private SensJeu lastSensJeu;
-    private int lastScoreEquipeA, lastScoreEquipeB,lastNbPoints,lastNbDonnes, scoreA, scoreB;
+    private int lastScoreEquipeA, lastScoreEquipeB,lastNbPoints,lastNbDonnes, scoreA, scoreB,scoreTotalEquipe1,scoreTotalEquipe2;
     private boolean lastPartieterm;
     private Equipe lastEquipeA, lastEquipeB, belote, capot;
     private Couleur currentCouleur;
@@ -127,7 +127,8 @@ public class ScoresFragment extends Fragment {
 
    public interface OnScoresFragmentInteractionListener {
         void onScoresDonneNullChoice();
-        void onScoreChangePreneur();
+        void onScoreChangePreneur(int score1, int score2);
+        void onScoreDisplayScoreTotal(int score1, int score2);
     }
 
 
@@ -151,25 +152,51 @@ public class ScoresFragment extends Fragment {
 
     private void addDonnesBtn() {
         numCurrentDonne = donnes.size();
-
         upDateCurrentDonne(numCurrentDonne);
 
-        donnes = MainActivity.beloteSkorDb.donneDao().getAllDonnesPartiesCourantes(lastPartie.getPartieId());
 
         if (scoreA == 0 && scoreB == 0) {
-
             showDialogModeEquipe();
 
         }else{
-            CreateDonne();
+            setTotalScore();
+            upDateTotalScore();
+            createDonne();
         }
     }
 
-    public void CreateDonne() {
+    public void upDateTotalScore() {
+
+    }
+
+    public void setTotalScore() {
+
+        scoreTotalEquipe1=0;
+        scoreTotalEquipe2=0;
+
+        for (Donne donne: donnes) {
+
+            scoreTotalEquipe1 += donne.getScore1();
+            scoreTotalEquipe2 += donne.getScore2();
+        }
+
+        Log.i(TAG, "setTotalScore: "+ scoreTotalEquipe1);
+
+        //displayScoreTotal(scoreTotalEquipe1,scoreTotalEquipe2);
+    }
+
+    public void displayScoreTotal(int scoreTotalEquipe1, int scoreTotalEquipe2) {
+
+        if (mListener != null) {
+            mListener.onScoreDisplayScoreTotal(scoreTotalEquipe1,scoreTotalEquipe2);
+        }
+    }
+
+    public void createDonne() {
         if(lastModeEquipe.equals(ModeEquipe.MODE_EQUIPE_STATIQUE_NOMINATIF.toString())) {
 
             if (mListener != null) {
-                mListener.onScoreChangePreneur();
+               mListener.onScoreChangePreneur(scoreTotalEquipe1, scoreTotalEquipe2);
             }
         }
 
@@ -207,6 +234,8 @@ public class ScoresFragment extends Fragment {
         currentDonne.setAnnoncesDonne(annoncesDonne);
 
         MainActivity.beloteSkorDb.donneDao().updateDonne(currentDonne);
+
+        donnes = MainActivity.beloteSkorDb.donneDao().getAllDonnesPartiesCourantes(lastPartie.getPartieId());
 
         //todo retirer après validation de l'update (test)
         firstDonne=MainActivity.beloteSkorDb.donneDao().getDonnebyNumDonne(numDonne,lastPartie.getPartieId());
@@ -267,4 +296,19 @@ public class ScoresFragment extends Fragment {
     }
 
 
+    public int getScoreTotalEquipe1() {
+        return scoreTotalEquipe1;
+    }
+
+    public void setScoreTotalEquipe1(int scoreTotalEquipe1) {
+        this.scoreTotalEquipe1 = scoreTotalEquipe1;
+    }
+
+    public int getScoreTotalEquipe2() {
+        return scoreTotalEquipe2;
+    }
+
+    public void setScoreTotalEquipe2(int scoreTotalEquipe2) {
+        this.scoreTotalEquipe2 = scoreTotalEquipe2;
+    }
 }

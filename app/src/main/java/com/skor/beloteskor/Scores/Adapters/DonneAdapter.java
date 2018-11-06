@@ -63,6 +63,9 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
     public interface OnDonneAdapterListener {
         String[] onDonneAdapterPlayers();
         void onDonneAdapterUpdateDonne(int numDonne);
+        void onDonneAdapterSetTotalScore();
+        void onDonneAdapterDisplayScoreTotal();
+        void onDonneAdapterUpDateTotalScore();
     }
 
                                     //LifeCycle
@@ -95,10 +98,9 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
 
         // Get the application context
         mContext = holder.itemView.getContext();
-
                                  //ViewHolder
         initCardViewParent(holder,position);
-        initCarrdViewChild(holder,position);
+        initCardViewChild(holder,position);
     }
 
     @Override
@@ -138,9 +140,9 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
         holder.setNumDonne(position + 1);
         isExpanded.add(false);
 
-
         //todo revoir gestion de l'ouverture initiale
         //todo le parent reste vert lorsque on add une nelle donne et la précédente non fermée
+        //todo important cela ne modifie pas que l'UI mais aussi le score final
 
         /*if (position == donnes.size()-1) {
             holder.getCardViewDonne().performClick();
@@ -154,7 +156,7 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
 
     }
 
-    private void initCarrdViewChild(final DonneViewHolder holder, final int position) {
+    private void initCardViewChild(final DonneViewHolder holder, final int position) {
 
         holder.getCardViewDonne().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -293,10 +295,38 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
 
                     Log.i(TAG, "onClick: "+(position+1));
 
+                    Log.i(TAG, "onClick: "+scoreA+scoreB);
+
                     upDatecurrentDonne(position+1);
+                    setTotalScore();
+                    displayTotalScore();
+                    upDateTotalScore();
                 }
             }
         });
+    }
+
+    private void displayTotalScore() {
+
+        if (mListener != null) {
+            mListener.onDonneAdapterDisplayScoreTotal();
+        }
+
+    }
+
+    private void upDateTotalScore() {
+        if (mListener != null) {
+            mListener.onDonneAdapterUpDateTotalScore();
+        }
+
+    }
+
+    private void setTotalScore() {
+
+        if (mListener != null) {
+            mListener.onDonneAdapterSetTotalScore();
+        }
+
     }
 
     private void upDatecurrentDonne(int numDonne) {

@@ -28,6 +28,7 @@ import com.skor.beloteskor.Scores.SettingsGameFragment;
 import com.skor.beloteskor.Scores.TeamScoreFragment;
 import com.skor.beloteskor.Statistics.StatisticsFragment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -47,12 +48,14 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
     public static final String EXTRA1="com.skor.beloteskor.MESSAGE1";
     public static final String EXTRA2="com.skor.beloteskor.MESSAGE2";
     public static final String EXTRA3="com.skor.beloteskor.MESSAGE3";
+    public static final String EXTRA4="com.skor.beloteskor.MESSAGE4";
 
     private static String TAG = "coucou";
     private String player1, player2, player3, player4;
     private String[] listPlayersName={"","","",""};
     private List<Donne> donnes = null;
     private ModeEquipe modeEquipe = null;
+    private Boolean isFromMainActivity;
 
     public static AppDatabase beloteSkorDb;
 
@@ -126,10 +129,15 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
         playerScoreFragment = new PlayerScoreFragment();
         Boolean isInScoresFragment = false;
         Boolean isFromMainActivity = false;
+        ArrayList<Integer> scores = new ArrayList<>();
+        scores.add(0);
+        scores.add(0);
+
         Bundle argsinit = new Bundle();
         argsinit.putStringArray(EXTRA,listPlayersName);
         argsinit.putBoolean(EXTRA1,isInScoresFragment);
         argsinit.putBoolean(EXTRA2,isFromMainActivity);
+        argsinit.putIntegerArrayList(EXTRA4,scores);
         playerScoreFragment.setArguments(argsinit);
         transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fl_fragment_name_score, playerScoreFragment).commit();
@@ -139,7 +147,6 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
         args.putStringArray(EXTRA,listPlayersName);
         settingsGameFragment.setArguments(args);
         replaceFragment(settingsGameFragment);
-
     }
 
                         //MENU OPTIONS
@@ -222,12 +229,16 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
         modeEquipe = ModeEquipe.MODE_EQUIPE_STATIQUE_NOMINATIF;
         Boolean isInScoresFragment = true;
         Boolean isFromMainActivity = false;
+        ArrayList<Integer> scores = new ArrayList<>();
+        scores.add(0);
+        scores.add(0);
 
         playerScoreFragment = new PlayerScoreFragment();
         Bundle args = new Bundle();
         args.putStringArray(EXTRA,listPlayersName);
         args.putBoolean(EXTRA1,isInScoresFragment);
         args.putBoolean(EXTRA2,isFromMainActivity);
+        args.putIntegerArrayList(EXTRA4,scores);
 
         playerScoreFragment.setArguments(args);
         transaction = getSupportFragmentManager().beginTransaction();
@@ -305,11 +316,14 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
     }
 
     @Override
-    public void onScoreChangePreneur() {
-
+    public void onScoreChangePreneur(int score1,int score2) {
+        //todo voir pour les autres valeurs à déclarer dès le début
         Boolean isInScoresFragment = true;
-        Boolean isFromMainActivity = true;
+        isFromMainActivity = true;
         String currentDistrib = playerScoreFragment.currentDistrib.getNomJoueur();
+        ArrayList<Integer> scores = new ArrayList<>();
+        scores.add(score1);
+        scores.add(score2);
 
         playerScoreFragment = new PlayerScoreFragment();
         Bundle args = new Bundle();
@@ -317,6 +331,7 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
         args.putBoolean(EXTRA1,isInScoresFragment);
         args.putBoolean(EXTRA2,isFromMainActivity);
         args.putString(EXTRA3,currentDistrib);
+        args.putIntegerArrayList(EXTRA4,scores);
 
         playerScoreFragment.setArguments(args);
         transaction = getSupportFragmentManager().beginTransaction();
@@ -325,9 +340,35 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
     }
 
     @Override
+    public void onScoreDisplayScoreTotal(int score1, int score2) {
+        Boolean isInScoresFragment = true;
+        Boolean isFromMainActivity = false;
+
+        ArrayList<Integer> scores = new ArrayList<>();
+        scores.add(score1);
+        scores.add(score2);
+
+
+        playerScoreFragment = new PlayerScoreFragment();
+        Bundle args = new Bundle();
+        args.putStringArray(EXTRA,listPlayersName);
+        args.putBoolean(EXTRA1,isInScoresFragment);
+        args.putBoolean(EXTRA2,isFromMainActivity);
+        args.putIntegerArrayList(EXTRA4,scores);
+
+        playerScoreFragment.setArguments(args);
+        transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fl_fragment_name_score, playerScoreFragment).commit();
+
+
+    }
+
+    @Override
     public void onDialogDonnePositiveClick(DialogFragment dialog) {
 
-        scoresFragment.CreateDonne();
+        scoresFragment.setTotalScore();
+        scoresFragment.upDateTotalScore();
+        scoresFragment.createDonne();
 
     }
 
@@ -338,7 +379,6 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
         Toast.makeText(this, "Veuillez modifier les scores de la donne, SVP...", Toast.LENGTH_SHORT).show();
 
     }
-
 
 
     //Fragments Player et scores
@@ -381,6 +421,26 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
     public void onDonneAdapterUpdateDonne(int numDonne) {
 
         scoresFragment.upDateCurrentDonne(numDonne);
+    }
+
+    @Override
+    public void onDonneAdapterSetTotalScore() {
+        scoresFragment.setTotalScore();
+    }
+
+    @Override
+    public void onDonneAdapterDisplayScoreTotal() {
+        int score1 = scoresFragment.getScoreTotalEquipe1();
+        int score2 = scoresFragment.getScoreTotalEquipe2();
+
+        scoresFragment.displayScoreTotal(score1,score2);
+    }
+
+    @Override
+    public void onDonneAdapterUpDateTotalScore() {
+
+        scoresFragment.upDateTotalScore();
+
     }
 
 

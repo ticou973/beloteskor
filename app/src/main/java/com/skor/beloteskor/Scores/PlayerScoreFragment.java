@@ -36,10 +36,14 @@ public class PlayerScoreFragment extends Fragment {
     private String player1="", player2="", player3="", player4="";
     private Boolean isInScoreFragment = false;
     private Boolean isFromMainActivity = false;
+    //todo mettre les public en getter et setter
+    public ArrayList<Integer> scores = new ArrayList<>();
+    private int scoreTotalEquipe1,scoreTotalEquipe2;
     public static final String EXTRA="com.skor.beloteskor.MESSAGE";
     public static final String EXTRA1="com.skor.beloteskor.MESSAGE1";
     public static final String EXTRA2="com.skor.beloteskor.MESSAGE2";
     public static final String EXTRA3="com.skor.beloteskor.MESSAGE3";
+    public static final String EXTRA4="com.skor.beloteskor.MESSAGE4";
 
 
     private String[] listPlayerName;
@@ -60,7 +64,6 @@ public class PlayerScoreFragment extends Fragment {
     }
 
                                      //LIFECYCLE
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -82,12 +85,14 @@ public class PlayerScoreFragment extends Fragment {
         isFromMainActivity = getArguments().getBoolean(EXTRA2);
 
         if(isFromMainActivity){
-
-           currentDistribName= getArguments().getString(EXTRA3);
+            currentDistribName= getArguments().getString(EXTRA3);
         }
 
-        listPreneurs = new ArrayList<>();
+        scores=getArguments().getIntegerArrayList(EXTRA4);
+        scoreTotalEquipe1 = scores.get(0);
+        scoreTotalEquipe2 = scores.get(1);
 
+        listPreneurs = new ArrayList<>();
     }
 
     @Override
@@ -98,14 +103,12 @@ public class PlayerScoreFragment extends Fragment {
         View view = inflater.inflate(R.layout.name_score_players, container, false);
 
         //JOUEURS
-
-
         //todo penser à gérer le format des noms (longueur...)
         //todo penser à gérer les doublons dans les 4 noms
         //todo penser à un autofill pour les noms déjà connus
         //todo penser à ajouter le distributeur courant
-        //Noms des joueurs et Scores
 
+        //Noms des joueurs et Scores
         yourName = view.findViewById(R.id.et_you);
         yourPartnerName = view.findViewById(R.id.et_your_partner);
         onYourLeftName = view.findViewById(R.id.et_on_your_left);
@@ -119,7 +122,7 @@ public class PlayerScoreFragment extends Fragment {
 
 
         //todo mettre un autocomplete à partir de la base des joueurs - A retirer dès que test fini
-       // joueursAutoComplete();
+        joueursAutoComplete();
         setListenerTextName();
 
         if (isInScoreFragment) {
@@ -133,14 +136,9 @@ public class PlayerScoreFragment extends Fragment {
             getListPreneurs();
 
             changePreneur();
-
         }
-
         return view;
     }
-
-
-
 
     @Override
     public void onDetach() {
@@ -234,8 +232,8 @@ public class PlayerScoreFragment extends Fragment {
         onYourRightName.setEnabled(false);
         triangleView.setVisibility(View.VISIBLE);
         distribBtn.setVisibility(View.VISIBLE);
-        totalScoreA.setText("0");
-        totalScoreB.setText("0");
+        totalScoreA.setText(String.valueOf(scoreTotalEquipe1));
+        totalScoreB.setText(String.valueOf(scoreTotalEquipe2));
 
         //DataBase
         lastPartie = MainActivity.beloteSkorDb.partieDao().getLastPartie();
@@ -292,8 +290,6 @@ public class PlayerScoreFragment extends Fragment {
 
             changeCouleurPreneur();
         }
-
-
     }
 
     private void changeCouleurPreneur() {
@@ -382,6 +378,12 @@ public class PlayerScoreFragment extends Fragment {
 
         }
 
+    }
+
+    public void refreshTotalScore(int totalScore1, int totalScore2){
+
+        totalScoreA.setText(String.valueOf(totalScore1));
+        totalScoreB.setText(String.valueOf(totalScore2));
     }
 
 
