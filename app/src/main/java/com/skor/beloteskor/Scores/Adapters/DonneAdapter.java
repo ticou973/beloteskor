@@ -67,6 +67,7 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
         void onDonneAdapterDisplayScoreTotal();
         void onDonneAdapterUpDateTotalScore();
         void onDonneAdapterDisplayTotalScoreAnonyme();
+        void onDonneAdapterTestFinPartie();
     }
 
                                     //LifeCycle
@@ -231,6 +232,8 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
                     setListenerToggleV9(holder,holder.getCarre_9_team1());
                     setListenerToggleV9(holder,holder.getCarre_9_team2());
 
+
+                    //collapse de la donne
                 } else {
                     isExpanded.set(position, false);
                     holder.collapse(position + 1);
@@ -304,9 +307,22 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
 
                         displayTotalScoreAnonyme();
                     }
+
+                    testFinPartie();
+
                 }
             }
         });
+    }
+
+    private void testFinPartie() {
+
+        Log.i(TAG, "testFinPartie: ");
+
+        if (mListener != null) {
+            mListener.onDonneAdapterTestFinPartie();
+        }
+
     }
 
     private void displayTotalScoreAnonyme() {
@@ -321,7 +337,6 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
         if (mListener != null) {
             mListener.onDonneAdapterDisplayScoreTotal();
         }
-
     }
 
     private void upDateTotalScore() {
@@ -473,8 +488,8 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
         holder.setScoreEquipeB(scoreB);
     }
 
-    private void setListenerClickPreneur(final DonneViewHolder holder, final TextView mainJoueur,
-                                         final TextView secondJoueur, final TextView thirdJoueur, final TextView fourthJoueur) {
+    private void setListenerClickPreneur(final DonneViewHolder holder, final TextView mainJoueur, final TextView secondJoueur, final TextView thirdJoueur, final TextView fourthJoueur) {
+
         mainJoueur.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -498,12 +513,14 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
                 }else{
                     Log.i(TAG, "onBindViewHolder: hello rien");
                 }
+
+                calculScoreDonne(holder);
+                displayDonneScore(holder);
             }
         });
     }
 
-    private void setListenerClickCouleur(final DonneViewHolder holder, final ImageView mainCouleur,
-                                         final ImageView secondCouleur, final ImageView thirdCouleur, final ImageView fourthCouleur) {
+    private void setListenerClickCouleur(final DonneViewHolder holder, final ImageView mainCouleur, final ImageView secondCouleur, final ImageView thirdCouleur, final ImageView fourthCouleur) {
         mainCouleur.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -573,7 +590,6 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
                 displayDonneScore(holder);
             }
         });
-
     }
 
     private void setListenerClickCarre(final DonneViewHolder holder, final ToggleButton mainTb) {
@@ -718,13 +734,15 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
             scoreB = scoreExtraB;
         }
 
+        Log.i(TAG, "calculScoreDonne: "+ preneur.getNomJoueur()+" "+holder.getPlayer1Name().getText());
+
         //todo faire gestion du litige si nécessaire
-        if(scoreA<scoreB && (preneur.getNomJoueur().equals(holder.getPlayer1Name().toString())||preneur.getNomJoueur().equals(holder.getPlayer2Name().toString()))){
+        if(scoreA<scoreB && (preneur.getNomJoueur().equals(holder.getPlayer1Name().getText().toString())||preneur.getNomJoueur().equals(holder.getPlayer2Name().getText().toString()))){
 
             scoreA=scoreBelote1;
             scoreB=162+scoreExtraB;
 
-        }else if(scoreA>scoreB && (preneur.getNomJoueur().equals(holder.getPlayer1Name().toString())||preneur.getNomJoueur().equals(holder.getPlayer2Name().toString()))){
+        }else if(scoreA>scoreB && (preneur.getNomJoueur().equals(holder.getPlayer3Name().getText().toString())||preneur.getNomJoueur().equals(holder.getPlayer4Name().getText().toString()))){
 
             scoreB=scoreBelote2;
             scoreA=162+scoreExtraA;

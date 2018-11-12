@@ -18,11 +18,14 @@ import android.widget.Toast;
 
 import com.skor.beloteskor.Model_DB.MainDb.AppDatabase;
 import com.skor.beloteskor.Model_DB.MainDb.Donne;
+import com.skor.beloteskor.Model_DB.MainDb.Joueur;
+import com.skor.beloteskor.Model_DB.MainDb.Partie;
 import com.skor.beloteskor.Model_DB.UtilsDb.ModeEquipe;
 import com.skor.beloteskor.Players.PlayersFragment;
 import com.skor.beloteskor.Scores.Adapters.DonneAdapter;
 import com.skor.beloteskor.Scores.DialogDonneNullFragment;
 import com.skor.beloteskor.Scores.DialogModeEquipeFragment;
+import com.skor.beloteskor.Scores.DialogWinnerFragment;
 import com.skor.beloteskor.Scores.PlayerScoreFragment;
 import com.skor.beloteskor.Scores.ScoresFragment;
 import com.skor.beloteskor.Scores.SettingsGameFragment;
@@ -34,7 +37,7 @@ import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity implements SettingsGameFragment.OnSettingsGameFragmentListener, PlayersFragment.OnPlayersFragmentInteractionListener, StatisticsFragment.OnStatisticsFragmentInteractionListener,
-        DialogModeEquipeFragment.DialogModeEquipeFragmentListener, PlayerScoreFragment.OnPlayerScoreFragmentListener, TeamScoreFragment.OnTeamFragmentInteractionListener, DonneAdapter.OnDonneAdapterListener, ScoresFragment.OnScoresFragmentInteractionListener, DialogDonneNullFragment.DialogDonneNullFragmentListener{
+        DialogModeEquipeFragment.DialogModeEquipeFragmentListener, PlayerScoreFragment.OnPlayerScoreFragmentListener, TeamScoreFragment.OnTeamFragmentInteractionListener, DonneAdapter.OnDonneAdapterListener, ScoresFragment.OnScoresFragmentInteractionListener, DialogDonneNullFragment.DialogDonneNullFragmentListener, DialogWinnerFragment.DialogWinnerFragmentListener {
 
     private android.support.v7.widget.Toolbar toolbar;
     private BottomNavigationView navigation;
@@ -45,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
     private PlayerScoreFragment playerScoreFragment;
     private TeamScoreFragment teamScoreFragment;
     private ScoresFragment scoresFragment;
+    private Partie nellePartie, currentPartie;
 
     public static final String EXTRA="com.skor.beloteskor.MESSAGE";
     public static final String EXTRA1="com.skor.beloteskor.MESSAGE1";
@@ -235,7 +239,7 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
         isFromMainActivity = false;
         currentDistrib=beloteSkorDb.partieDao().getLastPartie().getPremierDistributeur().getNomJoueur();
 
-        Log.i(TAG, "onSettingsStartGamePLayers: "+currentDistrib);
+        Log.i(TAG, "onSettingsStartGamePLayers: "+ currentDistrib);
 
         scores = new ArrayList<>();
         scores.add(0);
@@ -304,6 +308,7 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
     @Override
     public void onDialogNegativeClick(DialogFragment dialog) {
         settingsGameFragment.saveSettingsPartieAnonyme();
+        //todo voir à enlever
         modeEquipe = ModeEquipe.MODE_EQUIPE_STATIQUE_ANONYME;
         ArrayList<Integer> scores = new ArrayList<>();
         scores.add(0);
@@ -395,13 +400,92 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
 
     }
 
+    @Override
+    public void onScoreDialogWinner() {
+        DialogFragment dialog2 = new DialogWinnerFragment();
+        dialog2.show(getSupportFragmentManager(),"TAG");
+    }
+
+    @Override
+    public void onDialogWinnerPositiveClick(DialogFragment dialog) {
+
+        Log.i(TAG, "onDialogWinnerPositiveClick: nouvelle partie");
+
+        currentPartie = beloteSkorDb.partieDao().getLastPartie();
+
+        if(currentPartie.getType().getModeEquipe().equals(ModeEquipe.MODE_EQUIPE_STATIQUE_NOMINATIF.toString())){
+            Log.i(TAG, "onDialogWinnerPositiveClick1: nouvelle partie");
+
+            isInScoresFragment = true;
+            isFromMainActivity = false;
+            currentDistrib = playerScoreFragment.currentDistrib.getNomJoueur();
+
+            scores = new ArrayList<>();
+            scores.add(0);
+            scores.add(0);
+
+            playerScoreFragment = new PlayerScoreFragment();
+            Bundle args = new Bundle();
+            args.putStringArray(EXTRA,listPlayersName);
+            args.putBoolean(EXTRA1,isInScoresFragment);
+            args.putBoolean(EXTRA2,isFromMainActivity);
+            args.putString(EXTRA3,currentDistrib);
+            args.putIntegerArrayList(EXTRA4,scores);
+
+            playerScoreFragment.setArguments(args);
+            transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fl_fragment_name_score, playerScoreFragment).commit();
+
+            scoresFragment = new ScoresFragment();
+            //todo voir si obligé ?
+            Bundle argsscore = new Bundle();
+            argsscore.putStringArray(EXTRA,listPlayersName);
+            scoresFragment.setArguments(argsscore);
+            replaceFragment(scoresFragment);
+
+
+        }else if(currentPartie.getType().getModeEquipe().equals(ModeEquipe.MODE_EQUIPE_STATIQUE_ANONYME.toString())){
+
+            ArrayList<Integer> scores = new ArrayList<>();
+            scores.add(0);
+            scores.add(0);
+
+            currentDistrib=currentPartie.getPremierDistributeur().getNomJoueur();
+
+            teamScoreFragment = new TeamScoreFragment();
+            Bundle args = new Bundle();
+            args.putIntegerArrayList(EXTRA4,scores);
+
+            teamScoreFragment.setArguments(args);
+            transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fl_fragment_name_score, teamScoreFragment).commit();
+
+            scoresFragment = new ScoresFragment();
+            replaceFragment(scoresFragment);
+
+        }
+
+        Joueur lastDistrib = new Joueur(currentDistrib);
+
+        Partie partie = new Partie(currentPartie.getType(),currentPartie.getTable(),lastDistrib,currentPartie.getSensJeu(),0,0,false);
+
+        MainActivity.beloteSkorDb.partieDao().insertPartie(partie);
+
+    }
+
+    @Override
+    public void onDialogWinnerNegativeClick(DialogFragment dialog) {
+
+        Log.i(TAG, "onDialogWinnerNegativeClick: fin de partie");
+
+    }
 
     @Override
     public void onDialogDonnePositiveClick(DialogFragment dialog) {
 
         scoresFragment.setTotalScore();
         scoresFragment.upDateTotalScore();
-        scoresFragment.createDonne();
+        scoresFragment.testFinPartie();
     }
 
     @Override
@@ -486,6 +570,11 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
         scoresFragment.displayChangeScoreTotal(score1,score2);
     }
 
+    @Override
+    public void onDonneAdapterTestFinPartie() {
+        scoresFragment.testFinPartie();
+    }
+
 
     //Autres méthodes
 
@@ -496,5 +585,6 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
         transaction.commit();
 
     }
+
 
 }

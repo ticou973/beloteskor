@@ -23,6 +23,7 @@ import com.skor.beloteskor.Model_DB.UtilsDb.ModeEquipe;
 import com.skor.beloteskor.Model_DB.UtilsDb.SensJeu;
 import com.skor.beloteskor.Model_DB.UtilsDb.Table;
 import com.skor.beloteskor.Model_DB.UtilsDb.TypeDePartie;
+import com.skor.beloteskor.Model_DB.UtilsDb.TypeJeu;
 import com.skor.beloteskor.R;
 import com.skor.beloteskor.Scores.Adapters.DonneAdapter;
 
@@ -130,6 +131,7 @@ public class ScoresFragment extends Fragment {
         void onScoreChangePreneur(int score1, int score2);
         void onScoreDisplayScoreTotal(int score1, int score2);
         void onScoreChangeScoreTotal(int score1,int score2);
+        void onScoreDialogWinner();
     }
 
                                         //METHODES INTERNES
@@ -160,8 +162,45 @@ public class ScoresFragment extends Fragment {
         }else{
             setTotalScore();
             upDateTotalScore();
-            createDonne();
+            testFinPartie();
+
         }
+    }
+
+    public void testFinPartie() {
+        if(lastTypeJeu.equals(TypeJeu.DONNES.toString())){
+
+            if(numCurrentDonne<lastNbDonnes){
+                createDonne();
+            }else{
+                addDonneBtn.setVisibility(View.INVISIBLE);
+                //todo gérer le passage de donner pour le dialog fragment
+                //todo gérer le cas d'égalité des joueurs
+                showDialogWinner();
+                lastPartie.setPartieterminee(true);
+                MainActivity.beloteSkorDb.partieDao().updatePartie(lastPartie);
+            }
+
+        }else if (lastTypeJeu.equals(TypeJeu.POINTS.toString())){
+
+            if(scoreTotalEquipe1<lastNbPoints&&scoreTotalEquipe2<lastNbPoints){
+                createDonne();
+            }else{
+                addDonneBtn.setVisibility(View.INVISIBLE);
+                showDialogWinner();
+                lastPartie.setPartieterminee(true);
+                MainActivity.beloteSkorDb.partieDao().updatePartie(lastPartie);
+            }
+        }
+
+    }
+
+    private void showDialogWinner() {
+
+        if (mListener != null) {
+            mListener.onScoreDialogWinner();
+        }
+
     }
 
     public void upDateTotalScore() {
@@ -170,16 +209,6 @@ public class ScoresFragment extends Fragment {
         lastPartie.setScoreEquipeB(scoreTotalEquipe2);
 
         MainActivity.beloteSkorDb.partieDao().updatePartie(lastPartie);
-
-
-        //test
-
-        Partie partie = MainActivity.beloteSkorDb.partieDao().getLastPartie();
-
-        int scoreH = partie.getScoreEquipeA();
-        int scoreI = partie.getScoreEquipeB();
-
-        Log.i(TAG, "upDateTotalScore: "+scoreH+" "+ scoreI);
 
     }
 
@@ -193,6 +222,7 @@ public class ScoresFragment extends Fragment {
             scoreTotalEquipe1 += donne.getScore1();
             scoreTotalEquipe2 += donne.getScore2();
         }
+
         }
 
     public void displayScoreTotal(int scoreTotalEquipe1, int scoreTotalEquipe2) {
