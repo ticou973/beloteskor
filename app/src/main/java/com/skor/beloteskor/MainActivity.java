@@ -486,6 +486,12 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
         scoresFragment.setTotalScore();
         scoresFragment.upDateTotalScore();
         scoresFragment.testFinPartie();
+
+    Partie lastPartie =beloteSkorDb.partieDao().getLastPartie();;
+
+        if (!lastPartie.isPartieterminee()){
+            scoresFragment.createDonne();
+        }
     }
 
     @Override
@@ -572,6 +578,9 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
 
     @Override
     public void onDonneAdapterTestFinPartie() {
+
+        Log.i(TAG, "onDonneAdapterTestFinPartieA: ");
+
         scoresFragment.testFinPartie();
     }
 

@@ -34,7 +34,9 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
 
     private List<Donne> donnes;
     private Donne currentDonne;
-    private ArrayList<Boolean> isExpanded = new ArrayList<>();
+    //todo voir si isexpanded est nécessairement une liste ? le recyclerview le gère peut être ?
+    private List<Boolean> isExpanded = new ArrayList<>();
+    private List<Boolean> isPreneurChecked = new ArrayList<>();
     private float beginX, beginY;
     private int width;
     private int numberPickerposition = 0; //Center
@@ -83,10 +85,15 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
     @Override
     public void onBindViewHolder(final DonneViewHolder holder, final int position) {
 
+
         //todo voir comment le recycler view se place toujours à la fin (dernier item)
         currentDonne = donnes.get(position);
         scoreA = currentDonne.getScore1();
         scoreB = currentDonne.getScore2();
+
+        Log.i(TAG, "onBindViewHolder: " + position);
+        Log.i(TAG, "onBindViewHolder: "+ currentDonne.getNumDonne()+" "+currentDonne.getCapot()+ currentDonne.getBelote());
+        Log.i(TAG, "onBindViewHolder: "+scoreA+" "+scoreB);
 
         //init donnes et types de parties
         holder.setGestionScoreGone();
@@ -152,12 +159,12 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
             holder.getCardViewDonneDetails().setVisibility(View.GONE);
             isExpanded.set(position,false);
         }*/
-
         holder.getCardViewDonneDetails().setVisibility(View.GONE);
-
     }
 
     private void initCardViewChild(final DonneViewHolder holder, final int position) {
+
+        isPreneurChecked.add(false);
 
         holder.getCardViewDonne().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -169,6 +176,13 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
                     holder.expand(position + 1);
                     isExpanded.set(position, true);
 
+                    Log.i(TAG, "onClick:A "+position+isExpanded.get(position));
+
+                    if(isPreneurChecked.get(position)){
+                        holder.setGestionScoreVisible();
+                    }
+
+                    //todo voir pour simplifier cela car on veut la carte avec Annonces ouverte aussi
                     if(holder.getAnnonces_team1().isChecked()||holder.getAnnonces_team2().isChecked()){
                         holder.getCardviewAnnoncesBtn().setVisibility(View.VISIBLE);
                         holder.getCardViewAnnonces().setVisibility(View.VISIBLE);
@@ -189,10 +203,10 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
                     holder.setPlayer4Name(getPlayers()[3]);
 
                     //Gestion du preneur
-                    setListenerClickPreneur(holder, holder.getPlayer1Name(),holder.getPlayer2Name(),holder.getPlayer3Name(),holder.getPlayer4Name());
-                    setListenerClickPreneur(holder, holder.getPlayer2Name(),holder.getPlayer1Name(),holder.getPlayer3Name(),holder.getPlayer4Name());
-                    setListenerClickPreneur(holder, holder.getPlayer3Name(),holder.getPlayer2Name(),holder.getPlayer1Name(),holder.getPlayer4Name());
-                    setListenerClickPreneur(holder, holder.getPlayer4Name(),holder.getPlayer2Name(),holder.getPlayer3Name(),holder.getPlayer1Name());
+                    setListenerClickPreneur(holder, position, holder.getPlayer1Name(),holder.getPlayer2Name(),holder.getPlayer3Name(),holder.getPlayer4Name());
+                    setListenerClickPreneur(holder, position, holder.getPlayer2Name(),holder.getPlayer1Name(),holder.getPlayer3Name(),holder.getPlayer4Name());
+                    setListenerClickPreneur(holder, position, holder.getPlayer3Name(),holder.getPlayer2Name(),holder.getPlayer1Name(),holder.getPlayer4Name());
+                    setListenerClickPreneur(holder, position, holder.getPlayer4Name(),holder.getPlayer2Name(),holder.getPlayer3Name(),holder.getPlayer1Name());
 
 
                     //Gestion de la couleur prise
@@ -488,7 +502,7 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
         holder.setScoreEquipeB(scoreB);
     }
 
-    private void setListenerClickPreneur(final DonneViewHolder holder, final TextView mainJoueur, final TextView secondJoueur, final TextView thirdJoueur, final TextView fourthJoueur) {
+    private void setListenerClickPreneur(final DonneViewHolder holder, final int position, final TextView mainJoueur, final TextView secondJoueur, final TextView thirdJoueur, final TextView fourthJoueur) {
 
         mainJoueur.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -500,6 +514,7 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
 
                 preneur = new Joueur(mainJoueur.getText().toString());
                 holder.setGestionScoreVisible();
+                isPreneurChecked.set(position,true);
 
                 if(lastTypeAnnonce.equals(TypeAnnonce.SANS_ANNONCE.toString())){
                     //todo voir ce if utile ainsi que le else
@@ -637,7 +652,6 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
 
     private void initData() {
         //Appel de la dernière partie
-
         lastPartie = MainActivity.beloteSkorDb.partieDao().getLastPartie();
 
         lastModeEquipe=lastPartie.getType().getModeEquipe();
@@ -677,22 +691,6 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
             scoreExtraB+=scoreBelote2;
         }
 
-        //prise en charge du capot
-
-        if(holder.getCapot_team1().isChecked()){
-            scoreExtraA+=252;
-            scoreA=scoreExtraA;
-            scoreB=scoreExtraB;
-            return;
-
-        } else if (holder.getCapot_team2().isChecked()){
-            scoreExtraB+=252;
-            scoreB=scoreExtraB;
-            scoreA=scoreExtraA;
-            return;
-        }
-
-
         //gestion des annonces
 
         //gestion des carréd de valet et de 9
@@ -707,7 +705,6 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
 
         if(holder.getAnnonces_team1().isChecked()){
 
-
             scoreAnnonces1=(20*Integer.parseInt(holder.getNbTierce_team1().getText().toString()))+(50*Integer.parseInt(holder.getNbCinquante_team1().getText().toString()))+
                     (100*Integer.parseInt(holder.getNbCent_team1().getText().toString()))+(100*Integer.parseInt(holder.getNbCarre_autre_team1().getText().toString()))+primeCarreValet+primeCarre9;
 
@@ -719,6 +716,21 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
                     (100*Integer.parseInt(holder.getNbCent_team2().getText().toString()))+(100*Integer.parseInt(holder.getNbCarre_autre_team2().getText().toString()))+primeCarreValet+primeCarre9;
 
             scoreExtraB+=scoreAnnonces2;
+        }
+
+        //prise en charge du capot
+
+        if(holder.getCapot_team1().isChecked()){
+            scoreExtraA+=252;
+            scoreA=scoreExtraA;
+            scoreB=scoreExtraB;
+            return;
+
+        } else if (holder.getCapot_team2().isChecked()){
+            scoreExtraB+=252;
+            scoreB=scoreExtraB;
+            scoreA=scoreExtraA;
+            return;
         }
 
         //cas hors capot

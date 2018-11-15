@@ -23,7 +23,6 @@ import com.skor.beloteskor.Model_DB.UtilsDb.ModeEquipe;
 import com.skor.beloteskor.Model_DB.UtilsDb.SensJeu;
 import com.skor.beloteskor.Model_DB.UtilsDb.Table;
 import com.skor.beloteskor.Model_DB.UtilsDb.TypeDePartie;
-import com.skor.beloteskor.Model_DB.UtilsDb.TypeJeu;
 import com.skor.beloteskor.R;
 import com.skor.beloteskor.Scores.Adapters.DonneAdapter;
 
@@ -164,18 +163,22 @@ public class ScoresFragment extends Fragment {
             upDateTotalScore();
             testFinPartie();
 
+            if (!lastPartie.isPartieterminee()){
+                createDonne();
+            }
+
         }
     }
 
     public void testFinPartie() {
-        if(lastTypeJeu.equals(TypeJeu.DONNES.toString())){
+
+        /*if(lastTypeJeu.equals(TypeJeu.DONNES.toString())){
 
             if(numCurrentDonne<lastNbDonnes){
                 createDonne();
             }else{
                 addDonneBtn.setVisibility(View.INVISIBLE);
-                //todo gérer le passage de donner pour le dialog fragment
-                //todo gérer le cas d'égalité des joueurs
+
                 showDialogWinner();
                 lastPartie.setPartieterminee(true);
                 MainActivity.beloteSkorDb.partieDao().updatePartie(lastPartie);
@@ -191,6 +194,16 @@ public class ScoresFragment extends Fragment {
                 lastPartie.setPartieterminee(true);
                 MainActivity.beloteSkorDb.partieDao().updatePartie(lastPartie);
             }
+        }*/
+
+        if((lastNbDonnes!=0 && numCurrentDonne>=lastNbDonnes)||(lastNbPoints!=0 && scoreTotalEquipe1>=lastNbPoints)||(lastNbPoints!=0 && scoreTotalEquipe2>=lastNbPoints)){
+
+            //todo gérer le passage de donner pour le dialog fragment
+            //todo gérer le cas d'égalité des joueurs
+            addDonneBtn.setVisibility(View.INVISIBLE);
+            showDialogWinner();
+            lastPartie.setPartieterminee(true);
+            MainActivity.beloteSkorDb.partieDao().updatePartie(lastPartie);
         }
 
     }
