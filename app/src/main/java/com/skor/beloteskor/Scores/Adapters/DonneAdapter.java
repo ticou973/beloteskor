@@ -530,8 +530,15 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
                     //Log.i(TAG, "onBindViewHolder: hello rien");
                 }
 
-                calculScoreDonne(holder);
+                if(!isScoreModified.get(position)&&holder.getScoreEquipeA()==0&&holder.getScoreEquipeB()==0){
+                    Log.i(TAG, "onClick: preneur hello");
+                    scoreA=0;
+                    scoreB=0;
+                }else {
+                    calculScoreDonne(holder);
+                }
                 displayDonneScore(holder);
+
                 isScoreModified.set(position,true);
                 Log.i(TAG, "onClick: preneur "+ isScoreModified);
 
@@ -673,6 +680,7 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
         scoreA=0;
         scoreB=0;
         isScoreModified.add(false);
+        Log.i(TAG, "initData: ");
     }
 
     private void calculScoreDonne(DonneViewHolder holder){
