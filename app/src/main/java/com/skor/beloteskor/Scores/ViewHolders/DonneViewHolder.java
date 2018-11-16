@@ -564,6 +564,10 @@ public class DonneViewHolder extends RecyclerView.ViewHolder  {
 
     public void setEquipeNull(Equipe equipeNull) { this.equipeNull = equipeNull; }
 
+    public Button getValidationBtn() {
+        return validationBtn;
+    }
+
     public int getNbAnnonces(TextView mainTv) { return Integer.parseInt(mainTv.getText().toString());
 
 

@@ -30,6 +30,8 @@ import com.skor.beloteskor.Scores.ViewHolders.DonneViewHolder;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.graphics.Color.rgb;
+
 public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
 
     private List<Donne> donnes;
@@ -112,6 +114,9 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
 
         // Get the application context
         mContext = holder.itemView.getContext();
+
+        holder.getCardViewDonne().setBackgroundColor(rgb(255,255,255));
+        holder.setVisibilityBtn(false,position+1);
                                  //ViewHolder
         initCardViewParent(holder,position);
         initCardViewChild(holder,position);
@@ -169,7 +174,7 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
     }
 
     private void initCardViewChild(final DonneViewHolder holder, final int position) {
-        isPreneurChecked.add(false);
+
 
         //todo faire une demande de modif à l'utilisateur pour éviter les erreurs
 
@@ -186,7 +191,7 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
                         scoreA = currentDonne.getScore1();
                         scoreB = currentDonne.getScore2();
                     }
-                    Log.i(TAG, "onClick: expand "+ isScoreModified);
+                    Log.i(TAG, "onClick: expand "+ isPreneurChecked);
                     Log.i(TAG, "onClick: expand "+ scoreA);
 
                     //ouverture de l'item courant
@@ -680,6 +685,7 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
         scoreA=0;
         scoreB=0;
         isScoreModified.add(false);
+        isPreneurChecked.add(false);
         Log.i(TAG, "initData: ");
     }
 
