@@ -37,6 +37,7 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
     //todo voir si isexpanded est nécessairement une liste ? le recyclerview le gère peut être ?
     private List<Boolean> isExpanded = new ArrayList<>();
     private List<Boolean> isPreneurChecked = new ArrayList<>();
+    private List<Boolean> isScoreModified = new ArrayList<>();
     private float beginX, beginY;
     private int width;
     private int numberPickerposition = 0; //Center
@@ -85,15 +86,19 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
     @Override
     public void onBindViewHolder(final DonneViewHolder holder, final int position) {
 
-
         //todo voir comment le recycler view se place toujours à la fin (dernier item)
         currentDonne = donnes.get(position);
         scoreA = currentDonne.getScore1();
         scoreB = currentDonne.getScore2();
 
-        Log.i(TAG, "onBindViewHolder: " + position);
+        Log.i(TAG, "onBindViewHolder: "+ scoreA);
+
+        //todo vérifier que le number picker a été utilisé et ne pas valider juste une belote par exemple
+
+
+       /* Log.i(TAG, "onBindViewHolder: " + position);
         Log.i(TAG, "onBindViewHolder: "+ currentDonne.getNumDonne()+" "+currentDonne.getCapot()+ currentDonne.getBelote());
-        Log.i(TAG, "onBindViewHolder: "+scoreA+" "+scoreB);
+        Log.i(TAG, "onBindViewHolder: "+scoreA+" "+scoreB);*/
 
         //init donnes et types de parties
         holder.setGestionScoreGone();
@@ -140,6 +145,7 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
 
     }
 
+
                             // Méthodes Adapter
 
     private void initCardViewParent(DonneViewHolder holder, int position) {
@@ -163,36 +169,44 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
     }
 
     private void initCardViewChild(final DonneViewHolder holder, final int position) {
-
         isPreneurChecked.add(false);
+
+        //todo faire une demande de modif à l'utilisateur pour éviter les erreurs
 
         holder.getCardViewDonne().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 //Gestion de l'item courant
                 if (!isExpanded.get(position)) {
+
+                    if(isScoreModified.get(position)){
+                        isScoreModified.set(position,false);
+                        currentDonne = donnes.get(position);
+                        scoreA = currentDonne.getScore1();
+                        scoreB = currentDonne.getScore2();
+                    }
+                    Log.i(TAG, "onClick: expand "+ isScoreModified);
+                    Log.i(TAG, "onClick: expand "+ scoreA);
 
                     //ouverture de l'item courant
                     holder.expand(position + 1);
                     isExpanded.set(position, true);
 
-                    Log.i(TAG, "onClick:A "+position+isExpanded.get(position));
+                  //  Log.i(TAG, "onClick:A "+position+isExpanded.get(position)+isPreneurChecked.get(position));
 
                     if(isPreneurChecked.get(position)){
                         holder.setGestionScoreVisible();
-                    }
-
-                    //todo voir pour simplifier cela car on veut la carte avec Annonces ouverte aussi
-                    if(holder.getAnnonces_team1().isChecked()||holder.getAnnonces_team2().isChecked()){
                         holder.getCardviewAnnoncesBtn().setVisibility(View.VISIBLE);
-                        holder.getCardViewAnnonces().setVisibility(View.VISIBLE);
 
-                        if(holder.getCarre_team2().isChecked()||holder.getCarre_team1().isChecked()){
-
-                            holder.getCardViewCarre().setVisibility(View.VISIBLE);
-                        }else if(!holder.getAnnonces_team1().isChecked()&&!holder.getAnnonces_team2().isChecked()&&preneur!=null){
+                        //todo voir pour simplifier cela car on veut la carte avec Annonces ouverte aussi
+                        if(holder.getAnnonces_team1().isChecked()||holder.getAnnonces_team2().isChecked()){
                             holder.getCardViewAnnonces().setVisibility(View.VISIBLE);
 
+                            if(holder.getCarre_team2().isChecked()||holder.getCarre_team1().isChecked()){
+
+                                holder.getCardViewCarre().setVisibility(View.VISIBLE);
+                            }
                         }
                     }
 
@@ -216,48 +230,58 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
                     setListenerClickCouleur(holder, holder.getPreneur_trefle(),holder.getPreneur_coeur(),holder.getPreneur_pique(),holder.getPreneur_carreau());
 
                     //NumberPickerScore
-                    initNumberPicker(holder);
+                    initNumberPicker(holder, position);
 
                     //gestion de la belote et du capot
-                    setListenerChecked(holder,holder.getBelote_team1(),holder.getBelote_team2());
-                    setListenerChecked(holder, holder.getBelote_team2(),holder.getBelote_team1());
-                    setListenerChecked(holder, holder.getCapot_team1(),holder.getCapot_team2());
-                    setListenerChecked(holder, holder.getCapot_team2(),holder.getCapot_team1());
+                    setListenerChecked(holder, position, holder.getBelote_team1(),holder.getBelote_team2());
+                    setListenerChecked(holder, position, holder.getBelote_team2(),holder.getBelote_team1());
+                    setListenerChecked(holder, position, holder.getCapot_team1(),holder.getCapot_team2());
+                    setListenerChecked(holder, position, holder.getCapot_team2(),holder.getCapot_team1());
 
                     //gestion des annonces
                     holder.setListenerAnnoncesChecked(holder.getAnnonces_team1(),holder.getAnnonces_team2());
                     holder.setListenerAnnoncesChecked(holder.getAnnonces_team2(),holder.getAnnonces_team1());
 
-                    setListenerClickButton(holder,holder.getTierce_team1(),holder.getNbTierce_team1());
-                    setListenerClickButton(holder,holder.getTierce_team2(),holder.getNbTierce_team2());
-                    setListenerClickButton(holder,holder.getCinquante_team1(),holder.getNbCinquante_team1());
-                    setListenerClickButton(holder,holder.getCent_team1(),holder.getNbCent_team1());
-                    setListenerClickButton(holder,holder.getCinquante_team2(),holder.getNbCinquante_team2());
-                    setListenerClickButton(holder,holder.getCent_team2(),holder.getNbCent_team2());
+                    setListenerClickButton(holder, position, holder.getTierce_team1(),holder.getNbTierce_team1());
+                    setListenerClickButton(holder, position, holder.getTierce_team2(),holder.getNbTierce_team2());
+                    setListenerClickButton(holder, position, holder.getCinquante_team1(),holder.getNbCinquante_team1());
+                    setListenerClickButton(holder, position, holder.getCent_team1(),holder.getNbCent_team1());
+                    setListenerClickButton(holder, position, holder.getCinquante_team2(),holder.getNbCinquante_team2());
+                    setListenerClickButton(holder, position, holder.getCent_team2(),holder.getNbCent_team2());
 
                     setListenerClickCarre(holder, holder.getCarre_team1());
                     setListenerClickCarre(holder, holder.getCarre_team2());
 
                     //gestion des carrés
-                    setListenerClickButton(holder,holder.getCarre_autre_team1(),holder.getNbCarre_autre_team1());
-                    setListenerClickButton(holder,holder.getCarre_autre_team2(),holder.getNbCarre_autre_team2());
-                    setListenerToggleV9(holder,holder.getCarre_valet_team1());
-                    setListenerToggleV9(holder,holder.getCarre_valet_team2());
-                    setListenerToggleV9(holder,holder.getCarre_9_team1());
-                    setListenerToggleV9(holder,holder.getCarre_9_team2());
+                    setListenerClickButton(holder, position, holder.getCarre_autre_team1(),holder.getNbCarre_autre_team1());
+                    setListenerClickButton(holder, position, holder.getCarre_autre_team2(),holder.getNbCarre_autre_team2());
+                    setListenerToggleV9(holder, position, holder.getCarre_valet_team1());
+                    setListenerToggleV9(holder, position, holder.getCarre_valet_team2());
+                    setListenerToggleV9(holder, position, holder.getCarre_9_team1());
+                    setListenerToggleV9(holder, position, holder.getCarre_9_team2());
 
 
                     //collapse de la donne
                 } else {
+
+                    /*if(!isScoreModified.get(position)){
+                        Log.i(TAG, "onClick: hello");
+                        scoreA=MainActivity.beloteSkorDb.donneDao().getDonnebyNumDonne(position+1,lastPartie.getPartieId()).getScore1();
+                    }*/
+
+                    Log.i(TAG, "onClick: collapse "+ isScoreModified);
+                    Log.i(TAG, "onClick: collapse "+ scoreA);
                     isExpanded.set(position, false);
                     holder.collapse(position + 1);
                     holder.setCardViewAnnoncesBtnGone();
                     holder.setCardViewAnnoncesGone();
                     holder.setCardViewCarreGone();
+
                     capot = holder.getCapot();
                     belote = holder.getBelote();
                     annoncesDonne=holder.getAnnoncesDonne();
 
+                    //Log.i(TAG, "onClick:B "+position+isExpanded.get(position)+isPreneurChecked.get(position));
 
                    if(annoncesDonne.getEquipeAnnonces().getNomEquipe()=="EquipeA"){
                         annoncesDonne.setEquipeAnnonces(equipeA);
@@ -266,50 +290,40 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
                         annoncesDonne.setNbCent(Integer.parseInt(holder.getNbCent_team1().getText().toString()));
                         annoncesDonne.setNbCarreAutre(Integer.parseInt(holder.getNbCarre_autre_team1().getText().toString()));
 
-                        if(holder.getCarre_valet_team1().isChecked()){
-                            annoncesDonne.setCarreValet(true);
-                        }else{
-                            annoncesDonne.setCarreValet(false);
-                        }
+                        if(holder.getCarre_valet_team1().isChecked()){ annoncesDonne.setCarreValet(true);
+                        }else{ annoncesDonne.setCarreValet(false); }
 
-                        if(holder.getCarre_9_team1().isChecked()){
-
-                            annoncesDonne.setCarre9(true);
-                        }else{
-                            annoncesDonne.setCarre9(false);
-                        }
+                        if(holder.getCarre_9_team1().isChecked()){ annoncesDonne.setCarre9(true);
+                        }else{ annoncesDonne.setCarre9(false);}
 
 
                     }else if(annoncesDonne.getEquipeAnnonces().getNomEquipe()=="EquipeB"){
-
-                       annoncesDonne.setEquipeAnnonces(equipeB);
+                        annoncesDonne.setEquipeAnnonces(equipeB);
                         annoncesDonne.setNbTierce(Integer.parseInt(holder.getNbTierce_team2().getText().toString()));
                         annoncesDonne.setNbCinquante(Integer.parseInt(holder.getNbCinquante_team2().getText().toString()));
                         annoncesDonne.setNbCent(Integer.parseInt(holder.getNbCent_team2().getText().toString()));
                         annoncesDonne.setNbCarreAutre(Integer.parseInt(holder.getNbCarre_autre_team2().getText().toString()));
 
-                       if(holder.getCarre_valet_team2().isChecked()){
-                           annoncesDonne.setCarreValet(true);
-                       }else{
-                           annoncesDonne.setCarreValet(false);
-                       }
+                       if(holder.getCarre_valet_team2().isChecked()){ annoncesDonne.setCarreValet(true);
+                       }else{ annoncesDonne.setCarreValet(false); }
 
-                       if(holder.getCarre_9_team2().isChecked()){
-
-                           annoncesDonne.setCarre9(true);
-                       }else {
-                           annoncesDonne.setCarre9(false);
-                       }
+                       if(holder.getCarre_9_team2().isChecked()){ annoncesDonne.setCarre9(true);
+                       }else { annoncesDonne.setCarre9(false); }
 
                     }
 
-                    Log.i(TAG, "upDateCurrentDonneC: " + scoreA + " " + scoreB + " " + preneur+ " " +
+                   Log.i(TAG, "upDateCurrentDonneC: " + scoreA + " " + scoreB + " " + preneur.getNomJoueur()+ " " +
                             couleur + " " + belote.getNomEquipe() + " "+ capot.getNomEquipe() + " "+ (position+1)+ " "+annoncesDonne.getEquipeAnnonces().getNomEquipe()
                             + " "+ annoncesDonne.getNbTierce() + " " + annoncesDonne.getNbCinquante()+" "+
                             annoncesDonne.getNbCent()+" "+ annoncesDonne.getNbCarreAutre()+" "+
                             annoncesDonne.isCarreValet()+" "+annoncesDonne.isCarre9());
 
-                    upDatecurrentDonne(position+1);
+                    //Log.i(TAG, "onClickscore: "+isScoreModified);
+
+                    if(isScoreModified.get(position)){
+                        upDatecurrentDonne(position+1);
+                    }
+
                     setTotalScore();
                     upDateTotalScore();
 
@@ -331,7 +345,7 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
 
     private void testFinPartie() {
 
-        Log.i(TAG, "testFinPartie: ");
+        //Log.i(TAG, "testFinPartie: ");
 
         if (mListener != null) {
             mListener.onDonneAdapterTestFinPartie();
@@ -376,7 +390,7 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
 
     }
 
-    public void setListenerChecked(final DonneViewHolder holder, final ToggleButton mainTb, final ToggleButton secondTb) {
+    public void setListenerChecked(final DonneViewHolder holder, final int position, final ToggleButton mainTb, final ToggleButton secondTb) {
 
         mainTb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -400,6 +414,7 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
 
                 calculScoreDonne(holder);
                 displayDonneScore(holder);
+                isScoreModified.set(position,true);
 
 
                 if(holder.getCapot_team1().isChecked()){ capot.setNomEquipe("EquipeA");
@@ -419,7 +434,8 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
     }
 
     //todo voir pour déplacer ses méthodes dans ViewHolder
-    private void initNumberPicker(final DonneViewHolder holder) {
+    //todo voir pour mettre le number picker du côté opposé au preneur
+    private void initNumberPicker(final DonneViewHolder holder, final int position) {
         //gestion du detector
         detector = new GestureDetector(mContext, new GestureDetector.OnGestureListener() {
             @Override
@@ -445,15 +461,11 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
                 return true;
             }
             @Override
-            public boolean onDown(MotionEvent e) {
-                return true;
-            }
+            public boolean onDown(MotionEvent e) {return true;}
             @Override
             public void onShowPress(MotionEvent e) { }
             @Override
-            public boolean onSingleTapUp(MotionEvent e) {
-                return true;
-            }
+            public boolean onSingleTapUp(MotionEvent e) {return true;}
             @Override
             public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) { return true; }
             @Override
@@ -477,21 +489,10 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
         holder.getNumberPicker().setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-
-                /*if (numberPickerposition == 1) {
-                    holder.setScoreEquipeA(newVal);
-                    holder.setScoreEquipeB(162 - newVal);
-
-                } else if (numberPickerposition == 2) {
-                    holder.setScoreEquipeB(newVal);
-                    holder.setScoreEquipeA(162 - newVal);
-                }
-
-                scoreA = holder.getScoreEquipeA();
-                scoreB = holder.getScoreEquipeB();*/
                 scoreNumberPicker = newVal;
                 calculScoreDonne(holder);
                 displayDonneScore(holder);
+                isScoreModified.set(position,true);
 
             }
         });
@@ -518,19 +519,22 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
 
                 if(lastTypeAnnonce.equals(TypeAnnonce.SANS_ANNONCE.toString())){
                     //todo voir ce if utile ainsi que le else
-                    Log.i(TAG, "onBindViewHolder: coucou adapter");
+                    //Log.i(TAG, "onBindViewHolder: coucou adapter");
 
                 }else if(lastTypeAnnonce.equals(TypeAnnonce.AVEC_ANNONCES.toString())){
-                    Log.i(TAG, "onBindViewHolder: hello adapter");
+                   // Log.i(TAG, "onBindViewHolder: hello adapter");
                     holder.setGestionScoreVisible();
                     holder.setCardViewAnnoncesBtnVisible();
 
                 }else{
-                    Log.i(TAG, "onBindViewHolder: hello rien");
+                    //Log.i(TAG, "onBindViewHolder: hello rien");
                 }
 
                 calculScoreDonne(holder);
                 displayDonneScore(holder);
+                isScoreModified.set(position,true);
+                Log.i(TAG, "onClick: preneur "+ isScoreModified);
+
             }
         });
     }
@@ -558,7 +562,7 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
 
     }
 
-    private void setListenerToggleV9(final DonneViewHolder holder, final ToggleButton mainTb) {
+    private void setListenerToggleV9(final DonneViewHolder holder, final int position, final ToggleButton mainTb) {
 
         mainTb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -581,11 +585,12 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
 
                 calculScoreDonne(holder);
                 displayDonneScore(holder);
+                isScoreModified.set(position,true);
             }
         });
     }
 
-    private void setListenerClickButton(final DonneViewHolder holder, final Button mainBtn, final TextView mainTv) {
+    private void setListenerClickButton(final DonneViewHolder holder, final int position, final Button mainBtn, final TextView mainTv) {
         mainBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -603,6 +608,7 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
 
                 calculScoreDonne(holder);
                 displayDonneScore(holder);
+                isScoreModified.set(position,true);
             }
         });
     }
@@ -646,7 +652,6 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
                 }
             }
         });
-
     }
 
 
@@ -664,9 +669,10 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
 
         annoncesDonne=new AnnoncesDonne(equipeNull,0,0,0,0,false,false);
 
+        //todo vérifier inutilité de cette initialisation
         scoreA=0;
         scoreB=0;
-
+        isScoreModified.add(false);
     }
 
     private void calculScoreDonne(DonneViewHolder holder){
@@ -679,9 +685,7 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
         scoreBelote2=0;
         scoreAnnonces2 =0;
 
-
         //prise en charge de la belote
-
         if(holder.getBelote_team1().isChecked()){
 
             scoreBelote1 = 20;
@@ -746,7 +750,7 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
             scoreB = scoreExtraB;
         }
 
-        Log.i(TAG, "calculScoreDonne: "+ preneur.getNomJoueur()+" "+holder.getPlayer1Name().getText());
+
 
         //todo faire gestion du litige si nécessaire
         if(scoreA<scoreB && (preneur.getNomJoueur().equals(holder.getPlayer1Name().getText().toString())||preneur.getNomJoueur().equals(holder.getPlayer2Name().getText().toString()))){

@@ -60,7 +60,6 @@ public class ScoresFragment extends Fragment {
     private Couleur currentCouleur;
     private AnnoncesDonne annoncesDonne;
 
-
                                         //Constructeur
     public ScoresFragment() {
         // Required empty public constructor
@@ -88,13 +87,11 @@ public class ScoresFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_scores, container, false);
 
         //Recycler View
-
         //todo voir pour additemdecoration pour les recyclerview
         scoreRecyclerView = view.findViewById(R.id.recycler_view_scores);
         layoutManager = new LinearLayoutManager(context);
@@ -255,6 +252,8 @@ public class ScoresFragment extends Fragment {
 
 
     public void createDonne() {
+
+        //changement du donneur si nécessaire
         if(lastModeEquipe.equals(ModeEquipe.MODE_EQUIPE_STATIQUE_NOMINATIF.toString())) {
 
             if (mListener != null) {
@@ -265,7 +264,6 @@ public class ScoresFragment extends Fragment {
             if (mListener != null) {
                 mListener.onScoreChangeScoreTotal(scoreTotalEquipe1, scoreTotalEquipe2);
             }
-
         }
 
         nextDonne = new Donne(lastPartie.getPartieId(), donnes.size() + 1, 0, 0);
@@ -284,7 +282,7 @@ public class ScoresFragment extends Fragment {
         capot = donneAdapter.getCapot();
         annoncesDonne = donneAdapter.getAnnoncesDonne();
 
-       Log.i(TAG, "upDateCurrentDonneA: " + scoreA + " " + scoreB + " " + currentPreneur+ " " +
+      Log.i(TAG, "upDateCurrentDonneA: " + scoreA + " " + scoreB + " " + currentPreneur.getNomJoueur()+ " " +
                 currentCouleur + " " + belote.getNomEquipe() + " "+ capot.getNomEquipe() + " "+ numDonne+ " "+annoncesDonne.getEquipeAnnonces().getNomEquipe()
                 + " "+ annoncesDonne.getNbTierce() + " " + annoncesDonne.getNbCinquante()+" "+
                 annoncesDonne.getNbCent()+" "+ annoncesDonne.getNbCarreAutre()+" "+
@@ -304,14 +302,17 @@ public class ScoresFragment extends Fragment {
 
         donnes = MainActivity.beloteSkorDb.donneDao().getAllDonnesPartiesCourantes(lastPartie.getPartieId());
 
+
         //todo retirer après validation de l'update (test)
         firstDonne=MainActivity.beloteSkorDb.donneDao().getDonnebyNumDonne(numDonne,lastPartie.getPartieId());
 
-       Log.i(TAG, "upDateCurrentDonneB: " + firstDonne.getScore1() + " " + firstDonne.getScore2() + " " + firstDonne.getPreneur()+ " " +
+       Log.i(TAG, "upDateCurrentDonneB: " + firstDonne.getScore1() + " " + firstDonne.getScore2() + " " + firstDonne.getPreneur().getNomJoueur()+ " " +
         firstDonne.getCouleur() + " " + firstDonne.getBelote().getNomEquipe() + " "+ firstDonne.getCapot().getNomEquipe()+ " "+ firstDonne.getNumDonne()+ " "+firstDonne.getAnnoncesDonne().getEquipeAnnonces().getNomEquipe()
         + " "+ firstDonne.getAnnoncesDonne().getNbTierce() + " " + firstDonne.getAnnoncesDonne().getNbCinquante()+" "+
         firstDonne.getAnnoncesDonne().getNbCent()+" "+ firstDonne.getAnnoncesDonne().getNbCarreAutre()+" "+
         firstDonne.getAnnoncesDonne().isCarreValet()+" "+firstDonne.getAnnoncesDonne().isCarre9());
+
+        donneAdapter.setNotifyDonneAdapter(donnes);
     }
 
     private void showDialogModeEquipe() {

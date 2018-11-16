@@ -239,7 +239,7 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
         isFromMainActivity = false;
         currentDistrib=beloteSkorDb.partieDao().getLastPartie().getPremierDistributeur().getNomJoueur();
 
-        Log.i(TAG, "onSettingsStartGamePLayers: "+ currentDistrib);
+       // Log.i(TAG, "onSettingsStartGamePLayers: "+ currentDistrib);
 
         scores = new ArrayList<>();
         scores.add(0);
@@ -571,15 +571,13 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
         int score1 = scoresFragment.getScoreTotalEquipe1();
         int score2 = scoresFragment.getScoreTotalEquipe2();
 
-        Log.i(TAG, "onDonneAdapterDisplayTotalScoreAnonyme: "+score1+score2);
+       // Log.i(TAG, "onDonneAdapterDisplayTotalScoreAnonyme: "+score1+score2);
 
         scoresFragment.displayChangeScoreTotal(score1,score2);
     }
 
     @Override
     public void onDonneAdapterTestFinPartie() {
-
-        Log.i(TAG, "onDonneAdapterTestFinPartieA: ");
 
         scoresFragment.testFinPartie();
     }
