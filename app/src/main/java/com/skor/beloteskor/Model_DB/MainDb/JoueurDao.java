@@ -17,9 +17,6 @@ public interface JoueurDao {
     @Query("SELECT * FROM joueur")
     List<Joueur> getAllJoueurs();
 
-
-
-
     @Query("SELECT * FROM joueur WHERE joueurId IN (:joueurId)")
     Joueur loadJoueurById(int joueurId);
 

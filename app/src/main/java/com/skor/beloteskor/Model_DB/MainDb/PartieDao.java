@@ -24,6 +24,9 @@ public interface PartieDao {
     @Query("SELECT * FROM partie ORDER BY partieId DESC LIMIT 1")
     Partie getLastPartie();
 
+    @Query("SELECT * FROM partie WHERE ((A_1_nom_joueur IN (:name)) OR (A_2_nom_joueur IN (:name)) OR (B_1_nom_joueur IN (:name)) OR (B_2_nom_joueur) IN (:name))")
+    List<Partie> getPartiesByPlayerName(String name);
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertPartie(Partie partie);
 

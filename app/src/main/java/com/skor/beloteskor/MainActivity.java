@@ -280,10 +280,7 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
         args.putStringArray(EXTRA,listPlayersName);
         settingsGameFragment.setArguments(args);
 
-        if((player1.equals("")|| player2.equals("") || player3.equals("") || player4.equals(""))){
-
-            return false;
-        }
+        if((player1.equals("")|| player2.equals("") || player3.equals("") || player4.equals(""))){ return false; }
 
         return true;
     }
