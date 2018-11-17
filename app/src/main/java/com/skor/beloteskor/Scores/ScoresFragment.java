@@ -192,6 +192,7 @@ public class ScoresFragment extends Fragment {
                 MainActivity.beloteSkorDb.partieDao().updatePartie(lastPartie);
             }
         }*/
+        numCurrentDonne=donnes.size();
 
         if((lastNbDonnes!=0 && numCurrentDonne>=lastNbDonnes)||(lastNbPoints!=0 && scoreTotalEquipe1>=lastNbPoints)||(lastNbPoints!=0 && scoreTotalEquipe2>=lastNbPoints)){
 

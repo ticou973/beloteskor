@@ -117,6 +117,7 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
 
         holder.getCardViewDonne().setBackgroundColor(rgb(255,255,255));
         holder.setVisibilityBtn(false,position+1);
+        isExpanded.set(position,false);
                                  //ViewHolder
         initCardViewParent(holder,position);
         initCardViewChild(holder,position);
@@ -157,7 +158,6 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
         holder.setScoreEquipeA(scoreA);
         holder.setScoreEquipeB(scoreB);
         holder.setNumDonne(position + 1);
-        isExpanded.add(false);
 
         //todo revoir gestion de l'ouverture initiale
         //todo le parent reste vert lorsque on add une nelle donne et la précédente non fermée
@@ -269,11 +269,6 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
                     //collapse de la donne
                 } else {
 
-                    /*if(!isScoreModified.get(position)){
-                        Log.i(TAG, "onClick: hello");
-                        scoreA=MainActivity.beloteSkorDb.donneDao().getDonnebyNumDonne(position+1,lastPartie.getPartieId()).getScore1();
-                    }*/
-
                     Log.i(TAG, "onClick: collapse "+ isScoreModified);
                     Log.i(TAG, "onClick: collapse "+ scoreA);
                     isExpanded.set(position, false);
@@ -314,7 +309,6 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
 
                        if(holder.getCarre_9_team2().isChecked()){ annoncesDonne.setCarre9(true);
                        }else { annoncesDonne.setCarre9(false); }
-
                     }
 
                    Log.i(TAG, "upDateCurrentDonneC: " + scoreA + " " + scoreB + " " + preneur.getNomJoueur()+ " " +
@@ -323,39 +317,25 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
                             annoncesDonne.getNbCent()+" "+ annoncesDonne.getNbCarreAutre()+" "+
                             annoncesDonne.isCarreValet()+" "+annoncesDonne.isCarre9());
 
-                    //Log.i(TAG, "onClickscore: "+isScoreModified);
-
-                    if(isScoreModified.get(position)){
-                        upDatecurrentDonne(position+1);
-                    }
+                    if(isScoreModified.get(position)){ upDatecurrentDonne(position+1);}
 
                     setTotalScore();
                     upDateTotalScore();
 
-                    if(lastModeEquipe.equals(ModeEquipe.MODE_EQUIPE_STATIQUE_NOMINATIF.toString())) {
+                    if(lastModeEquipe.equals(ModeEquipe.MODE_EQUIPE_STATIQUE_NOMINATIF.toString())) { displayTotalScore();
 
-                        displayTotalScore();
-
-                    }else if(lastModeEquipe.equals(ModeEquipe.MODE_EQUIPE_STATIQUE_ANONYME.toString())){
-
-                        displayTotalScoreAnonyme();
-                    }
+                    }else if(lastModeEquipe.equals(ModeEquipe.MODE_EQUIPE_STATIQUE_ANONYME.toString())){ displayTotalScoreAnonyme();}
 
                     testFinPartie();
-
                 }
             }
         });
     }
 
     private void testFinPartie() {
-
-        //Log.i(TAG, "testFinPartie: ");
-
         if (mListener != null) {
             mListener.onDonneAdapterTestFinPartie();
         }
-
     }
 
     private void displayTotalScoreAnonyme() {
@@ -686,6 +666,7 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
         scoreB=0;
         isScoreModified.add(false);
         isPreneurChecked.add(false);
+        isExpanded.add(false);
         Log.i(TAG, "initData: ");
     }
 
