@@ -56,6 +56,9 @@
     <string name="_9">9</string>
     <string name="autre">Autre</string>
     <string name="us">Us</string>
+    <string name="nombre_de_parties_jou_es">Nombre de parties jouées :</string>
+    <string name="nombre_de_parties_gagn_es">Nombre de parties gagnées :</string>
+    <string name="partenaire_privil_gi">Partenaire privilégié :</string>
 
 
 </resources>
