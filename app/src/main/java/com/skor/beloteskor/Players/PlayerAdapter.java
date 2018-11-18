@@ -79,10 +79,7 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerViewHolder> {
 
                i++;
            }
-
         }
-
         return i;
-
     }
 }
