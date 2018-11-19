@@ -44,13 +44,13 @@ public class Partie {
     @ColumnInfo(name="etat_partie")
     private boolean partieterminee;
 
-    /*@ColumnInfo(name = "timestamp_partie")
-    private String timeStampPartie;*/
+    @ColumnInfo(name = "timestamp_partie")
+    private String timeStampPartie;
 
 
     //Méthodes constructeurs
 
-    public Partie(TypeDePartie type, Table table, Joueur premierDistributeur, SensJeu sensJeu, int scoreEquipeA, int scoreEquipeB, boolean partieterminee) {
+    public Partie(TypeDePartie type, Table table, Joueur premierDistributeur, SensJeu sensJeu, int scoreEquipeA, int scoreEquipeB, boolean partieterminee, String timeStampPartie) {
         this.type = type;
         this.table = table;
         this.premierDistributeur = premierDistributeur;
@@ -58,6 +58,7 @@ public class Partie {
         this.scoreEquipeA = scoreEquipeA;
         this.scoreEquipeB = scoreEquipeB;
         this.partieterminee = partieterminee;
+        this.timeStampPartie=timeStampPartie;
     }
 
 
@@ -130,5 +131,13 @@ public class Partie {
 
     public void setSensJeu(SensJeu sensJeu) {
         this.sensJeu = sensJeu;
+    }
+
+    public String getTimeStampPartie() {
+        return timeStampPartie;
+    }
+
+    public void setTimeStampPartie(String timeStampPartie) {
+        this.timeStampPartie = timeStampPartie;
     }
 }

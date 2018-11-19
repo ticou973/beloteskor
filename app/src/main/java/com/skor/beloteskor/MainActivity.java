@@ -32,7 +32,9 @@ import com.skor.beloteskor.Scores.SettingsGameFragment;
 import com.skor.beloteskor.Scores.TeamScoreFragment;
 import com.skor.beloteskor.Statistics.StatisticsFragment;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -466,7 +468,7 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
 
         Joueur lastDistrib = new Joueur(currentDistrib);
 
-        Partie partie = new Partie(currentPartie.getType(),currentPartie.getTable(),lastDistrib,currentPartie.getSensJeu(),0,0,false);
+        Partie partie = new Partie(currentPartie.getType(),currentPartie.getTable(),lastDistrib,currentPartie.getSensJeu(),0,0,false,aujourdhui());
 
         MainActivity.beloteSkorDb.partieDao().insertPartie(partie);
 
@@ -590,6 +592,12 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
         transaction.replace(R.id.fl_fragment_main, fragment);
         transaction.commit();
 
+    }
+
+    //todo ajouter les heures et minutes
+    public String aujourdhui() {
+        final Date date = new Date();
+        return new SimpleDateFormat("dd-MM-yyyy").format(date);
     }
 
 

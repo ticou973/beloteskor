@@ -33,6 +33,9 @@ import com.skor.beloteskor.Model_DB.UtilsDb.TypeDePartie;
 import com.skor.beloteskor.Model_DB.UtilsDb.TypeJeu;
 import com.skor.beloteskor.R;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 
 public class SettingsGameFragment extends Fragment {
 
@@ -448,7 +451,7 @@ public class SettingsGameFragment extends Fragment {
         //Partie
 
 
-        Partie partie = new Partie(typeDePartie,table,premierDistrib,sensJeu,0,0,false);
+        Partie partie = new Partie(typeDePartie,table,premierDistrib,sensJeu,0,0,false,aujourdhui());
 
         MainActivity.beloteSkorDb.partieDao().insertPartie(partie);
 
@@ -552,7 +555,7 @@ public class SettingsGameFragment extends Fragment {
 
         //Partie
 
-        Partie partie = new Partie(typeDePartie,table,premierDistrib,sensJeu,0,0,false);
+        Partie partie = new Partie(typeDePartie,table,premierDistrib,sensJeu,0,0,false,aujourdhui());
 
         MainActivity.beloteSkorDb.partieDao().insertPartie(partie);
 
@@ -633,6 +636,11 @@ public class SettingsGameFragment extends Fragment {
     public static void hideKeyboardFrom(Context context, View view) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    public String aujourdhui() {
+        final Date date = new Date();
+        return new SimpleDateFormat("dd-MM-yyyy").format(date);
     }
 
 

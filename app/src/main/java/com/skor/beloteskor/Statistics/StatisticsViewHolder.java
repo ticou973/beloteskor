@@ -56,6 +56,6 @@ class StatisticsViewHolder extends RecyclerView.ViewHolder {
 
     public void setTextDate(String datePartie){
 
-        date.setText("Date :"+datePartie);
+        date.setText("Date : "+datePartie);
     }
 }
