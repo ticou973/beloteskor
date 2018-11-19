@@ -16,7 +16,7 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerViewHolder> {
 
     private List<Joueur> joueurs;
     private List<Partie> partiesJoueur, partiesGagneesJoueur;
-    private String name, partenaire;
+    private String name;
     private int nbPartiesJ, nbPartiesG;
     private int pourcentageG;
 
@@ -25,8 +25,9 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerViewHolder> {
 
     public PlayerAdapter(List<Joueur> joueurs){
         this.joueurs=joueurs;
-
     }
+
+    //todo ajouter un plus dans la carte pour avoir plus de stats sur le joueur (nb donnes J, G, Preneurs, Couleur préféré, type de jeu préféré, partenaire privilégié, profil du joueur
 
     @Override
     public PlayerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -56,9 +57,6 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerViewHolder> {
 
         holder.setPourcentagePartiesGagnees(pourcentageG);
 
-        //partenaire privilégié
-        partenaire="Alberto";
-        holder.setPartenairePrivilegie(partenaire);
     }
 
     @Override
@@ -67,18 +65,11 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerViewHolder> {
     }
 
     private int calculNbPartiesGagnees() {
-
         int i =0;
 
         for (Partie partie: partiesJoueur) {
-
-           if(partie.getScoreEquipeA()>partie.getScoreEquipeB()&&(partie.getTable().getEquipeA().getJoueur1().equals(name)||partie.getTable().getEquipeA().getJoueur2().equals(name))){
-
-               i++;
-           }else if(partie.getScoreEquipeB()>partie.getScoreEquipeA()&&(partie.getTable().getEquipeB().getJoueur1().equals(name)||partie.getTable().getEquipeB().getJoueur2().equals(name))){
-
-               i++;
-           }
+            if(partie.getScoreEquipeA()>partie.getScoreEquipeB()&&(partie.getTable().getEquipeA().getJoueur1().getNomJoueur().equals(name)||partie.getTable().getEquipeA().getJoueur2().getNomJoueur().equals(name))){ i++;
+           }else if(partie.getScoreEquipeB()>partie.getScoreEquipeA()&&(partie.getTable().getEquipeB().getJoueur1().getNomJoueur().equals(name)||partie.getTable().getEquipeB().getJoueur2().getNomJoueur().equals(name))){i++; }
         }
         return i;
     }

@@ -53,7 +53,7 @@ public class StatisticsFragment extends Fragment {
 
     }
 
-
+//todo gérer le cas de départ "pas de parties
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

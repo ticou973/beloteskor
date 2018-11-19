@@ -40,7 +40,7 @@ class StatisticsViewHolder extends RecyclerView.ViewHolder {
 
     public void setTextEquipeB(String eqB){
 
-        equipeA.setText(eqB);
+        equipeB.setText(eqB);
     }
 
 
@@ -51,7 +51,7 @@ class StatisticsViewHolder extends RecyclerView.ViewHolder {
 
     public void setTextScoreEquipeB(String scEqB){
 
-        scoreEquipeA.setText(scEqB);
+        scoreEquipeB.setText(scEqB);
     }
 
     public void setTextDate(String datePartie){

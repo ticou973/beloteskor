@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import com.skor.beloteskor.Model_DB.MainDb.Partie;
 import com.skor.beloteskor.R;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 class StatisticsAdapter extends RecyclerView.Adapter<StatisticsViewHolder> {
@@ -48,18 +50,12 @@ class StatisticsAdapter extends RecyclerView.Adapter<StatisticsViewHolder> {
         holder.setTextEquipeA(equipeA);
         holder.setTextEquipeB(equipeB);
 
-        if(partie.isPartieterminee()){
-
-            statut ="terminée";
-
-        }else{
-
-            statut ="en cours";
+        if(partie.isPartieterminee()){ statut ="terminée";
+        }else{ statut ="en cours";
         }
-
         holder.setTextStatut(statut);
 
-        date = "28.11.2018";
+        date = aujourdhui();
         holder.setTextDate(date);
 
     }
@@ -67,6 +63,11 @@ class StatisticsAdapter extends RecyclerView.Adapter<StatisticsViewHolder> {
     @Override
     public int getItemCount() {
         return parties.size();
+    }
+
+    public String aujourdhui() {
+        final Date date = new Date();
+        return new SimpleDateFormat("dd-MM-yyyy").format(date);
     }
 }
 

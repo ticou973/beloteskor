@@ -38,4 +38,7 @@ public interface DonneDao {
     @Update
     void updateDonne(Donne donne);
 
+    @Query("DELETE FROM donne")
+    void deleteAll();
+
 }

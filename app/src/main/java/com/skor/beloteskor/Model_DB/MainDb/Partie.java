@@ -44,6 +44,8 @@ public class Partie {
     @ColumnInfo(name="etat_partie")
     private boolean partieterminee;
 
+    /*@ColumnInfo(name = "timestamp_partie")
+    private String timeStampPartie;*/
 
 
     //Méthodes constructeurs

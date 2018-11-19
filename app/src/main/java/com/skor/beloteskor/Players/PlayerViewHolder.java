@@ -8,7 +8,7 @@ import com.skor.beloteskor.R;
 
 class PlayerViewHolder extends RecyclerView.ViewHolder {
 
-   private TextView playerName,nbPartiesJouees,nbPartiesgagnees,pourcentagePartiesGagnees, partenairePrivilegie;
+   private TextView playerName,nbPartiesJouees,nbPartiesgagnees,pourcentagePartiesGagnees;
 
 
     public PlayerViewHolder(View itemView) {
@@ -18,7 +18,6 @@ class PlayerViewHolder extends RecyclerView.ViewHolder {
         nbPartiesJouees=itemView.findViewById(R.id.tv_nb_parties_jouees);
         nbPartiesgagnees=itemView.findViewById(R.id.tv_nb_parties_gagnees);
         pourcentagePartiesGagnees=itemView.findViewById(R.id.tv_pourcentage_parties_gagnees);
-        partenairePrivilegie= itemView.findViewById(R.id.tv_partenaire_privilegie);
 
     }
 
@@ -39,10 +38,6 @@ class PlayerViewHolder extends RecyclerView.ViewHolder {
 
         String pourcentageText = "("+String.valueOf(pourcentage)+" %)";
         pourcentagePartiesGagnees.setText(pourcentageText);
-    }
-
-    public void setPartenairePrivilegie(String partenaire){
-        partenairePrivilegie.setText(partenaire);
     }
 }
 

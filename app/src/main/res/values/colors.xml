@@ -13,4 +13,5 @@
     <color name="color_accent2_dark">#c8b900</color>
     <color name="color_accent2_light">#ffff72</color>
     <color name="whiteapp">#ffffff</color>
+    <color name="colorGreyBackground">#eeeeee</color>
 </resources>

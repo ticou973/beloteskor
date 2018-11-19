@@ -197,7 +197,9 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
 
             case R.id.reset_db:
 
-                MainActivity.beloteSkorDb.joueurDao().deleteAll();
+                beloteSkorDb.joueurDao().deleteAll();
+                beloteSkorDb.partieDao().deleteAll();
+                beloteSkorDb.donneDao().deleteAll();
 
                 return true;
 

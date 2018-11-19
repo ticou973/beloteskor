@@ -45,6 +45,7 @@ public class PlayersFragment extends Fragment {
         this.context = context;
     }
 
+    //todo gérer le cas de départ "pas de joueurs"
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
