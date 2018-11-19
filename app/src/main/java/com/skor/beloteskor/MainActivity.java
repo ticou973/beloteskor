@@ -21,6 +21,7 @@ import com.skor.beloteskor.Model_DB.MainDb.Donne;
 import com.skor.beloteskor.Model_DB.MainDb.Joueur;
 import com.skor.beloteskor.Model_DB.MainDb.Partie;
 import com.skor.beloteskor.Model_DB.UtilsDb.ModeEquipe;
+import com.skor.beloteskor.Players.PlayerMenuFragment;
 import com.skor.beloteskor.Players.PlayersFragment;
 import com.skor.beloteskor.Scores.Adapters.DonneAdapter;
 import com.skor.beloteskor.Scores.DialogDonneNullFragment;
@@ -31,6 +32,7 @@ import com.skor.beloteskor.Scores.ScoresFragment;
 import com.skor.beloteskor.Scores.SettingsGameFragment;
 import com.skor.beloteskor.Scores.TeamScoreFragment;
 import com.skor.beloteskor.Statistics.StatisticsFragment;
+import com.skor.beloteskor.Statistics.StatisticsMenuFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -50,6 +52,8 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
     private PlayerScoreFragment playerScoreFragment;
     private TeamScoreFragment teamScoreFragment;
     private ScoresFragment scoresFragment;
+    private StatisticsMenuFragment statisticsMenuFragment;
+    private PlayerMenuFragment playerMenuFragment;
     private Partie nellePartie, currentPartie;
 
     public static final String EXTRA="com.skor.beloteskor.MESSAGE";
@@ -96,38 +100,7 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
         actionBar.setIcon(R.drawable.ic_clubs_33561);
 
 
-        //gestion de la bottom navigation view
-        navigation = findViewById(R.id.navigation);
-        navigation.setSelectedItemId(R.id.scores);
 
-        //Navigation dans la Bottom view
-        navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-                switch (item.getItemId()) {
-
-                    case R.id.players:
-                        PlayersFragment playersFragment = new PlayersFragment();
-                        replaceFragment(playersFragment);
-                        return true;
-
-                    case R.id.scores:
-                        ScoresFragment scoresFragment = new ScoresFragment();
-                        replaceFragment(scoresFragment);
-                        return true;
-
-                    case R.id.statistics:
-                        StatisticsFragment statisticsFragment = new StatisticsFragment();
-                        replaceFragment(statisticsFragment);
-                        return true;
-
-                    default:
-                        Toast.makeText(MainActivity.this, "default", Toast.LENGTH_SHORT).show();
-                        return false;
-                }
-            }
-        });
                                     //FRAGMENTS
 
         flFragmentMain = findViewById(R.id.fl_fragment_main);
@@ -158,6 +131,52 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
         args.putStringArray(EXTRA,listPlayersName);
         settingsGameFragment.setArguments(args);
         replaceFragment(settingsGameFragment);
+
+        //gestion de la bottom navigation view
+        navigation = findViewById(R.id.navigation);
+        navigation.setSelectedItemId(R.id.scores);
+
+        //Navigation dans la Bottom view
+        navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                switch (item.getItemId()) {
+
+                    case R.id.players:
+
+                        playerMenuFragment = new PlayerMenuFragment();
+                        transaction = getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.fl_fragment_name_score, playerMenuFragment).commit();
+
+                        PlayersFragment playersFragment = new PlayersFragment();
+                        replaceFragment(playersFragment);
+                        return true;
+
+                    case R.id.scores:
+
+                        //todo gérer les différents cas pour les scores
+
+                        ScoresFragment scoresFragment = new ScoresFragment();
+                        replaceFragment(scoresFragment);
+                        return true;
+
+                    case R.id.statistics:
+
+                        statisticsMenuFragment =new StatisticsMenuFragment();
+                        transaction = getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.fl_fragment_name_score, statisticsMenuFragment).commit();
+
+                        StatisticsFragment statisticsFragment = new StatisticsFragment();
+                        replaceFragment(statisticsFragment);
+                        return true;
+
+                    default:
+                        Toast.makeText(MainActivity.this, "default", Toast.LENGTH_SHORT).show();
+                        return false;
+                }
+            }
+        });
     }
 
                         //MENU OPTIONS

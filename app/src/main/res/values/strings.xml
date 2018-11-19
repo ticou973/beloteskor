@@ -60,6 +60,8 @@
     <string name="nombre_de_parties_gagn_es">Nombre de parties gagnées :</string>
     <string name="partenaire_privil_gi">Partenaire privilégié :</string>
     <string name="partie_num">Partie N°</string>
+    <string name="joueurs">Joueurs</string>
+    <string name="parties">Parties</string>
 
 
 </resources>
