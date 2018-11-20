@@ -568,6 +568,42 @@ public class DonneViewHolder extends RecyclerView.ViewHolder  {
         return validationBtn;
     }
 
+    public void setNbTierce_team1(int nbTierce) {
+
+        nbTierce_team1.setText(String.valueOf(nbTierce));
+
+    }
+
+    public void setNbTierce_team2(int nbTierce) {
+
+        nbTierce_team2.setText(String.valueOf(nbTierce));
+
+    }
+
+    public void setNbCinquante_team1(int nbCinquante) {
+       nbCinquante_team1.setText(String.valueOf(nbCinquante));
+    }
+
+    public void setNbCinquante_team2(int nbCinquante) {
+        nbCinquante_team2.setText(String.valueOf(nbCinquante));
+    }
+
+    public void setNbCent_team1(int nbCent) {
+        nbCent_team1.setText(String.valueOf(nbCent));
+    }
+
+    public void setNbCent_team2(int nbCent) {
+        nbCent_team2.setText(String.valueOf(nbCent));
+    }
+
+    public void setNbCarre_autre_team1(int nbCarre_autre) {
+        nbCarre_autre_team1.setText(String.valueOf(nbCarre_autre));
+    }
+
+    public void setNbCarre_autre_team2(int nbCarre_autre) {
+        nbCarre_autre_team2.setText(String.valueOf(nbCarre_autre));
+    }
+
     public int getNbAnnonces(TextView mainTv) { return Integer.parseInt(mainTv.getText().toString());
 
 

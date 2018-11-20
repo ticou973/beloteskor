@@ -165,7 +165,6 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
                         if(isInScoresFragment){
                             if(currentPartie.getType().getModeEquipe().equals(ModeEquipe.MODE_EQUIPE_STATIQUE_NOMINATIF.toString())){
                                 //todo V0 à virer inscoreF dès que cela marche
-                                Log.i(TAG, "onNavigationItemSelected: A");
                                 isInScoresFragment = true;
                                 isFromMainActivity = false;
                                 currentDistrib = playerScoreFragment.currentDistrib.getNomJoueur();
@@ -196,8 +195,6 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
 
                             }else if(currentPartie.getType().getModeEquipe().equals(ModeEquipe.MODE_EQUIPE_STATIQUE_ANONYME.toString())){
 
-                                Log.i(TAG, "onNavigationItemSelected: B");
-
                                 scores = new ArrayList<>();
                                 scores.add(currentPartie.getScoreEquipeA());
                                 scores.add(currentPartie.getScoreEquipeB());
@@ -220,7 +217,6 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
                            // replaceFragment(scoresFragment);
 
                         }else{
-                            Log.i(TAG, "onNavigationItemSelected: C");
                             playerScoreFragment = new PlayerScoreFragment();
                             //todo V0 à virer inscoreF dès que cela marche
 
