@@ -45,7 +45,7 @@ public class PlayersFragment extends Fragment {
         this.context = context;
     }
 
-    //todo gérer le cas de départ "pas de joueurs"
+    //todo V0 gérer le cas de départ "pas de joueurs"
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,7 +70,6 @@ public class PlayersFragment extends Fragment {
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onPlayersFragmentInteraction();
@@ -87,7 +86,6 @@ public class PlayersFragment extends Fragment {
 
 
     public interface OnPlayersFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onPlayersFragmentInteraction();
     }
 

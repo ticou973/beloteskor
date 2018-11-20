@@ -21,7 +21,7 @@ public class DonneScore {
         this.numDonne = numDonne;
     }
 
-    //todo voir si utile
+    //todo V1a voir si utile
     @Override
     public String toString() {
         return title + String.valueOf(donneScoreDetails.getScoreDonneEquipeA());

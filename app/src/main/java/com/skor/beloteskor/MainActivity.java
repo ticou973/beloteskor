@@ -67,18 +67,18 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
     private String[] listPlayersName={"","","",""};
     private List<Donne> donnes = null;
     private ModeEquipe modeEquipe = null;
-    private Boolean isFromMainActivity, isInScoresFragment;
+    private boolean isFromMainActivity, isInScoresFragment;
     private ArrayList<Integer> scores;
 
     public static AppDatabase beloteSkorDb;
 
-    //todo faire un splash
-    //todo faire un icon d'application
-    //todo Faire du beau code en en mettant des méthodes pour tous les endroits où j'ai mis des titres
-    //todo vérifier qu'il y ait besoin d'instancier le fragment en premier avec la navigation
-    //todo récupérer les contextes dans tous les fragments avec le onAttach des fragments en déclarant context au départ
-    //todo mettre une methode newinstance dans le fragment pour éviter de créer cette instance dans le main instance, peut être fait avec les mlistener
-    //todo Changer le modèle par un modèleView
+    //todo V1 faire un splash
+    //todo V1 faire un icon d'application
+    //todo V1a Faire du beau code en mettant des méthodes pour tous les endroits où j'ai mis des titres
+    //todo V1a vérifier qu'il y ait besoin d'instancier le fragment en premier avec la navigation
+    //todo V0 récupérer les contextes dans tous les fragments avec le onAttach des fragments en déclarant context au départ
+    //todo V1a mettre une methode newinstance dans le fragment pour éviter de créer cette instance dans le main instance, peut être fait avec les mlistener
+    //todo V1a Changer le modèle par un modèleView
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +86,9 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
         setContentView(R.layout.activity_main);
 
         //Gestion de la DB : instance de la DB
+
+        //todo V1a voir pour le allowMain Thread queries et fallbackTodestruction
+        //todo V1a voir pour les migrations évolutions des bases de données
 
         beloteSkorDb = Room.databaseBuilder(getApplicationContext(),AppDatabase.class,"BeloteSkorDb")
                 .allowMainThreadQueries()
@@ -98,7 +101,6 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("  BeloteSkor");
         actionBar.setIcon(R.drawable.ic_clubs_33561);
-
 
 
                                     //FRAGMENTS
@@ -155,10 +157,98 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
 
                     case R.id.scores:
 
-                        //todo gérer les différents cas pour les scores
+                        currentPartie = beloteSkorDb.partieDao().getLastPartie();
 
-                        ScoresFragment scoresFragment = new ScoresFragment();
-                        replaceFragment(scoresFragment);
+                        Log.i(TAG, "onNavigationItemSelected: "+currentPartie.getType().getModeEquipe());
+
+                        //todo V0 gérer les différents cas pour les scores
+                        if(isInScoresFragment){
+                            if(currentPartie.getType().getModeEquipe().equals(ModeEquipe.MODE_EQUIPE_STATIQUE_NOMINATIF.toString())){
+                                //todo V0 à virer inscoreF dès que cela marche
+                                Log.i(TAG, "onNavigationItemSelected: A");
+                                isInScoresFragment = true;
+                                isFromMainActivity = false;
+                                currentDistrib = playerScoreFragment.currentDistrib.getNomJoueur();
+
+                                scores = new ArrayList<>();
+                                scores.add(currentPartie.getScoreEquipeA());
+                                scores.add(currentPartie.getScoreEquipeB());
+
+                                playerScoreFragment = new PlayerScoreFragment();
+                                Bundle args = new Bundle();
+                                args.putStringArray(EXTRA,listPlayersName);
+                                args.putBoolean(EXTRA1,isInScoresFragment);
+                                args.putBoolean(EXTRA2,isFromMainActivity);
+                                args.putString(EXTRA3,currentDistrib);
+                                args.putIntegerArrayList(EXTRA4,scores);
+
+                                playerScoreFragment.setArguments(args);
+                                transaction = getSupportFragmentManager().beginTransaction();
+                                transaction.replace(R.id.fl_fragment_name_score, playerScoreFragment).commit();
+
+                                scoresFragment = new ScoresFragment();
+                                //todo V0 voir si obligé ?
+                                Bundle argsscore = new Bundle();
+                                argsscore.putStringArray(EXTRA,listPlayersName);
+                                scoresFragment.setArguments(argsscore);
+                                replaceFragment(scoresFragment);
+
+
+                            }else if(currentPartie.getType().getModeEquipe().equals(ModeEquipe.MODE_EQUIPE_STATIQUE_ANONYME.toString())){
+
+                                Log.i(TAG, "onNavigationItemSelected: B");
+
+                                scores = new ArrayList<>();
+                                scores.add(currentPartie.getScoreEquipeA());
+                                scores.add(currentPartie.getScoreEquipeB());
+
+                                currentDistrib=currentPartie.getPremierDistributeur().getNomJoueur();
+
+                                teamScoreFragment = new TeamScoreFragment();
+                                Bundle args = new Bundle();
+                                args.putIntegerArrayList(EXTRA4,scores);
+
+                                teamScoreFragment.setArguments(args);
+                                transaction = getSupportFragmentManager().beginTransaction();
+                                transaction.replace(R.id.fl_fragment_name_score, teamScoreFragment).commit();
+
+                                scoresFragment = new ScoresFragment();
+                                replaceFragment(scoresFragment);
+
+                            }
+                           // ScoresFragment scoresFragment = new ScoresFragment();
+                           // replaceFragment(scoresFragment);
+
+                        }else{
+                            Log.i(TAG, "onNavigationItemSelected: C");
+                            playerScoreFragment = new PlayerScoreFragment();
+                            //todo V0 à virer inscoreF dès que cela marche
+
+                            isInScoresFragment=false;
+                            isFromMainActivity = false;
+                            currentDistrib=" ";
+                            scores = new ArrayList<>();
+                            scores.add(0);
+                            scores.add(0);
+
+                            Bundle argsinit = new Bundle();
+                            argsinit.putStringArray(EXTRA,listPlayersName);
+                            argsinit.putBoolean(EXTRA1,isInScoresFragment);
+                            argsinit.putBoolean(EXTRA2,isFromMainActivity);
+                            argsinit.putString(EXTRA3,currentDistrib);
+                            argsinit.putIntegerArrayList(EXTRA4,scores);
+                            playerScoreFragment.setArguments(argsinit);
+                            transaction = getSupportFragmentManager().beginTransaction();
+                            transaction.replace(R.id.fl_fragment_name_score, playerScoreFragment).commit();
+
+                            //todo V1a prendre en compte les options déjà déclarées
+                            settingsGameFragment = new SettingsGameFragment();
+                            Bundle args = new Bundle();
+                            args.putStringArray(EXTRA,listPlayersName);
+                            settingsGameFragment.setArguments(args);
+                            replaceFragment(settingsGameFragment);
+                        }
+
                         return true;
 
                     case R.id.statistics:
@@ -190,11 +280,11 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
         return true;
     }
 
-    //todo menu options
+    //todo V0 menu options
   //Méthode qui gère la sélection de le menu de la Toolbar
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-    //todo prévoir un onglet nouvelle partie (à la place de search ?
+    //todo V0 prévoir un onglet nouvelle partie (à la place de search ?
 
         switch (item.getItemId()) {
 
@@ -214,7 +304,7 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
 
                 return true;
 
-                //todo penser à retirer ces 2 menus plus tard et dans le menu.xml
+                //todo V0 penser à retirer ces 2 menus plus tard et dans le menu.xml
 
             case R.id.reset_db:
 
@@ -256,7 +346,7 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
 
     @Override
     public void onSettingsStartGamePLayers() {
-        //todo vérifier si modeEquipe intéressant ici ou à supprimer
+        //todo V0 vérifier si modeEquipe intéressant ici ou à supprimer
         modeEquipe = ModeEquipe.MODE_EQUIPE_STATIQUE_NOMINATIF;
         isInScoresFragment = true;
         isFromMainActivity = false;
@@ -281,7 +371,7 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
         transaction.replace(R.id.fl_fragment_name_score, playerScoreFragment).commit();
 
         scoresFragment = new ScoresFragment();
-        //todo voir si obligé ?
+        //todo V0 voir si obligé ?
         Bundle argsscore = new Bundle();
         argsscore.putStringArray(EXTRA,listPlayersName);
         scoresFragment.setArguments(argsscore);
@@ -327,8 +417,10 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
 
     @Override
     public void onDialogNegativeClick(DialogFragment dialog) {
+        isInScoresFragment = true;
+        isFromMainActivity = false;
         settingsGameFragment.saveSettingsPartieAnonyme();
-        //todo voir à enlever
+        //todo V0 voir à enlever
         modeEquipe = ModeEquipe.MODE_EQUIPE_STATIQUE_ANONYME;
         ArrayList<Integer> scores = new ArrayList<>();
         scores.add(0);
@@ -358,7 +450,6 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
 
     @Override
     public void onScoreChangePreneur(int score1,int score2) {
-        //todo voir pour les autres valeurs à déclarer dès le début
         isInScoresFragment = true;
         isFromMainActivity = true;
         currentDistrib = playerScoreFragment.currentDistrib.getNomJoueur();
@@ -457,7 +548,7 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
             transaction.replace(R.id.fl_fragment_name_score, playerScoreFragment).commit();
 
             scoresFragment = new ScoresFragment();
-            //todo voir si obligé ?
+            //todo V0 voir si obligé ?
             Bundle argsscore = new Bundle();
             argsscore.putStringArray(EXTRA,listPlayersName);
             scoresFragment.setArguments(argsscore);
@@ -466,6 +557,7 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
 
         }else if(currentPartie.getType().getModeEquipe().equals(ModeEquipe.MODE_EQUIPE_STATIQUE_ANONYME.toString())){
 
+            //todo V0 vérifier si le score déclaré ne marcherait pas
             ArrayList<Integer> scores = new ArrayList<>();
             scores.add(0);
             scores.add(0);
@@ -613,7 +705,7 @@ public class MainActivity extends AppCompatActivity implements SettingsGameFragm
 
     }
 
-    //todo ajouter les heures et minutes
+    //todo V0 ajouter les heures et minutes
     public String aujourdhui() {
         final Date date = new Date();
         return new SimpleDateFormat("dd-MM-yyyy").format(date);

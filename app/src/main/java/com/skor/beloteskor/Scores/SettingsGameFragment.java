@@ -52,12 +52,12 @@ public class SettingsGameFragment extends Fragment {
     private String[] listPlayers;
     private SensJeu sensJeu;
 
-    //Todo virer dès que test viré
+    //Todo V0 virer dès que test viré
     private static String TAG = "coucou";
 
 
 
-//todo penser à faire des méthodes pour enlever les quantités énormes de codes plus loin
+//todo V1a penser à faire des méthodes pour enlever les quantités énormes de codes plus loin
                              //CONSTRUCTEURS
 
 
@@ -93,7 +93,7 @@ public class SettingsGameFragment extends Fragment {
         return view;
     }
 
-// todo A voir si pas dans le OncreateView
+// todo V0 A voir si pas dans le OncreateView
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -292,8 +292,8 @@ public class SettingsGameFragment extends Fragment {
             }
         });
 
-        //todo gérer le fait d'obliger à valider l'un des deux (touche DOne)
-        //todo limiter les nombres en grandeur à l'intérieur
+        //todo V1 gérer le fait d'obliger à valider l'un des deux (touche DONE)
+        //todo V1 limiter les nombres en grandeur à l'intérieur
 
         setListenerCheckedTo4ToggleButton(distribYouBtn,distribYourPartnerBtn,distribLeftBtn,distribRightBtn);
         setListenerCheckedTo4ToggleButton(distribYourPartnerBtn,distribYouBtn,distribLeftBtn,distribRightBtn);
@@ -334,7 +334,7 @@ public class SettingsGameFragment extends Fragment {
 
                 if(hasFocus){
                     mainTil.setBackgroundColor(getResources().getColor(R.color.color_accent2));
-                    //todo mettre une ressource pour les alphas
+                    //todo V0 mettre une ressource pour les alphas
                     mainTil.setAlpha(1.0f);
                     secondTil.setBackgroundColor(getResources().getColor(R.color.colorbuttonfalse));
                     secondTil.setAlpha(0.3f);
@@ -455,9 +455,11 @@ public class SettingsGameFragment extends Fragment {
 
         MainActivity.beloteSkorDb.partieDao().insertPartie(partie);
 
+
+
         //TEST
 
-        //todo virer le test dès que implémenter ailleurs
+        //todo V0 virer le test dès que implémenter ailleurs
 
         Partie lastPartie = MainActivity.beloteSkorDb.partieDao().getLastPartie();
 
@@ -490,13 +492,11 @@ public class SettingsGameFragment extends Fragment {
                 + newligne + "joueurs : " + lastJoueur1EqA + ", "  + lastJoueur2EqA + ", " + lastJoueur1EqB + ", " + lastJoueur2EqB + newligne + "premier distributeur : " + lastNomPremierDistrib + newligne + "Sens Jeu : "
                 + lastSensJeu + newligne + "lastScoreEqA : " + lastScoreEquipeA + newligne + "lastScoreEquipeB : " + lastScoreEquipeB + newligne + "statut partie : " + lastPartieterm);
 
-
-
     }
-    //todo voir pour faire des asynctasks pour les settings pour éviter le thread main (trop long au départ)
+    //todo V1a voir pour faire des asynctasks pour les settings pour éviter le thread main (trop long au départ)
 
     private void saveSettings(){
-        //todo voir les simplifications pour joueur et player, cela semble redondant
+        //todo V1a voir les simplifications pour joueur et player, cela semble redondant
         //Joueurs
 
         Joueur joueur1 = new Joueur(player1);
@@ -561,7 +561,7 @@ public class SettingsGameFragment extends Fragment {
 
         //TEST
 
-        //todo virer le test dès que implémenter ailleurs
+        //todo V0 virer le test dès que implémenter ailleurs
 
         Partie lastPartie = MainActivity.beloteSkorDb.partieDao().getLastPartie();
 

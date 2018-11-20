@@ -27,7 +27,7 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerViewHolder> {
         this.joueurs=joueurs;
     }
 
-    //todo ajouter un plus dans la carte pour avoir plus de stats sur le joueur (nb donnes J, G, Preneurs, Couleur préféré, type de jeu préféré, partenaire privilégié, profil du joueur
+    //todo V1 ajouter un plus dans la carte pour avoir plus de stats sur le joueur (nb donnes J, G, Preneurs, Couleur préféré, type de jeu préféré, partenaire privilégié, profil du joueur
 
     @Override
     public PlayerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

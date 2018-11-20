@@ -36,7 +36,6 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
 
     private List<Donne> donnes;
     private Donne currentDonne;
-    //todo voir si isexpanded est nécessairement une liste ? le recyclerview le gère peut être ?
     private List<Boolean> isExpanded = new ArrayList<>();
     private List<Boolean> isPreneurChecked = new ArrayList<>();
     private List<Boolean> isScoreModified = new ArrayList<>();
@@ -88,14 +87,14 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
     @Override
     public void onBindViewHolder(final DonneViewHolder holder, final int position) {
 
-        //todo voir comment le recycler view se place toujours à la fin (dernier item)
+        //todo V1 voir comment le recycler view se place toujours à la fin (dernier item)
         currentDonne = donnes.get(position);
         scoreA = currentDonne.getScore1();
         scoreB = currentDonne.getScore2();
 
         Log.i(TAG, "onBindViewHolder: "+ scoreA);
 
-        //todo vérifier que le number picker a été utilisé et ne pas valider juste une belote par exemple
+        //todo V0 vérifier que le number picker a été utilisé et ne pas valider juste une belote par exemple
 
 
        /* Log.i(TAG, "onBindViewHolder: " + position);
@@ -109,7 +108,7 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
         holder.setCardViewAnnoncesBtnGone();
 
         //get the players with an interface
-        //todo à voir avec la bdd pour les players
+        //todo V1a à voir avec la bdd pour les players
         getPlayers();
 
         // Get the application context
@@ -159,9 +158,7 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
         holder.setScoreEquipeB(scoreB);
         holder.setNumDonne(position + 1);
 
-        //todo revoir gestion de l'ouverture initiale
-        //todo le parent reste vert lorsque on add une nelle donne et la précédente non fermée
-        //todo important cela ne modifie pas que l'UI mais aussi le score final
+        //todo V1 revoir gestion de l'ouverture initiale
 
         /*if (position == donnes.size()-1) {
             holder.getCardViewDonne().performClick();
@@ -175,8 +172,7 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
 
     private void initCardViewChild(final DonneViewHolder holder, final int position) {
 
-
-        //todo faire une demande de modif à l'utilisateur pour éviter les erreurs
+        //todo V1 faire une demande de modif à l'utilisateur pour éviter les erreurs
 
         holder.getCardViewDonne().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -204,7 +200,6 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
                         holder.setGestionScoreVisible();
                         holder.getCardviewAnnoncesBtn().setVisibility(View.VISIBLE);
 
-                        //todo voir pour simplifier cela car on veut la carte avec Annonces ouverte aussi
                         if(holder.getAnnonces_team1().isChecked()||holder.getAnnonces_team2().isChecked()){
                             holder.getCardViewAnnonces().setVisibility(View.VISIBLE);
 
@@ -327,6 +322,8 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
                     }else if(lastModeEquipe.equals(ModeEquipe.MODE_EQUIPE_STATIQUE_ANONYME.toString())){ displayTotalScoreAnonyme();}
 
                     testFinPartie();
+
+                    Log.i(TAG, "onClick: "+lastPartie.getType().getModeEquipe());
                 }
             }
         });
@@ -418,14 +415,12 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
 
     }
 
-    //todo voir pour déplacer ses méthodes dans ViewHolder
-    //todo voir pour mettre le number picker du côté opposé au preneur
+    //todo V1 voir pour mettre le number picker du côté opposé au preneur
     private void initNumberPicker(final DonneViewHolder holder, final int position) {
         //gestion du detector
         detector = new GestureDetector(mContext, new GestureDetector.OnGestureListener() {
             @Override
             public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-                //todo gérer le fling gauche et droite pour envoyer le numberpicker et le fling vertical pour selection numberpicker. peut être dupliquer dans le scroll
 
                 if (e2.getX() < e1.getX() && Math.abs(e2.getY() - e1.getY()) < 100) {
                     numberPickerposition = 1; //Left
@@ -442,7 +437,7 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
                 } else if (Math.abs(e2.getY() - e1.getY()) > 100) {
                     holder.getNumberPicker().setOnTouchListener(null);
                 }
-                //todo voir pour numberpicker au centre
+                //todo V1 voir pour numberpicker au centre
                 return true;
             }
             @Override
@@ -457,7 +452,7 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
             public void onLongPress(MotionEvent e) { }
         });
 
-        //todo gerer le perform Click
+        //todo V1a gerer le perform Click
         //Gestion du mouvement OnFling
 
         holder.getNumberPicker().setOnTouchListener(new View.OnTouchListener() {
@@ -470,7 +465,7 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
             }
         });
 
-        //todo voir si intéressant de gérer le capot à 0 plutot que touche
+        //todo V1 voir si intéressant de gérer le capot à 0 plutot que touche
         holder.getNumberPicker().setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
@@ -503,7 +498,7 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
                 isPreneurChecked.set(position,true);
 
                 if(lastTypeAnnonce.equals(TypeAnnonce.SANS_ANNONCE.toString())){
-                    //todo voir ce if utile ainsi que le else
+                    //todo V0 voir ce if utile ainsi que le else
                     //Log.i(TAG, "onBindViewHolder: coucou adapter");
 
                 }else if(lastTypeAnnonce.equals(TypeAnnonce.AVEC_ANNONCES.toString())){
@@ -611,7 +606,7 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-                //todo voir pour éviter un gros bouton sur Carré
+                //todo V1 voir pour éviter un gros bouton sur Carré
                 mainTb.setBackgroundResource(R.drawable.radius_button_accent);
 
                 if(mainTb.isChecked()){
@@ -661,7 +656,7 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
 
         annoncesDonne=new AnnoncesDonne(equipeNull,0,0,0,0,false,false);
 
-        //todo vérifier inutilité de cette initialisation
+        //todo V0 vérifier inutilité de cette initialisation
         scoreA=0;
         scoreB=0;
         isScoreModified.add(false);
@@ -747,7 +742,7 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
 
 
 
-        //todo faire gestion du litige si nécessaire
+        //todo V1 faire gestion du litige si nécessaire
         if(scoreA<scoreB && (preneur.getNomJoueur().equals(holder.getPlayer1Name().getText().toString())||preneur.getNomJoueur().equals(holder.getPlayer2Name().getText().toString()))){
 
             scoreA=scoreBelote1;
@@ -761,7 +756,7 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
 
     }
 
-    //todo voir si simplifiable le notify avec le ViewModel
+    //todo V1a voir si simplifiable le notify avec le ViewModel
     public void setNotifyDonneAdapter(List<Donne> donnes){
 
         this.donnes = donnes;
@@ -781,7 +776,7 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
 
          }else if(lastModeEquipe.equals(ModeEquipe.MODE_EQUIPE_STATIQUE_ANONYME.toString())){
 
-//todo voir comment repasser par les strings pour les noms
+//todo V1a voir comment repasser par les strings pour les noms
             String[] listPlayers = {"Us1","Us2","You1","You2"};
 
             return listPlayers;

@@ -38,7 +38,7 @@ public class DonneViewHolder extends RecyclerView.ViewHolder  {
 
     private static final String TAG="coucou";
 
-    //todo penser à mettre des élévation sur btn et cardview
+    //todo V0 penser à mettre des élévation sur btn et cardview
 
     public DonneViewHolder(View itemView) {
         super(itemView);

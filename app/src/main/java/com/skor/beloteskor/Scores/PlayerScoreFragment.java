@@ -36,7 +36,7 @@ public class PlayerScoreFragment extends Fragment {
     private String player1="", player2="", player3="", player4="";
     private Boolean isInScoreFragment = false;
     private Boolean isFromMainActivity = false;
-    //todo mettre les public en getter et setter
+    //todo V0 mettre les public en getter et setter
     public ArrayList<Integer> scores = new ArrayList<>();
     private int scoreTotalEquipe1,scoreTotalEquipe2;
     public static final String EXTRA="com.skor.beloteskor.MESSAGE";
@@ -105,10 +105,9 @@ public class PlayerScoreFragment extends Fragment {
         View view = inflater.inflate(R.layout.name_score_players, container, false);
 
         //JOUEURS
-        //todo penser à gérer le format des noms (longueur...)
-        //todo penser à gérer les doublons dans les 4 noms
-        //todo penser à un autofill pour les noms déjà connus
-        //todo penser à ajouter le distributeur courant
+        //todo V1 penser à gérer le format des noms (longueur...)
+        //todo V1 penser à gérer les doublons dans les 4 noms
+        //todo V1 penser à un autofill pour les noms déjà connus
 
         //Noms des joueurs et Scores
         yourName = view.findViewById(R.id.et_you);
@@ -123,7 +122,7 @@ public class PlayerScoreFragment extends Fragment {
         distribBtn.setVisibility(View.INVISIBLE);
 
 
-        //todo mettre un autocomplete à partir de la base des joueurs - A retirer dès que test fini
+        //todo V0 mettre un autocomplete à partir de la base des joueurs - A retirer dès que test fini
         joueursAutoComplete();
         setListenerTextName();
 
@@ -207,7 +206,7 @@ public class PlayerScoreFragment extends Fragment {
 
 
     }
-    //todo a virer dès que les test sont terminés
+    //todo V0 a virer dès que les test sont terminés
     private void joueursAutoComplete() {
 
         player1 = "Alfred";

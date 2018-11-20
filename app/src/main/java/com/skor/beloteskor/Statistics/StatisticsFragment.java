@@ -53,7 +53,7 @@ public class StatisticsFragment extends Fragment {
 
     }
 
-//todo gérer le cas de départ "pas de parties
+//todo V0 gérer le cas de départ "pas de parties
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -73,7 +73,6 @@ public class StatisticsFragment extends Fragment {
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onStatisticsFragmentInteraction();
@@ -90,7 +89,6 @@ public class StatisticsFragment extends Fragment {
 
 
     public interface OnStatisticsFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onStatisticsFragmentInteraction();
     }
 

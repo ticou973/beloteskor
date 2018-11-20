@@ -26,6 +26,8 @@ import com.skor.beloteskor.Model_DB.UtilsDb.TypeDePartie;
 import com.skor.beloteskor.R;
 import com.skor.beloteskor.Scores.Adapters.DonneAdapter;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 
@@ -43,7 +45,6 @@ public class ScoresFragment extends Fragment {
 
     private static String TAG = "coucou";
 
-    //todo vérifier si nécessaire à ce niveau ou dans le init
     //variables de parties
 
     private Partie lastPartie;
@@ -92,7 +93,7 @@ public class ScoresFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_scores, container, false);
 
         //Recycler View
-        //todo voir pour additemdecoration pour les recyclerview
+        //todo V1 voir pour additemdecoration pour les recyclerview
         scoreRecyclerView = view.findViewById(R.id.recycler_view_scores);
         layoutManager = new LinearLayoutManager(context);
         scoreRecyclerView.setLayoutManager(layoutManager);
@@ -103,7 +104,7 @@ public class ScoresFragment extends Fragment {
         //Button add donnes
         addDonneBtn = view.findViewById(R.id.donne_add_btn);
 
-        //todo voir pour insérer le cas de la mauvaise donne qui donne 162
+        //todo V1 voir pour insérer le cas de la mauvaise donne qui donne 162
         addDonneBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,8 +120,6 @@ public class ScoresFragment extends Fragment {
         mListener = null;
     }
 
-
-    //Todo à mettre dans la main activity avec l'aide du listener, idem pour le bouton d'ajout d'une mène ce qui permettra de rajouter un élément à la liste ?
 
    public interface OnScoresFragmentInteractionListener {
         void onScoresDonneNullChoice();
@@ -169,40 +168,21 @@ public class ScoresFragment extends Fragment {
 
     public void testFinPartie() {
 
-        /*if(lastTypeJeu.equals(TypeJeu.DONNES.toString())){
-
-            if(numCurrentDonne<lastNbDonnes){
-                createDonne();
-            }else{
-                addDonneBtn.setVisibility(View.INVISIBLE);
-
-                showDialogWinner();
-                lastPartie.setPartieterminee(true);
-                MainActivity.beloteSkorDb.partieDao().updatePartie(lastPartie);
-            }
-
-        }else if (lastTypeJeu.equals(TypeJeu.POINTS.toString())){
-
-            if(scoreTotalEquipe1<lastNbPoints&&scoreTotalEquipe2<lastNbPoints){
-                createDonne();
-            }else{
-                addDonneBtn.setVisibility(View.INVISIBLE);
-                showDialogWinner();
-                lastPartie.setPartieterminee(true);
-                MainActivity.beloteSkorDb.partieDao().updatePartie(lastPartie);
-            }
-        }*/
         numCurrentDonne=donnes.size();
 
         if((lastNbDonnes!=0 && numCurrentDonne>=lastNbDonnes)||(lastNbPoints!=0 && scoreTotalEquipe1>=lastNbPoints)||(lastNbPoints!=0 && scoreTotalEquipe2>=lastNbPoints)){
 
-            //todo gérer le passage de donner pour le dialog fragment
-            //todo gérer le cas d'égalité des joueurs
+            //todo V0 gérer le passage de winner pour le dialog fragment
+            //todo V0 gérer le cas d'égalité des joueurs
             addDonneBtn.setVisibility(View.INVISIBLE);
             showDialogWinner();
             lastPartie.setPartieterminee(true);
-            MainActivity.beloteSkorDb.partieDao().updatePartie(lastPartie);
         }
+        lastPartie.setScoreEquipeA(scoreTotalEquipe1);
+        lastPartie.setScoreEquipeB(scoreTotalEquipe2);
+        lastPartie.setTimeStampPartie(aujourdhui());
+
+        MainActivity.beloteSkorDb.partieDao().updatePartie(lastPartie);
 
     }
 
@@ -304,7 +284,7 @@ public class ScoresFragment extends Fragment {
         donnes = MainActivity.beloteSkorDb.donneDao().getAllDonnesPartiesCourantes(lastPartie.getPartieId());
 
 
-        //todo retirer après validation de l'update (test)
+        //todo V0 retirer après validation de l'update (test)
         firstDonne=MainActivity.beloteSkorDb.donneDao().getDonnebyNumDonne(numDonne,lastPartie.getPartieId());
 
        Log.i(TAG, "upDateCurrentDonneB: " + firstDonne.getScore1() + " " + firstDonne.getScore2() + " " + firstDonne.getPreneur().getNomJoueur()+ " " +
@@ -324,10 +304,10 @@ public class ScoresFragment extends Fragment {
     }
 
 
-    //todo virer après test
+    //todo V0 virer après test
     private void testTablePartie(){
 
-        //todo inutile à virer quand bd sera opérationnelle
+        //todo V0 inutile à virer quand bd sera opérationnelle
 
         lastTypePartie = lastPartie.getType();
         lastTable = lastPartie.getTable();
@@ -355,7 +335,7 @@ public class ScoresFragment extends Fragment {
 
     private void displayLogTestTablePartie() {
 
-        //todo à retirer en production
+        //todo V0 à retirer en production
         String newligne=System.getProperty("line.separator");
 
         Log.i(TAG, newligne + lastPartie.getPartieId() + newligne + "type jeu : " + lastTypeJeu + newligne + "type Annonce : " + lastTypeAnnonce + newligne + "Mode Equipe : " + lastModeEquipe + newligne +  "Nb Points : " + lastNbPoints + newligne + "Nb Donnes : " + lastNbDonnes
@@ -379,5 +359,10 @@ public class ScoresFragment extends Fragment {
 
     public void setScoreTotalEquipe2(int scoreTotalEquipe2) {
         this.scoreTotalEquipe2 = scoreTotalEquipe2;
+    }
+
+    public String aujourdhui() {
+        final Date date = new Date();
+        return new SimpleDateFormat("dd-MM-yyyy").format(date);
     }
 }

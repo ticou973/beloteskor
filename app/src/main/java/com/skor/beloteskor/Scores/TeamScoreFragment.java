@@ -68,7 +68,6 @@ public class TeamScoreFragment extends Fragment {
     }
 
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed() {
         if (mListener != null) {
             mListener.onTeamFragmentInteraction();
@@ -94,7 +93,6 @@ public class TeamScoreFragment extends Fragment {
 
 
     public interface OnTeamFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onTeamFragmentInteraction();
     }
 }

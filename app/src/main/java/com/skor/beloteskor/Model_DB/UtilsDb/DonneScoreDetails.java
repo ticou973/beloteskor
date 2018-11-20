@@ -19,7 +19,7 @@ public class DonneScoreDetails {
         this.scoreDonneEquipeB = scoreDonneEquipeB;
     }
 
-    //todo voir si utile
+    //todo V1a voir si utile
     @Override
     public String toString() {
         return String.valueOf(getScoreDonneEquipeA()) + " " + String.valueOf(getScoreDonneEquipeB());
