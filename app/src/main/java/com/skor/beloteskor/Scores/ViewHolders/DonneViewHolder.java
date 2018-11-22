@@ -100,7 +100,7 @@ public class DonneViewHolder extends RecyclerView.ViewHolder  {
         //Données
         equipeA= new Equipe("EquipeA");
         equipeB=new Equipe("EquipeB");
-        equipeNull=new Equipe("Noannnonces");
+        equipeNull=new Equipe("NoAnnonces");
         annoncesDonne = new AnnoncesDonne(equipeNull,0,0,0,0,false,false);
     }
 
@@ -403,6 +403,7 @@ public class DonneViewHolder extends RecyclerView.ViewHolder  {
     }
 
     public void setAnnoncesBtnVisible(){
+
 
         annonces_team1.setVisibility(View.VISIBLE);
         annonces_team2.setVisibility(View.VISIBLE);

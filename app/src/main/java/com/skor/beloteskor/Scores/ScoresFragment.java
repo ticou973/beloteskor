@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -263,11 +262,11 @@ public class ScoresFragment extends Fragment {
         capot = donneAdapter.getCapot();
         annoncesDonne = donneAdapter.getAnnoncesDonne();
 
-      Log.i(TAG, "upDateCurrentDonneA: " + scoreA + " " + scoreB + " " + currentPreneur.getNomJoueur()+ " " +
+/*      Log.i(TAG, "upDateCurrentDonneA: " + scoreA + " " + scoreB + " " + currentPreneur.getNomJoueur()+ " " +
                 currentCouleur + " " + belote.getNomEquipe() + " "+ capot.getNomEquipe() + " "+ numDonne+ " "+annoncesDonne.getEquipeAnnonces().getNomEquipe()
                 + " "+ annoncesDonne.getNbTierce() + " " + annoncesDonne.getNbCinquante()+" "+
                 annoncesDonne.getNbCent()+" "+ annoncesDonne.getNbCarreAutre()+" "+
-                annoncesDonne.isCarreValet()+" "+annoncesDonne.isCarre9());
+                annoncesDonne.isCarreValet()+" "+annoncesDonne.isCarre9());*/
 
         currentDonne = MainActivity.beloteSkorDb.donneDao().getDonnebyNumDonne(numDonne,lastPartie.getPartieId());
 
@@ -287,11 +286,11 @@ public class ScoresFragment extends Fragment {
         //todo V0 retirer après validation de l'update (test)
         firstDonne=MainActivity.beloteSkorDb.donneDao().getDonnebyNumDonne(numDonne,lastPartie.getPartieId());
 
-      Log.i(TAG, "upDateCurrentDonneB: " + firstDonne.getScore1() + " " + firstDonne.getScore2() + " " + firstDonne.getPreneur().getNomJoueur()+ " " +
+/*      Log.i(TAG, "upDateCurrentDonneB: " + firstDonne.getScore1() + " " + firstDonne.getScore2() + " " + firstDonne.getPreneur().getNomJoueur()+ " " +
         firstDonne.getCouleur() + " " + firstDonne.getBelote().getNomEquipe() + " "+ firstDonne.getCapot().getNomEquipe()+ " "+ firstDonne.getNumDonne()+ " "+firstDonne.getAnnoncesDonne().getEquipeAnnonces().getNomEquipe()
         + " "+ firstDonne.getAnnoncesDonne().getNbTierce() + " " + firstDonne.getAnnoncesDonne().getNbCinquante()+" "+
         firstDonne.getAnnoncesDonne().getNbCent()+" "+ firstDonne.getAnnoncesDonne().getNbCarreAutre()+" "+
-        firstDonne.getAnnoncesDonne().isCarreValet()+" "+firstDonne.getAnnoncesDonne().isCarre9());
+        firstDonne.getAnnoncesDonne().isCarreValet()+" "+firstDonne.getAnnoncesDonne().isCarre9());*/
 
         donneAdapter.setNotifyDonneAdapter(donnes);
     }

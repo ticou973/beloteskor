@@ -92,11 +92,12 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
         scoreA = currentDonne.getScore1();
         scoreB = currentDonne.getScore2();
 
-        Log.i(TAG, "onBindViewHolder : Preneur"+currentDonne.getPreneur());
+        //Log.i(TAG, "onBindViewHolder : Preneur"+currentDonne.getPreneur());
 
         //todo V0 vérifier que le number picker a été utilisé et ne pas valider juste une belote par exemple
 
 
+        Log.i(TAG, "onBindViewHolder: ");
         //init donnes et types de parties
         holder.setGestionScoreGone();
         holder.setCardViewAnnoncesGone();
@@ -160,179 +161,6 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
         holder.getCardViewDonneDetails().setVisibility(View.GONE);
     }
 
-    private void initUI(DonneViewHolder holder, int position) {
-
-        currentDonne=donnes.get(position);
-
-        if(currentDonne.getPreneur()!=null){
-            setUIPreneur(holder);
-
-            if(currentDonne.getCouleur()!=null) {
-                setUICouleur(holder);
-            }
-
-            if(currentDonne.getBelote()!=null){
-                setUIBelote(holder);
-            }
-
-            if(currentDonne.getCapot()!=null) {
-                 setUICapot(holder);
-            }
-
-            if(currentDonne.getAnnoncesDonne()!=null) {
-                setUIAnnonces(holder);
-
-                if(currentDonne.getAnnoncesDonne().getNbTierce()!=0){
-                    setUITierce(holder);
-                }
-
-                if(currentDonne.getAnnoncesDonne().getNbCinquante()!=0){
-                    setUICinquante(holder);
-                }
-
-                if(currentDonne.getAnnoncesDonne().getNbCent()!=0){
-                    setUICent(holder);
-                }
-
-                if(currentDonne.getAnnoncesDonne().getNbCarreAutre()!=0||currentDonne.getAnnoncesDonne().isCarre9()||currentDonne.getAnnoncesDonne().isCarreValet()){
-
-                    setUICarre(holder);
-                }
-            }
-
-        }else{
-
-            //todo V0 enlever dès que l'on voit que cela marche
-
-        }
-
-    }
-
-    private void setUICarre(DonneViewHolder holder) {
-
-        holder.setCardViewCarreVisible();
-
-        if(currentDonne.getAnnoncesDonne().getEquipeAnnonces().getNomEquipe().equals("EquipeA")){
-
-            holder.setToggleGone(holder.getCarre_team2(),holder.getCarre_9_team2(),holder.getCarre_valet_team2());
-            holder.setTextViewGone(holder.getNbCarre_autre_team2(),holder.getNbTierce_team2(),holder.getNbCinquante_team2(),holder.getNbCent_team2());
-            holder.setButtonGone(holder.getCarre_autre_team2(),holder.getTierce_team2(),holder.getCinquante_team2(),holder.getCent_team2());
-
-        }
-        if(currentDonne.getAnnoncesDonne().getEquipeAnnonces().getNomEquipe().equals("EquipeB")){
-
-            holder.setToggleGone(holder.getCarre_team1(),holder.getCarre_9_team1(),holder.getCarre_valet_team1());
-            holder.setTextViewGone(holder.getNbCarre_autre_team1(),holder.getNbTierce_team1(),holder.getNbCinquante_team1(),holder.getNbCent_team1());
-            holder.setButtonGone(holder.getCarre_autre_team1(),holder.getTierce_team1(),holder.getCinquante_team1(),holder.getCent_team1());
-        }
-
-
-
-        if(currentDonne.getAnnoncesDonne().getNbCarreAutre()!=0){
-
-            if(currentDonne.getAnnoncesDonne().getEquipeAnnonces().getNomEquipe().equals("EquipeA")){
-                holder.setColorAnnonce(holder.getCarre_autre_team1(),true);
-                holder.setNbCarre_autre_team1(currentDonne.getAnnoncesDonne().getNbCarreAutre());
-            }
-            if(currentDonne.getAnnoncesDonne().getEquipeAnnonces().getNomEquipe().equals("EquipeB")){
-                holder.setColorAnnonce(holder.getCarre_autre_team2(),true);
-                holder.setNbCarre_autre_team2(currentDonne.getAnnoncesDonne().getNbCarreAutre());
-            }
-        }
-
-        if(currentDonne.getAnnoncesDonne().isCarreValet()){
-
-            if(currentDonne.getAnnoncesDonne().getEquipeAnnonces().getNomEquipe().equals("EquipeA")){ holder.getCarre_valet_team1().setChecked(true); }
-            if(currentDonne.getAnnoncesDonne().getEquipeAnnonces().getNomEquipe().equals("EquipeB")){holder.getCarre_valet_team2().setChecked(true); }
-        }
-
-        if(currentDonne.getAnnoncesDonne().isCarre9()){
-            if(currentDonne.getAnnoncesDonne().getEquipeAnnonces().getNomEquipe().equals("EquipeA")){ holder.getCarre_9_team1().setChecked(true); }
-            if(currentDonne.getAnnoncesDonne().getEquipeAnnonces().getNomEquipe().equals("EquipeB")){holder.getCarre_9_team2().setChecked(true); }
-
-        }
-
-    }
-
-    private void setUICent(DonneViewHolder holder) {
-
-        if(currentDonne.getAnnoncesDonne().getEquipeAnnonces().getNomEquipe().equals("EquipeA")){
-            holder.setColorAnnonce(holder.getCent_team1(),true);
-            holder.setNbCent_team1(currentDonne.getAnnoncesDonne().getNbCent());
-        }
-        if(currentDonne.getAnnoncesDonne().getEquipeAnnonces().getNomEquipe().equals("EquipeB")){
-            holder.setColorAnnonce(holder.getCent_team2(),true);
-            holder.setNbCent_team2(currentDonne.getAnnoncesDonne().getNbCent());
-        }
-
-    }
-
-    private void setUICinquante(DonneViewHolder holder) {
-
-        if(currentDonne.getAnnoncesDonne().getEquipeAnnonces().getNomEquipe().equals("EquipeA")){
-            holder.setColorAnnonce(holder.getCinquante_team1(),true);
-            holder.setNbCinquante_team1(currentDonne.getAnnoncesDonne().getNbCinquante());
-        }
-        if(currentDonne.getAnnoncesDonne().getEquipeAnnonces().getNomEquipe().equals("EquipeB")){
-            holder.setColorAnnonce(holder.getCinquante_team2(),true);
-            holder.setNbCinquante_team2(currentDonne.getAnnoncesDonne().getNbCinquante());
-        }
-
-    }
-
-    private void setUITierce(DonneViewHolder holder) {
-
-        if(currentDonne.getAnnoncesDonne().getEquipeAnnonces().getNomEquipe().equals("EquipeA")){
-            holder.setColorAnnonce(holder.getTierce_team1(),true);
-            holder.setNbTierce_team1(currentDonne.getAnnoncesDonne().getNbTierce());
-        }
-        if(currentDonne.getAnnoncesDonne().getEquipeAnnonces().getNomEquipe().equals("EquipeB")){
-            holder.setColorAnnonce(holder.getTierce_team2(),true);
-            holder.setNbTierce_team2(currentDonne.getAnnoncesDonne().getNbTierce());
-        }
-
-
-    }
-
-    private void setUIAnnonces(DonneViewHolder holder) {
-        holder.setCardViewAnnoncesVisible();
-        holder.setCardViewAnnoncesBtnVisible();
-        if(currentDonne.getAnnoncesDonne().getEquipeAnnonces().getNomEquipe().equals("EquipeA")){ holder.getAnnonces_team1().setChecked(true); }
-        if(currentDonne.getAnnoncesDonne().getEquipeAnnonces().getNomEquipe().equals("EquipeB")){ holder.getAnnonces_team2().setChecked(true); }
-    }
-
-    private void setUICapot(DonneViewHolder holder) {
-        if(currentDonne.getCapot().getNomEquipe().equals("EquipeA")){ holder.getCapot_team1().setChecked(true); }
-        if(currentDonne.getCapot().getNomEquipe().equals("EquipeB")){ holder.getCapot_team2().setChecked(true); }
-
-    }
-
-    private void setUIBelote(DonneViewHolder holder) {
-
-        if(currentDonne.getBelote().getNomEquipe().equals("EquipeA")){ holder.getBelote_team1().setChecked(true); }
-        if(currentDonne.getBelote().getNomEquipe().equals("EquipeB")){ holder.getBelote_team2().setChecked(true); }
-
-    }
-
-    private void setUICouleur(DonneViewHolder holder) {
-        
-        if(currentDonne.getCouleur().equals(Couleur.CARREAU)){ holder.setColorPreneurCouleur(holder.getPreneur_carreau(),true); }
-        if(currentDonne.getCouleur().equals(Couleur.COEUR)){ holder.setColorPreneurCouleur(holder.getPreneur_coeur(),true); }
-        if(currentDonne.getCouleur().equals(Couleur.TREFLE)){ holder.setColorPreneurCouleur(holder.getPreneur_trefle(),true); }
-        if(currentDonne.getCouleur().equals(Couleur.PIQUE)){ holder.setColorPreneurCouleur(holder.getPreneur_pique(),true); }
-    }
-
-    private void setUIPreneur(DonneViewHolder holder) {
-
-        if(currentDonne.getPreneur().getNomJoueur().equals(getPlayers()[0])){ holder.setColorPlayerPreneur(holder.getPlayer1Name(),true); }
-        if(currentDonne.getPreneur().getNomJoueur().equals(getPlayers()[1])){ holder.setColorPlayerPreneur(holder.getPlayer2Name(),true); }
-        if(currentDonne.getPreneur().getNomJoueur().equals(getPlayers()[2])){ holder.setColorPlayerPreneur(holder.getPlayer3Name(),true); }
-        if(currentDonne.getPreneur().getNomJoueur().equals(getPlayers()[3])){ holder.setColorPlayerPreneur(holder.getPlayer4Name(),true); }
-
-        holder.setGestionScoreVisible();
-        holder.setAnnoncesBtnVisible();
-
-    }
 
     private void initCardViewChild(final DonneViewHolder holder, final int position) {
 
@@ -358,7 +186,7 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
 
                     initUI(holder,position);
 
-                    if(isPreneurChecked.get(position)){
+                    /*if(isPreneurChecked.get(position)){
                         holder.setGestionScoreVisible();
                         holder.getCardviewAnnoncesBtn().setVisibility(View.VISIBLE);
 
@@ -370,7 +198,7 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
                                 holder.getCardViewCarre().setVisibility(View.VISIBLE);
                             }
                         }
-                    }
+                    }*/
 
                     //Récupération des noms de joueurs
                     holder.setPlayer1Name(getPlayers()[0]);
@@ -437,8 +265,6 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
 
                     annoncesDonne=holder.getAnnoncesDonne();
 
-                    //Log.i(TAG, "onClick:B "+position+isExpanded.get(position)+isPreneurChecked.get(position));
-
                    if(annoncesDonne.getEquipeAnnonces().getNomEquipe()=="EquipeA"){
                         annoncesDonne.setEquipeAnnonces(equipeA);
                         annoncesDonne.setNbTierce(Integer.parseInt(holder.getNbTierce_team1().getText().toString()));
@@ -483,11 +309,228 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
                     }else if(lastModeEquipe.equals(ModeEquipe.MODE_EQUIPE_STATIQUE_ANONYME.toString())){ displayTotalScoreAnonyme();}
 
                     testFinPartie();
-
-                    //Log.i(TAG, "onClick: "+lastPartie.getType().getModeEquipe());
                 }
             }
         });
+    }
+
+    private void initData() {
+        //Appel de la dernière partie
+        lastPartie = MainActivity.beloteSkorDb.partieDao().getLastPartie();
+
+        lastModeEquipe=lastPartie.getType().getModeEquipe();
+
+        lastTypeAnnonce=lastPartie.getType().getTypeAnnonce();
+
+        equipeA = new Equipe("EquipeA");
+        equipeB = new Equipe("EquipeB");
+        equipeNull = new Equipe("NoAnnonces");
+
+        annoncesDonne=new AnnoncesDonne(equipeNull,0,0,0,0,false,false);
+
+        //todo V0 vérifier inutilité de cette initialisation
+        scoreA=0;
+        scoreB=0;
+        isScoreModified.add(false);
+        isPreneurChecked.add(false);
+        isExpanded.add(false);
+        Log.i(TAG, "initData: ");
+
+    }
+
+    private void initUI(DonneViewHolder holder, int position) {
+
+        currentDonne=donnes.get(position);
+        if(currentDonne.getAnnoncesDonne()!=null) {
+            Log.i(TAG, "initUI: " + currentDonne.getAnnoncesDonne().getEquipeAnnonces().getNomEquipe());
+
+        }
+        if(currentDonne.getPreneur()!=null){
+            setUIPreneur(holder);
+
+            if(currentDonne.getCouleur()!=null) { setUICouleur(holder); }
+
+            if(currentDonne.getBelote()!=null){ setUIBelote(holder); }
+
+            if(currentDonne.getCapot()!=null) { setUICapot(holder); }
+
+           
+            if(currentDonne.getAnnoncesDonne()!=null&&!currentDonne.getAnnoncesDonne().getEquipeAnnonces().getNomEquipe().equals("NoAnnonces")) {
+
+                Log.i(TAG, "initUI: annonces"+currentDonne.getAnnoncesDonne().getEquipeAnnonces().getNomEquipe());
+                setUIAnnonces(holder);
+
+                if(currentDonne.getAnnoncesDonne().getNbTierce()!=0){ setUITierce(holder); }
+
+                if(currentDonne.getAnnoncesDonne().getNbCinquante()!=0){ setUICinquante(holder); }
+
+                if(currentDonne.getAnnoncesDonne().getNbCent()!=0){ setUICent(holder); }
+
+                if(currentDonne.getAnnoncesDonne().getNbCarreAutre()!=0||currentDonne.getAnnoncesDonne().isCarre9()||currentDonne.getAnnoncesDonne().isCarreValet()){ setUICarre(holder); }
+            }
+
+        }
+    }
+
+    private void setUICarre(DonneViewHolder holder) {
+
+        holder.setCardViewCarreVisible();
+
+        if(currentDonne.getAnnoncesDonne().getEquipeAnnonces().getNomEquipe().equals("EquipeA")){
+            Log.i(TAG, "setUICarre: ");
+            holder.getCarre_team1().setBackgroundResource(R.drawable.radius_button_accent);
+            holder.getCarre_team1().setChecked(true);
+            holder.setColorBeloteCapot(holder.getCarre_team1(),holder.getCarre_team2(),1.0f,0.3f);
+            holder.setToggleGone(holder.getCarre_team2(),holder.getCarre_9_team2(),holder.getCarre_valet_team2());
+            holder.setTextViewGone(holder.getNbCarre_autre_team2(),holder.getNbTierce_team2(),holder.getNbCinquante_team2(),holder.getNbCent_team2());
+            holder.setButtonGone(holder.getCarre_autre_team2(),holder.getTierce_team2(),holder.getCinquante_team2(),holder.getCent_team2());
+        }
+        if(currentDonne.getAnnoncesDonne().getEquipeAnnonces().getNomEquipe().equals("EquipeB")){
+            holder.getCarre_team2().setBackgroundResource(R.drawable.radius_button_accent);
+            holder.getCarre_team2().setChecked(true);
+            holder.setColorBeloteCapot(holder.getCarre_team2(),holder.getCarre_team1(),1.0f,0.3f);
+            holder.setToggleGone(holder.getCarre_team1(),holder.getCarre_9_team1(),holder.getCarre_valet_team1());
+            holder.setTextViewGone(holder.getNbCarre_autre_team1(),holder.getNbTierce_team1(),holder.getNbCinquante_team1(),holder.getNbCent_team1());
+            holder.setButtonGone(holder.getCarre_autre_team1(),holder.getTierce_team1(),holder.getCinquante_team1(),holder.getCent_team1());
+        }
+
+        if(currentDonne.getAnnoncesDonne().getNbCarreAutre()!=0){
+
+            if(currentDonne.getAnnoncesDonne().getEquipeAnnonces().getNomEquipe().equals("EquipeA")){
+                holder.setColorAnnonce(holder.getCarre_autre_team1(),true);
+                holder.setNbCarre_autre_team1(currentDonne.getAnnoncesDonne().getNbCarreAutre());
+            }
+            if(currentDonne.getAnnoncesDonne().getEquipeAnnonces().getNomEquipe().equals("EquipeB")){
+                holder.setColorAnnonce(holder.getCarre_autre_team2(),true);
+                holder.setNbCarre_autre_team2(currentDonne.getAnnoncesDonne().getNbCarreAutre());
+            }
+        }
+
+        if(currentDonne.getAnnoncesDonne().isCarreValet()){
+            if(currentDonne.getAnnoncesDonne().getEquipeAnnonces().getNomEquipe().equals("EquipeA")){
+                holder.getCarre_valet_team1().setBackgroundResource(R.drawable.radius_button_accent);
+                holder.getCarre_valet_team1().setChecked(true);
+            }
+            if(currentDonne.getAnnoncesDonne().getEquipeAnnonces().getNomEquipe().equals("EquipeB")){
+                holder.getCarre_valet_team2().setBackgroundResource(R.drawable.radius_button_accent);
+                holder.getCarre_valet_team2().setChecked(true);
+            }
+        }
+
+        if(currentDonne.getAnnoncesDonne().isCarre9()){
+            if(currentDonne.getAnnoncesDonne().getEquipeAnnonces().getNomEquipe().equals("EquipeA")){
+                holder.getCarre_9_team1().setBackgroundResource(R.drawable.radius_button_accent);
+                holder.getCarre_9_team1().setChecked(true);
+            }
+            if(currentDonne.getAnnoncesDonne().getEquipeAnnonces().getNomEquipe().equals("EquipeB")){
+                holder.getCarre_9_team2().setBackgroundResource(R.drawable.radius_button_accent);
+                holder.getCarre_9_team2().setChecked(true);
+            }
+        }
+
+    }
+
+    private void setUICent(DonneViewHolder holder) {
+
+        if(currentDonne.getAnnoncesDonne().getEquipeAnnonces().getNomEquipe().equals("EquipeA")){
+            holder.setColorAnnonce(holder.getCent_team1(),true);
+            holder.setNbCent_team1(currentDonne.getAnnoncesDonne().getNbCent());
+        }
+        if(currentDonne.getAnnoncesDonne().getEquipeAnnonces().getNomEquipe().equals("EquipeB")){
+            holder.setColorAnnonce(holder.getCent_team2(),true);
+            holder.setNbCent_team2(currentDonne.getAnnoncesDonne().getNbCent());
+        }
+
+    }
+
+    private void setUICinquante(DonneViewHolder holder) {
+
+        if(currentDonne.getAnnoncesDonne().getEquipeAnnonces().getNomEquipe().equals("EquipeA")){
+            holder.setColorAnnonce(holder.getCinquante_team1(),true);
+            holder.setNbCinquante_team1(currentDonne.getAnnoncesDonne().getNbCinquante());
+        }
+        if(currentDonne.getAnnoncesDonne().getEquipeAnnonces().getNomEquipe().equals("EquipeB")){
+            holder.setColorAnnonce(holder.getCinquante_team2(),true);
+            holder.setNbCinquante_team2(currentDonne.getAnnoncesDonne().getNbCinquante());
+        }
+
+    }
+
+    private void setUITierce(DonneViewHolder holder) {
+
+        if(currentDonne.getAnnoncesDonne().getEquipeAnnonces().getNomEquipe().equals("EquipeA")){
+            holder.setColorAnnonce(holder.getTierce_team1(),true);
+            holder.setNbTierce_team1(currentDonne.getAnnoncesDonne().getNbTierce());
+        }
+        if(currentDonne.getAnnoncesDonne().getEquipeAnnonces().getNomEquipe().equals("EquipeB")){
+            holder.setColorAnnonce(holder.getTierce_team2(),true);
+            holder.setNbTierce_team2(currentDonne.getAnnoncesDonne().getNbTierce());
+        }
+
+
+    }
+
+    private void setUIAnnonces(DonneViewHolder holder) {
+        holder.setCardViewAnnoncesVisible();
+        holder.setCardViewAnnoncesBtnVisible();
+        if(currentDonne.getAnnoncesDonne().getEquipeAnnonces().getNomEquipe().equals("EquipeA")){
+            holder.getAnnonces_team1().setChecked(true);
+            holder.setColorBeloteCapot(holder.getAnnonces_team1(),holder.getAnnonces_team2(),1.0f,0.3f);
+
+        }
+        if(currentDonne.getAnnoncesDonne().getEquipeAnnonces().getNomEquipe().equals("EquipeB")){
+            holder.setColorBeloteCapot(holder.getAnnonces_team2(),holder.getAnnonces_team1(),1.0f,0.3f);
+            holder.getAnnonces_team2().setChecked(true);
+        }
+    }
+
+    private void setUICapot(DonneViewHolder holder) {
+        if(currentDonne.getCapot().getNomEquipe().equals("EquipeA")){
+            holder.setColorBeloteCapot(holder.getCapot_team1(),holder.getCapot_team2(),1.0f,0.3f);
+            holder.getCapot_team1().setChecked(true);
+        }
+        if(currentDonne.getCapot().getNomEquipe().equals("EquipeB")){
+            holder.setColorBeloteCapot(holder.getCapot_team2(),holder.getCapot_team1(),1.0f,0.3f);
+            holder.getCapot_team2().setChecked(true);
+        }
+
+    }
+
+    private void setUIBelote(DonneViewHolder holder) {
+
+        if(currentDonne.getBelote().getNomEquipe().equals("EquipeA")){
+            holder.setColorBeloteCapot(holder.getBelote_team1(),holder.getBelote_team2(),1.0f,0.3f);
+            holder.getBelote_team1().setChecked(true);
+        }
+        if(currentDonne.getBelote().getNomEquipe().equals("EquipeB")){
+            holder.setColorBeloteCapot(holder.getBelote_team2(),holder.getBelote_team1(),1.0f,0.3f);
+            holder.getBelote_team2().setChecked(true);
+        }
+
+    }
+
+    private void setUICouleur(DonneViewHolder holder) {
+
+        if(currentDonne.getCouleur().equals(Couleur.CARREAU)){ holder.setColorPreneurCouleur(holder.getPreneur_carreau(),true); }
+        if(currentDonne.getCouleur().equals(Couleur.COEUR)){ holder.setColorPreneurCouleur(holder.getPreneur_coeur(),true); }
+        if(currentDonne.getCouleur().equals(Couleur.TREFLE)){ holder.setColorPreneurCouleur(holder.getPreneur_trefle(),true); }
+        if(currentDonne.getCouleur().equals(Couleur.PIQUE)){ holder.setColorPreneurCouleur(holder.getPreneur_pique(),true); }
+    }
+
+    private void setUIPreneur(DonneViewHolder holder) {
+
+        if(currentDonne.getPreneur().getNomJoueur().equals(getPlayers()[0])){ holder.setColorPlayerPreneur(holder.getPlayer1Name(),true); }
+        if(currentDonne.getPreneur().getNomJoueur().equals(getPlayers()[1])){ holder.setColorPlayerPreneur(holder.getPlayer2Name(),true); }
+        if(currentDonne.getPreneur().getNomJoueur().equals(getPlayers()[2])){ holder.setColorPlayerPreneur(holder.getPlayer3Name(),true); }
+        if(currentDonne.getPreneur().getNomJoueur().equals(getPlayers()[3])){ holder.setColorPlayerPreneur(holder.getPlayer4Name(),true); }
+
+        holder.setGestionScoreVisible();
+
+        if(lastPartie.getType().getTypeAnnonce().equals(TypeAnnonce.AVEC_ANNONCES.toString())) {
+
+            holder.setCardViewAnnoncesBtnVisible();
+        }
+
     }
 
     private void testFinPartie() {
@@ -569,13 +612,7 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
                 }else if(holder.getBelote_team2().isChecked()){ belote.setNomEquipe("EquipeB");
                 }else{ belote.setNomEquipe("NoBelote");
                 }
-
-                Log.i(TAG, "checked: "+belote.getNomEquipe());
             }
-
-
-
-
 
         });
 
@@ -805,30 +842,6 @@ public class DonneAdapter extends RecyclerView.Adapter<DonneViewHolder> {
                 }
             }
         });
-    }
-
-
-    private void initData() {
-        //Appel de la dernière partie
-        lastPartie = MainActivity.beloteSkorDb.partieDao().getLastPartie();
-
-        lastModeEquipe=lastPartie.getType().getModeEquipe();
-
-        lastTypeAnnonce=lastPartie.getType().getTypeAnnonce();
-
-        equipeA = new Equipe("EquipeA");
-        equipeB = new Equipe("EquipeB");
-        equipeNull = new Equipe("NoAnnonces");
-
-        annoncesDonne=new AnnoncesDonne(equipeNull,0,0,0,0,false,false);
-
-        //todo V0 vérifier inutilité de cette initialisation
-        scoreA=0;
-        scoreB=0;
-        isScoreModified.add(false);
-        isPreneurChecked.add(false);
-        isExpanded.add(false);
-
     }
 
     private void calculScoreDonne(DonneViewHolder holder){
